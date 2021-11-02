@@ -12,11 +12,12 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 		filename = self.path.split('/')[-1] + ".json"
 
-
+		# data = open(filename, encoding="utf-8")
 		data = open(filename, encoding="shift_jis")
 
 		if(data):
 			self.wfile.write(bytes(data.read(),"utf-8"))
+			# self.wfile.write(bytes(data.read(),"shift_jis"))
 			print(str(datetime.now()) + " Data loaded " + filename)
 			self.wfile.close()
 		else:
@@ -30,6 +31,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 		self.send_header('Access-Control-Allow-Origin', "*")
 		self.end_headers()
 		req_body = self.rfile.read(int(self.headers.get('Content-Length'))).decode('utf-8')
+		# req_body = self.rfile.read(int(self.headers.get('Content-Length'))).decode('shift_jis')
 		filename = self.path.split('/')[-1] + ".json"
 
 		if self.path.split("/")[1] == "save-html":
@@ -52,12 +54,13 @@ class RequestHandler(BaseHTTPRequestHandler):
 				"ベージュ": "BG",
 				"シェリーベージュ": "CB",
 				"スキニーベージュ": "SB",
-				"サンドベージュ": "BG",
+				"サンドベージュ": "SB",
 				"チャコール": "CC",
 				"チャコールグレー": "CC",
 				"オフ×ブラック": "WB",
 				"オフ×ネイビー": "WN",
 				"テラコッタ": "TC",
+				"ライトグリーン": "LG",
 				# "No.1 帆型": "01",
 				# "No.2 H型": "02",
 				"ミックス": "MX",
@@ -66,7 +69,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 				"ブラウン": "BR",
 				"キャメル": "CA",
 				"ドロップ": "DR",
-				"グレー": "GR",
+				"グレー": "GL",
 				"ピンク": "PK",
 				"シャンパン": "CP",
 				"リング": "RN",
@@ -88,6 +91,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 			self.rfile.close()
 
 			self.wfile.write(bytes("Data written " + filename,"utf-8"))
+			# self.wfile.write(bytes("Data written " + filename,"shift_jis"))
 			print(str(datetime.now()) + " Data written " + filename)
 			self.wfile.close()
 
