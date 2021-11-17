@@ -1,3 +1,27 @@
+// Create Staff Comments
+
+let comments = [prompt("コメント1"), prompt("コメント2"), prompt("コメント3")];
+
+let commentsHtml = comments
+  .map((comment) => {
+    const modelHeight = comment.match(/\d{3}cm/);
+    const size = comment.match(/\w{1,2}(号|サイズ)(?=着)/)[0];
+    const statement = comment.match(/.*(\n.*)*(?=\n\w{1,2}(号|サイズ))/);
+
+    // [0]?.replace(/\n/g, "");
+
+    return ` <ul>
+  <li id="rw-icon_1"><p><span>STAFF・1</span></p></li><li><dl>
+  <dt>身長：${modelHeight}</dt>
+  <dd><b>着用：${size}</b>
+    ${statement}
+    </dd></dl></li></ul>
+  `;
+  })
+  .join("\n");
+
+copy(commentsHtml);
+
 //* Create size table
 
 let sizeInput = prompt("Size");
@@ -23,7 +47,11 @@ for (let i = 0; i < sizeValues.length - 1; i++) {
 }
 
 sizeHeaders =
-  "<tr>" + sizeHeaders.map((header) => `<th>${header}</th>`).join("") + "</tr>";
+  "<tr>" +
+  sizeHeaders
+    .map((header) => `<th>${header.replace(/（/g, "<br>（")}</th>`)
+    .join("") +
+  "</tr>";
 sizeRows = sizeRows
   .map(
     (row) =>
@@ -35,11 +63,7 @@ sizeRows = sizeRows
   )
   .join("\n");
 
-document.body.focus();
-setTimeout(
-  () => navigator.clipboard.writeText(sizeHeaders + "\n" + sizeRows),
-  300
-);
+copy(sizeHeaders + "\n" + sizeRows);
 
 //! Pass Data
 let response = await fetch(
@@ -197,7 +221,8 @@ let selectValueChanger = Object.getOwnPropertyDescriptor(
   "value"
 ).set;
 
-inputValueChanger.call(manageNumberInput, data.productNumber);
+if (manageNumberInput)
+  inputValueChanger.call(manageNumberInput, data.productNumber);
 inputValueChanger.call(productNumberInput, data.productNumber);
 textareaValueChanger.call(productNameInput, data.rakutenProductName);
 textareaValueChanger.call(catchCopyInput, data.rakutenCatchCopy);
@@ -218,9 +243,10 @@ categoryInputs.forEach((input, i) => {
   inputValueChanger.call(input, data.rakutenCategory[i] ?? "");
   input.onfocus = () => (input.value = data.rakutenCategory[i]);
 });
+
 selectValueChanger.call(asurakuInput, 1);
 asurakuInput.value = 1;
-imageUrlInputs.forEach((input) =>
+imageUrlInputs.forEach((input) => {
   input.addEventListener("focus", () =>
     inputValueChanger.call(
       input,
@@ -228,13 +254,13 @@ imageUrlInputs.forEach((input) =>
         .replaceAll(window.location.href.split("/")[8], data.productNumber)
         .replace(/(?<=cabinet\/)\D{4,12}(?=\/)/g, data.category)
     )
-  )
-);
-altInputs.forEach((input) =>
+  );
+});
+altInputs.forEach((input) => {
   input.addEventListener("focus", () =>
     inputValueChanger.call(input, data.title)
-  )
-);
+  );
+});
 
 document.querySelectorAll("[type=text], textarea").forEach((input) => {
   // input.dispatchEvent(new Event("focus", { bubbles: true }))
@@ -267,6 +293,8 @@ let inputValueChanger = Object.getOwnPropertyDescriptor(
 ).set;
 
 data.sizes.forEach((size, i) => {
+  sizeInputs[i].tabIndex = i + 1;
+  sizeCodeInputs[i].tabIndex = i + 1;
   let sizeCode =
     size.length < 3 ? "0" + size.replace("号", "") : size.replace("号", "");
   sizeCode = !size.includes("フリー") ? sizeCode : "fl";
@@ -279,6 +307,8 @@ data.sizes.forEach((size, i) => {
 });
 
 data.colors.forEach((color, i) => {
+  colorInputs[i].tabIndex = i + 1;
+  colorCodeInputs[i].tabIndex = i + 1;
   inputValueChanger.call(colorInputs[i], color);
   colorInputs[i].onfocus = () => inputValueChanger.call(colorInputs[i], color);
   inputValueChanger.call(
@@ -297,43 +327,47 @@ document.querySelectorAll("input").forEach((input) => {
   input.dispatchEvent(new Event("change", { bubbles: true }));
 });
 
-//! Shoplist expand image upload
-FileList.prototype.push = Array.prototype.push;
-FileList.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
+//! Shoplist multiple image upload
 
 let tbody = document.querySelector("#main > form > table > tbody");
-let uploadInput = tbody.querySelector("input[type=file]");
-uploadInput.multiple = true;
-uploadInput.addEventListener("change", () => {
-  [...uploadInput.files].forEach((file, i) => {
-    const inputFile = [...uploadInput.files].splice(i, 1);
-    const fileUpload = document.createElement("input");
-    fileUpload.type = "file";
-    fileUpload.files.push(inputFile);
-    console.log(fileUpload);
-    tbody.appendChild(fileUpload);
+let form = document.querySelector("form");
+let formData = new FormData(form);
+
+tbody.querySelectorAll("input[type=file]").forEach((uploadInput) => {
+  uploadInput.multiple = true;
+  uploadInput.addEventListener("change", () => {
+    const files = [...uploadInput.files];
+    files.forEach((file, i) => {
+      formData.append(`upload_image[${i + 2}]`, file);
+    });
   });
 });
-tbody.innerHTML = ``;
-for (let i = 1; i <= 30; i++) {
-  tbody.innerHTML += `
-  <tr>
-  <th>${i}</th>
-  <td>
-  <table class="inner_table">
-  <tbody><tr>
-  <td>画像選択</td>
-  <td><input type="file" name="upload_image[${i}]" size="50"></td>
-  </tr>
-      <tr>
-        <td>画像説明</td>
-        <td><input type="text" name="comment[${i}]" size="60"></td>
-      </tr>
-    </tbody></table>
-    </td>
-    </tr>
-    `;
-}
+
+form.onsubmit = (event) => {
+  event.preventDefault();
+  document.querySelector('[href="#Submit"]').innerHTML = `アップロード中...`;
+  document.querySelector('[href="#Submit"]').style.backgroundColor = `#3338`;
+  document.querySelector('[href="#Submit"]').style.cursor = `wait`;
+  fetch(form.action, {
+    method: "POST",
+    body: formData,
+  })
+    .then(async (res) => {
+      console.log(await res.text());
+      if (confirm("アップロード完了!\nウィンドウ閉じる？")) {
+        window.close();
+      } else {
+        document.querySelector('[href="#Submit"]').innerHTML = `登録`;
+        document.querySelector(
+          '[href="#Submit"]'
+        ).style.backgroundColor = `#333`;
+        document.querySelector('[href="#Submit"]').style.cursor = `pointer`;
+        form.reset();
+        formData = new FormData(form);
+      }
+    })
+    .catch((error) => console.error(error));
+};
 
 //! SHOPLIST Submit Product
 
@@ -371,42 +405,44 @@ document.querySelector("[name=stock_name_width]").value = "サイズ";
 document.querySelector("[name=stock_name_height]").value = "カラー";
 document.querySelector("[name=product_subject_mobile]").value =
   shoplistDescription
-    .replaceAll("\n ", "")
-    .replaceAll("【", "\n<br><br>\n【")
-    .replaceAll("】", "】<br>\n");
+    .replace(/\n/g, "")
+    .replace(/【/g, "\n<br><br>\n【")
+    .replace(/】/g, "】<br>\n") + "\n\n";
 
-let sizeInput = prompt("Size");
+if (!/^k/.test(productNumber)) {
+  let sizeInput = prompt("Size");
 
-let sizeHeaders = sizeInput
-  .replace(/"/g, "")
-  .replace(/\n（/g, "（")
-  .match(/(\(|（)*([一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤]|ｻ|ｽ|ﾊﾞ)\S+/gu);
-let sizeValues = sizeInput
-  .split(sizeHeaders[sizeHeaders.length - 1])[1]
-  .match(/(\w|[ａ-ｚ])\S*/giu);
+  let sizeHeaders = sizeInput
+    .replace(/"/g, "")
+    .replace(/\n（/g, "（")
+    .match(/(\(|（)*([一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤]|ｻ|ｽ|ﾊﾞ)\S+/gu);
+  let sizeValues = sizeInput
+    .split(sizeHeaders[sizeHeaders.length - 1])[1]
+    .match(/(\w|[ａ-ｚ])\S*/giu);
 
-let sizeRows = [];
+  let sizeRows = [];
 
-for (let i = 0; i < sizeValues.length - 1; i++) {
-  let sizeRow = [];
-  if (!(i % sizeHeaders.length)) {
-    for (let j = i; j < i + sizeHeaders.length; j++) {
-      sizeRow.push(sizeValues[j]);
+  for (let i = 0; i < sizeValues.length - 1; i++) {
+    let sizeRow = [];
+    if (!(i % sizeHeaders.length)) {
+      for (let j = i; j < i + sizeHeaders.length; j++) {
+        sizeRow.push(sizeValues[j]);
+      }
+      sizeRows.push(sizeRow);
     }
-    sizeRows.push(sizeRow);
   }
-}
 
-document.querySelector("[name=product_subject_mobile]").value += sizeRows
-  .map((row) =>
-    row
-      .map((col, i) =>
-        i != 0 ? sizeHeaders[i] + ` ${col}cm` : col + "号<br>\n"
-      )
-      .join(" / ")
-  )
-  .join("<br><br>\n")
-  .replace(/\n \/ /g, "\n");
+  document.querySelector("[name=product_subject_mobile]").value += sizeRows
+    .map((row) =>
+      row
+        .map((col, i) =>
+          i != 0 ? sizeHeaders[i] + ` ${col}cm` : col + "号<br>\n"
+        )
+        .join(" / ")
+    )
+    .join("<br><br>\n")
+    .replace(/\n \/ /g, "\n");
+}
 
 document
   .querySelectorAll('td[style="width:80px;"]')
@@ -438,6 +474,43 @@ document
       (td.lastElementChild.src =
         td.nextElementSibling.querySelector('input[size="40"]').value)
   );
+
+// Shoplist Create Size Description
+
+let sizeInput = prompt("Size");
+
+let sizeHeaders = sizeInput
+  .replace(/"/g, "")
+  .replace(/\n（/g, "（")
+  .match(/(\(|（)*([一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤]|ｻ|ｽ|ﾊﾞ)\S+/gu);
+let sizeValues = sizeInput
+  .split(sizeHeaders[sizeHeaders.length - 1])[1]
+  .match(/(\w|[ａ-ｚ])\S*/giu);
+
+let sizeRows = [];
+
+for (let i = 0; i < sizeValues.length - 1; i++) {
+  let sizeRow = [];
+  if (!(i % sizeHeaders.length)) {
+    for (let j = i; j < i + sizeHeaders.length; j++) {
+      sizeRow.push(sizeValues[j]);
+    }
+    sizeRows.push(sizeRow);
+  }
+}
+
+copy(
+  sizeRows
+    .map((row) =>
+      row
+        .map((col, i) =>
+          i != 0 ? sizeHeaders[i] + ` ${col}cm` : col + "号<br>\n"
+        )
+        .join(" / ")
+    )
+    .join("<br>\n")
+    .replace(/\n \/ /g, "\n")
+);
 
 //! Shoplist Variation
 
@@ -577,7 +650,57 @@ let textareaValueChanger = Object.getOwnPropertyDescriptor(
 
 for (input in inputs) {
   inputValueChanger.call(inputs[input], data[input.replace("Input", "")]);
+  inputs[input].onfocus = () =>
+    (inputs[input].value = data[input.replace("Input", "")]);
 }
+inputs.productNumberInput.onfocus = () =>
+  (inputs.productNumberInput.value = data.productNumber);
+inputs.priceInput.onfocus = () => (inputs.priceInput.value = data.price);
+
+document
+  .querySelector(
+    "#react-tabs-1 > div > div:nth-child(11) > div:nth-child(5) > div.uiGridA__gridA2 > div > div > div > ul > li > div > div > a > p > span"
+  )
+  .click();
+document.querySelector("#LibTree > ul > li > span > span")?.click();
+document
+  .querySelector("#LibTree > ul > li > ul > li.dynatree-lastsib > span > a")
+  ?.click();
+document.querySelector("input#Upload1")?.click();
+
+document
+  .querySelectorAll(
+    "div:nth-child(11) > div:nth-child(6) div.imageListB span.imageListB__photoText"
+  )
+  .forEach((a, i) => {
+    if (i < 19) {
+      const number =
+        a.parentElement.parentElement.parentElement.parentElement.textContent.match(
+          /\d{1,2}/
+        );
+      setTimeout(() => {
+        a.click();
+        document
+          .querySelector(
+            "#LibTree > ul > li > ul > li.dynatree-lastsib > span > a"
+          )
+          .click();
+        [...document.querySelectorAll("[id^=RowList]")]
+          .find((row) => row.innerHTML.includes(`sp${number}.jpg`))
+          ?.querySelector("input[id^=Upload]")
+          ?.click();
+      }, i * 800);
+    }
+  });
+
+setTimeout(() => {
+  document
+    .querySelector(
+      "#react-tabs-1 > div > div:nth-child(11) > div:nth-child(5) > div.uiGridA__gridA2 > div > div > div > ul > li > div > div > a > p > span"
+    )
+    .click();
+  document.querySelector("input#Upload1")?.click();
+}, 800 * 20);
 
 textareaValueChanger.call(
   descriptionInput,
@@ -619,9 +742,11 @@ document
     ".optionSelection__column:first-child [name=optionSelectionItem]"
   )
   .forEach((input, i) => {
-    input.addEventListener("focus", () =>
-      inputValueChanger.call(input, data.colors[i - 1])
-    );
+    input.tabIndex = i + 1;
+    input.addEventListener("focus", () => {
+      input.tabIndex = 0;
+      inputValueChanger.call(input, data.colors[i - 1]);
+    });
     input.dispatchEvent(new Event("focus", { bubbles: true }));
   });
 document
@@ -629,9 +754,11 @@ document
     ".optionSelection__column:last-child [name=optionSelectionItem]"
   )
   .forEach((input, i) => {
-    input.addEventListener("focus", () =>
-      inputValueChanger.call(input, data.sizes[i - 1])
-    );
+    input.tabIndex = i + 1;
+    input.addEventListener("focus", () => {
+      input.tabIndex = 0;
+      inputValueChanger.call(input, data.sizes[i - 1]);
+    });
     input.dispatchEvent(new Event("focus", { bubbles: true }));
   });
 
@@ -639,7 +766,8 @@ document
 
 document
   .querySelectorAll(".stockList td:nth-child(1) span > input")
-  .forEach((input) => {
+  .forEach((input, i) => {
+    input.tabIndex = i + 1;
     const yahooSizeCode =
       input.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerText.replaceAll(
         "号",
@@ -678,6 +806,7 @@ document
 document
   .querySelectorAll(".stockList .stockList__tableWrap tr:nth-child(1) textarea")
   .forEach((textArea, i) => {
+    textArea.tabIndex = i + 1;
     textArea.value = `https://shopping.c.yimg.jp/lib/milulu-shop/${
       data.productNumber
     }-parts${i + 1}.jpg`;
@@ -777,3 +906,83 @@ document
 [...document.querySelectorAll("tr")]
   .filter((tr) => /m214044ct0/.test(tr.innerHTML))
   .forEach((tr) => console.log(tr.querySelector('[value="削除"]').click()));
+
+// Amazon select modules
+let response = await fetch(`http://localhost:8888/milulu`);
+let data = await response.json();
+
+document
+  .querySelector("#app-main > div > div > div > div > div > div > div > div")
+  .click();
+
+document.querySelector('[data-component-id="launchpad-company-logo"]').click();
+
+document
+  .querySelector(
+    "#app-main > div > div > div > div > div:nth-child(2) > div > div > div"
+  )
+  .click();
+
+document.querySelector('[data-component-id="3p-module-b"]').click();
+
+document
+  .querySelector(
+    "#app-main > div > div > div > div > div:nth-child(3) > div > div > div"
+  )
+  .click();
+
+document.querySelector('[data-component-id="module-4"]').click();
+
+document
+  .querySelector(
+    "#app-main > div > div > div > div > div:nth-child(4) > div > div > div"
+  )
+  .click();
+
+document.querySelector('[data-component-id="module-4"]').click();
+
+document
+  .querySelector(
+    "#app-main > div > div > div > div > div:nth-child(5) > div > div > div"
+  )
+  .click();
+
+document.querySelector('[data-component-id="module-9"]').click();
+
+document
+  .querySelector(
+    "#app-main > div > div > div > div > div:nth-child(6) > div > div > div"
+  )
+  .click();
+
+document.querySelector('[data-component-id="module-6"]').click();
+
+let inputValueChanger = Object.getOwnPropertyDescriptor(
+  window.HTMLInputElement.prototype,
+  "value"
+).set;
+
+inputValueChanger.call(
+  document.querySelector("#awsui-input-0"),
+  data.productNumber
+);
+
+inputValueChanger.call(
+  document.querySelector(
+    "#app-main > div > div > div > div > div:nth-child(3) > div:nth-child(2) > div > div:nth-child(1) > div > span > div > input[type=text]"
+  ),
+  "▼ ディティール"
+);
+
+inputValueChanger.call(
+  document.querySelector(
+    "#app-main > div > div > div > div > div:nth-child(5) > div:nth-child(2) > div > div:nth-child(1) > div > span > div > input[type=text]"
+  ),
+  "▼ テキスタイル"
+);
+
+document
+  .querySelectorAll("input[type=text], textare")
+  .forEach((input) =>
+    input.dispatchEvent(new Event("input", { bubbles: true }))
+  );
