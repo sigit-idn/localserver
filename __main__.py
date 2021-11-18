@@ -1,6 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from datetime import datetime
+import re
+from scrap import scrap
 
 class RequestHandler(BaseHTTPRequestHandler):
 	print(str(datetime.now()) + " Listening on port 8888")
@@ -9,6 +11,14 @@ class RequestHandler(BaseHTTPRequestHandler):
 		self.send_response(200, "ok")
 		self.send_header('Access-Control-Allow-Origin', "*")
 		self.end_headers()
+
+		if re.search("scrap", self.path):
+			return self.wfile.write(
+				bytes(
+					json.dumps(scrap(re.search("\w+$", self.path)[0])),
+					"utf-8"
+				)
+				)
 
 		filename = self.path.split('/')[-1] + ".json"
 
@@ -30,6 +40,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 		self.send_response(200)
 		self.send_header('Access-Control-Allow-Origin', "*")
 		self.end_headers()
+
 		req_body = self.rfile.read(int(self.headers.get('Content-Length'))).decode('utf-8')
 		# req_body = self.rfile.read(int(self.headers.get('Content-Length'))).decode('shift_jis')
 		filename = self.path.split('/')[-1] + ".json"

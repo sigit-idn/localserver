@@ -119,13 +119,16 @@ let coordinateTexts = coordinateInput
 data.coordinateSubtitles = coordinateTexts.filter((_, i) => i % 4 < 2);
 data.coordinateTitles = coordinateTexts.filter((_, i) => i % 4 >= 2);
 
-let coordinateItems = data.coordinateUrls.map((url, i) => {
+let coordinateItems = data.coordinateUrls.map(async (url, i) => {
   let coordinateNumber = url.split("/")[url.split("/").length - 2];
+  let res = await fetch("http://localhost:8888/scrap/" + coordinateNumber);
+  let { thumbnail } = await res.json();
+
   let coordinateCategory =
     data.productNumber[0] == "k"
       ? "accessories"
-      : categories[coordinateNumber.match(/[a-zA-Z]{2,3}/)];
-  return `
+      : categories[coordinateNumber.match(/(?<=\d)[a-z]{2,3}/i)];
+  document.querySelector(".productArea").innerHTML += `
 <a href="${url}" target="_blank"><!-- ← 商品URL指定欄 -->	
 	<div class="rw-coBanner">
 		<p><img src="https://image.rakuten.co.jp/milulu/cabinet/${data.category}/${
@@ -133,7 +136,10 @@ let coordinateItems = data.coordinateUrls.map((url, i) => {
   }-co_${i + 1}.jpg"></p>	
 	<div>	
 		<ul>
-			<li><p><img src="https://image.rakuten.co.jp/milulu/cabinet/${coordinateCategory}/${coordinateNumber}-thumbnail.jpg"></p>
+			<li><p><img src="${
+        thumbnail ??
+        `https://image.rakuten.co.jp/milulu/cabinet/${coordinateCategory}/${coordinateNumber}-thumbnail.jpg`
+      }"></p>
 				<p><s>${data.coordinateSubtitles[i]}
 				</s><!-- ← 小タイトル（s～s 消してもOK） -->
 				${data.coordinateTitles[i]}
@@ -149,9 +155,43 @@ let coordinateItems = data.coordinateUrls.map((url, i) => {
 });
 
 let productArea = document.querySelector(".productArea");
-productArea.innerHTML = coordinateItems.join("\n");
+// productArea.innerHTML = coordinateItems.join("\n");
 productArea.addEventListener("mousewheel", () =>
   navigator.clipboard.writeText(productArea.outerHTML)
+);
+
+// Create Related Product
+let relatedItems = "";
+
+prompt("関連商品")
+  .match(/\w{1,2}\d{5,7}\w{1,2}\d{1,2}/g)
+  .filter((val, i, arr) => arr.indexOf(val) === i)
+  .forEach(async (productNumber) => {
+    let response = await fetch("http://localhost:8888/scrap/" + productNumber);
+    let data = await response.json();
+
+    relatedItems += `  <li style="box-shadow: 0 -4px 0 0 #FFF inset;">
+    <a href="https://item.rakuten.co.jp/milulu/${productNumber}/" target="_top">
+      <i>
+        <img src="${data.thumbnail}">
+      </i>
+      <span>
+        <u></u>
+        <u>
+          <font size="0.5em" color="#6a5acd">
+            ＜${data.category.replace(/<br>|\s/g, "")}＞
+          </font>
+          <br>
+          ${data.h1.replace(/<br>|<br\/>|\s/g, "")}
+        </u>
+      </span>
+    </a>
+  </li>
+  `;
+  });
+
+document.addEventListener("mousewheel", () =>
+  navigator.clipboard.writeText(relatedItems)
 );
 
 //! Rakuten Submit Product
