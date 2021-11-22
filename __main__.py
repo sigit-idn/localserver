@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from datetime import datetime
 import re
-from scrap import scrap
+from scrape import scrape
 
 class RequestHandler(BaseHTTPRequestHandler):
 	print(str(datetime.now()) + " Listening on port 8888")
@@ -12,10 +12,10 @@ class RequestHandler(BaseHTTPRequestHandler):
 		self.send_header('Access-Control-Allow-Origin', "*")
 		self.end_headers()
 
-		if re.search("scrap", self.path):
+		if re.search("scrape", self.path):
 			return self.wfile.write(
 				bytes(
-					json.dumps(scrap(re.search("\w+$", self.path)[0])),
+					json.dumps(scrape(re.search("\w+$", self.path)[0])),
 					"utf-8"
 				)
 				)

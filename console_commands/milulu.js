@@ -121,8 +121,9 @@ data.coordinateTitles = coordinateTexts.filter((_, i) => i % 4 >= 2);
 
 let coordinateItems = data.coordinateUrls.map(async (url, i) => {
   let coordinateNumber = url.split("/")[url.split("/").length - 2];
-  let res = await fetch("http://localhost:8888/scrap/" + coordinateNumber);
-  let { thumbnail } = await res.json();
+  let res = await fetch("http://localhost:8888/scrape/" + coordinateNumber);
+  let scrapeData = await res.json();
+  let thumbnail = scrapeData?.thumbnail ?? false;
 
   let coordinateCategory =
     data.productNumber[0] == "k"

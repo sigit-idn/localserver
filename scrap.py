@@ -1,11 +1,13 @@
+import bs4
 import requests
 from bs4 import BeautifulSoup
 import re
 
+
 # print(requests)
 
 # print(re.search("(?<=p).+(?=ng)", "pulang"))
-def scrap(product_number):
+def scraps(product_number):
   # page = requests.get('https://item.rakuten.co.jp/milulu/' + product_number)
   iframe = requests.get('https://www.rakuten.ne.jp/gold/milulu/psge2/' + product_number + '/html/'+ product_number +'.html')
   if iframe.status_code == 404:
@@ -49,3 +51,4 @@ def scrap(product_number):
     "thumbnail": thumbnail,
     "category": category
   }
+
