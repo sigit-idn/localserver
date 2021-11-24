@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../css/tailwind.min.css" rel="stylesheet" />
+    <title>Amazon Template</title>
+    <style>
+      .overflow-x-scroll::-webkit-scrollbar,
+      .overflow-y-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+      .overflow-x-scroll,
+      .overflow-y-scroll {
+        -ms-overflow-style: none; 
+        scrollbar-width: none; 
+    }
+    </style>
+  </head>
+  <body class="bg-black">
+    <section
+      class="
+        text-sm
+        container
+        mx-auto
+        p-6
+        text-gray-200
+        h-screen
+        w-screen
+        flex flex-col
+        overflow-hidden
+      "
+    >
+      <div
+        class="
+          w-full
+          mb-8
+          overflow-x-hidden 
+          overflow-y-scroll
+          rounded-lg
+          shadow-lg
+          bg-gray-800
+          border-gray-700
+        "
+      >
+        <div class="w-full overflow-x-scroll">
+          <table class="w-full">
+            <thead>
+              <tr
+                class="
+                  text-md
+                  font-semibold
+                  tracking-wide
+                  text-left
+                  bg-gray-700
+                  border-b border-gray-700
+                "
+                id="tableHeader"
+              ></tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <button
+        id="copy"
+        class="
+          mx-auto
+          bg-green-600
+          px-3
+          py-1
+          hover:bg-green-700
+          rounded
+          block
+          w-max
+        "
+      >
+        Copy
+      </button>
+    </section>
+
+    <script>
+      fetch(`http://localhost:8888/watmos-style`).then(async (res) => {
+        const {skus, titles, prices, colors, colorMaps, quantity, descriptions} = await res.json()
+
+        const getProductType = (query) => {
+          const categories = {
+            空気清浄機: { productType: "airpurifier", browseNode: "4083011" },
+          };
+
+          const categoryKey = Object.keys(categories).find((key) =>
+            new RegExp(key).test(titles[0])
+          );
+
+          return categories[categoryKey][query];
+        };
+
+        const parentValues = {
+          feed_product_type: getProductType("productType"),
+          item_sku: skus[0],
+          product_description: descriptions[0].productDescription,
+          item_name: titles[0],
+          brand_name: "ｗａｔｍｏｓｓｔｙｌｅ",
+          bullet_point1: descriptions[0].bulletPoint1,
+          bullet_point2: descriptions[0].bulletPoint2,
+          bullet_point3: descriptions[0].bulletPoint3,
+          bullet_point4: descriptions[0].bulletPoint4,
+          bullet_point5: descriptions[0].bulletPoint5,
+          variation_theme: colors.length
+            ? 
+            // sizes?.length > 1
+            //   ? "SizeColor"
+            //   : 
+              "Color"
+            : "",
+          parent_child: colors.length ? "Parent" : "",
+          update_delete: "Update",
+          generic_keywords: descriptions[0].genericKeywords,
+          merchant_shipping_group_name: "マケプレお急ぎ便用",
+          condition_type: "新品",
+          recommended_browse_nodes: getProductType("browseNode"),
+          fulfillment_latency: 4,
+        };
+
+        const tableHeaders = prompt("Table Headers").match(/\w+/g);
+        tableHeaders.forEach((header) => {
+          document.querySelector("#tableHeader").innerHTML += `
+           	<th class="px-4 py-3">${header}</th>`;
+          document.querySelector("#tableBody > tr").innerHTML += `
+       <td class="border-gray-700 px-4 py-3 border font-light">
+       	${parentValues[header] ?? ""}
+       	</td>`;
+        });
+
+        colors.forEach((color, i) => {
+          const {productDescription, bulletPoint1, bulletPoint2, bulletPoint3, bulletPoint4, bulletPoint5, genericKeywords} = descriptions[i]
+          const values = {
+            feed_product_type: getProductType("productType"),
+            item_sku: skus[i+1],
+            product_description: productDescription,
+            item_name:
+              titles[i],
+              brand_name: "ｗａｔｍｏｓｓｔｙｌｅ",
+            bullet_point1 : bulletPoint1,
+            bullet_point2 : bulletPoint2,
+            bullet_point3 : bulletPoint3,
+            bullet_point4 : bulletPoint4,
+            bullet_point5 : bulletPoint5,
+            quantity: 1,
+            relationship_type: colors.length ? "variation" : "",
+            variation_theme: "Color",
+            // variations.length
+            //   ? data.size.length > 1
+            //     ? "SizeColor"
+            //     : "Color"
+            //   : "",
+            parent_sku: skus[0],
+            parent_child: "Child",
+            update_delete: "Update",
+            generic_keywords: genericKeywords,
+            size_name: "",
+            size_map: "",
+            color_name: colors[i],
+            color_map: colorMaps[i],
+            merchant_shipping_group_name: "マケプレお急ぎ便配送パターン",
+            condition_type: "新品",
+            standard_price: prices[i],
+            recommended_browse_nodes: getProductType("browseNode"),
+            fulfillment_latency: 4,
+          };
+
+          document.querySelector("#tableBody").innerHTML += `
+       <tr>
+       	${tableHeaders
+          .map(
+            (header) =>
+              `<td class="border-gray-700 px-4 py-3 border font-light">
+       			${values[header] ?? ""}
+       			</td>`
+          )
+          .join("")}
+       </tr>
+       	`;
+        });
+
+        document
+          .querySelector("#copy")
+          .addEventListener("click", (event) =>
+            navigator.clipboard
+              .writeText(document.querySelector("#tableBody").innerText)
+              .then((res) => console.log("Copied!"))
+          );
+      });
+      // fetch(`http://localhost:8888/watmos`)
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     document.querySelector("tbody").innerHTML += `
+      // <tr>
+      // 	<td>accessory</td>
+      // 	<td>${data.itemNumber}</td>
+      // 	<td>TAYU-TAFU(たゆたふ)</td>
+      // 	<td>${data.itemName.split("【")[0]}</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>レディース</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>Parent</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>SizeColor</td>
+      // 	<td>Update</td>
+      // 	<td></td>
+      // 	<td>${data.description
+      //     .replaceAll("\n\n", "\n")
+      //     .replaceAll("\n", "&lt;br&gt;\n")}</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>${data.catchCopy}</td>
+      // 	<td>カジュアル</td>
+      // 	<td>カジュアル</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>5</td>
+      // 	<td>新品</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>移行された配送パターン</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // </tr>
+      // `;
+
+      //     const variations = data.size
+      //       .map((size) => data.color.map((color) => color + "-_-" + size))
+      //       .join()
+      //       .split(",");
+
+      //     const variationsCode = data.size
+      //       .map((size, i) =>
+      //         data.color.map((color, j) => "X" + (1000 + i) + "Y" + (1000 + j))
+      //       )
+      //       .join()
+      //       .split(",");
+
+      //     console.log(variations, variationsCode);
+      //     variations.forEach(
+      //       (variation, i) =>
+      //         (document.querySelector("tbody").innerHTML += `
+      // <tr>
+      // 	<td>accessory</td>
+      // 	<td>${data.itemNumber + variationsCode[i]}</td>
+      // 	<td>TAYU-TAFU(たゆたふ)</td>
+      // 	<td>${
+      //     data.itemName.split("【")[0] + variations[i].replace("-_-", " ")
+      //   }</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>${(spec1 = data.description
+      //     .split("【仕様】")[1]
+      //     .split("[草履]")[0])}</td>
+      // 	<td>${(spec2 = data.description.split(spec1)[1]?.split("ご注意")[0])}</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>${variation.split("-_-")[1]}</td>
+      // 	<td>${variation.split("-_-")[0]}</td>
+      // 	<td>${variation.split("-_-")[0].match(/[ァ-ヴー]+/)}</td>
+      // 	<td>レディース</td>
+      // 	<td>Free</td>
+      // 	<td></td>
+      // 	<td>0</td>
+      // 	<td>${data.price}</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>Child</td>
+      // 	<td>${data.itemNumber}</td>
+      // 	<td>Variation</td>
+      // 	<td>SizeColor</td>
+      // 	<td>Update</td>
+      // 	<td></td>
+      // 	<td>${data.description
+      //     .replaceAll("\n\n", "\n")
+      //     .replaceAll("\n", "&lt;br&gt;\n")}</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>${(spec1 = data.description
+      //     .split("【仕様】")[1]
+      //     .split("[草履]")[0])}</td>
+      // 	<td>${(spec2 = data.description.split(spec1)[1]?.split("ご注意")[0])}</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>${data.catchCopy}</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>5</td>
+      // 	<td>新品</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td>移行された配送パターン</td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // 	<td></td>
+      // </tr>
+      // `)
+      //     );
+
+      //     document
+      //       .querySelectorAll("tbody")
+      //       .forEach((tbody) =>
+      //         tbody.addEventListener("dblclick", (event) =>
+      //           navigator.clipboard
+      //             .writeText(tbody.innerText)
+      //             .then((res) => console.log("Copied!"))
+      //         )
+      //       );
+      //   });
+    </script>
+  </body>
+</html>

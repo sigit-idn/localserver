@@ -308,29 +308,26 @@ input.dispatchEvent(new Event("change", {bubbles: true}));
 //* Yahoo komoku sentaku
 
 document
-.querySelectorAll(
-".optionSelection__column:first-child [name=optionSelectionItem]")
-.forEach((input, i) => {
-  inputValueChanger.call(input, data.color[i - 3])
-  input.onfocus = () =>
-  inputValueChanger.call(input, data.color[i - 3])
-}
-) 
+  .querySelectorAll(
+    ".optionSelection__column:first-child [name=optionSelectionItem]"
+  )
+  .forEach((input, i) => {
+    inputValueChanger.call(input, data.color[i - 1]);
+    input.onfocus = () => inputValueChanger.call(input, data.color[i - 1]);
+  });
 document
-.querySelectorAll(
-".optionSelection__column:last-child [name=optionSelectionItem]:not(:first-child)"
-)
-.forEach((input, i) => {
-  input.addEventListener('focus', () =>
-  inputValueChanger.call(input, data.size[i - 3]))
-}
-)
+  .querySelectorAll(
+    ".optionSelection__column:last-child [name=optionSelectionItem]:not(:first-child)"
+  )
+  .forEach((input, i) => {
+    input.addEventListener("focus", () =>
+      inputValueChanger.call(input, data.size[i - 1])
+    );
+  });
 
-document
-.querySelectorAll("[type=text], textarea")
-.forEach((input) => {
-input.dispatchEvent(new Event("input", {bubbles: true}));
-input.dispatchEvent(new Event("change", {bubbles: true}));
+document.querySelectorAll("[type=text], textarea").forEach((input) => {
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  input.dispatchEvent(new Event("change", { bubbles: true }));
 });
 
 //* Tayutafu Yahoo variation table
@@ -338,24 +335,34 @@ input.dispatchEvent(new Event("change", {bubbles: true}));
 let xValue = 0;
 let yValue = 0;
 
-document.querySelectorAll(".stockList td:nth-child(1) span > input")
-.forEach((input, i) =>{
-  yValue = Math.floor(i / data.size.length)
-  inputValueChanger.call(input, data.itemNumber + 'X' + (1000 + xValue) + 'Y' + (1000 + yValue))
-  let newValue = input.value
-  input.onfocus = () => {
-    inputValueChanger.call(input, newValue)
-  }
-  xValue = xValue >= data.size.length - 1 ? 0 : xValue + 1;
-});
+document
+  .querySelectorAll(".stockList td:nth-child(1) span > input")
+  .forEach((input, i) => {
+    input.tabIndex = i + 1;
+    yValue = Math.floor(i / data.size.length);
+    inputValueChanger.call(
+      input,
+      data.itemNumber + "X" + (1000 + xValue) + "Y" + (1000 + yValue)
+    );
+    let newValue = input.value;
+    input.onfocus = () => {
+      inputValueChanger.call(input, newValue);
+    };
+    xValue = xValue >= data.size.length - 1 ? 0 : xValue + 1;
+  });
 
 document
-.querySelectorAll(".stockList .stockList__tableWrap tr:nth-child(1) textarea")
-.forEach((textArea, i) => {
-  textareaValueChanger.call(textArea, `https://shopping.c.yimg.jp/lib/tayu-tafu/${data.itemNumber}-c100${i}.jpg`)
-  const newValue = textArea.value
-  textArea.onfocus = () => textareaValueChanger.call(textArea, newValue)
-});
+  .querySelectorAll(".stockList .stockList__tableWrap tr:nth-child(1) textarea")
+  .forEach((textArea, i) => {
+    textArea.tabIndex = i + 1;
+    textareaValueChanger.call(
+      textArea,
+      `https://shopping.c.yimg.jp/lib/tayu-tafu/${data.itemNumber}-${i + 1}.jpg`
+    );
+    // textareaValueChanger.call(textArea, `https://shopping.c.yimg.jp/lib/tayu-tafu/${data.itemNumber}-c100${i}.jpg`)
+    const newValue = textArea.value;
+    textArea.onfocus = () => textareaValueChanger.call(textArea, newValue);
+  });
 
 document.querySelectorAll('input, textarea').forEach(input => {
 input.dispatchEvent(new Event('input', {bubbles: true}))
@@ -572,9 +579,11 @@ let data = await fetch(`http://localhost:8888/tayutafu`)
   .then((response) => response.json())
   .then((data) => data);
 
-document.querySelectorAll("#small input[name*=choicesColLabel]")
+document
+  .querySelectorAll("input[name*=choicesColLabel]")
   .forEach((sizeInput, i) => (sizeInput.value = data.size[i] || ""));
-document.querySelectorAll("#small input[name*=choicesRowLabel]")
+document
+  .querySelectorAll("input[name*=choicesRowLabel]")
   .forEach((sizeInput, i) => (sizeInput.value = data.color[i] || ""));
 
 let colArray = [
