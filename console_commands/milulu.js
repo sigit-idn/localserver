@@ -168,7 +168,7 @@ prompt("関連商品")
   .match(/\w{1,2}\d{5,7}\w{1,2}\d{1,2}/g)
   .filter((val, i, arr) => arr.indexOf(val) === i)
   .forEach(async (productNumber) => {
-    let response = await fetch("http://localhost:8888/scrap/" + productNumber);
+    let response = await fetch("http://localhost:8888/scrape/" + productNumber);
     let data = await response.json();
 
     relatedItems += `  <li style="box-shadow: 0 -4px 0 0 #FFF inset;">
@@ -180,10 +180,10 @@ prompt("関連商品")
         <u></u>
         <u>
           <font size="0.5em" color="#6a5acd">
-            ＜${data.category.replace(/<br>|\s/g, "")}＞
+            ＜${data.category?.replace(/<br>|\s/g, "")}＞
           </font>
           <br>
-          ${data.h1.replace(/<br>|<br\/>|\s/g, "")}
+          ${data.h1?.replace(/<br>|<br\/>|\s/g, "")}
         </u>
       </span>
     </a>
@@ -242,7 +242,7 @@ ${data.sizes.join("／")}<br>
 
 mobilePageValue = mobilePageValue
   .join("<!-- specs -->")
-  .replaceAll(window.location.href.split("/")[8], data.productNumber)
+  ?.replaceAll(window.location.href.split("/")[8], data.productNumber)
   .replace(/(?<=cabinet\/)\D{4,12}(?=\/)/g, data.category);
 mobilePageValue = mobilePageValue.replace(
   /着用サイズ.+/,
