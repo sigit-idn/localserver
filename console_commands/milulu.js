@@ -66,11 +66,9 @@ sizeRows = sizeRows
 copy(sizeHeaders + "\n" + sizeRows);
 
 //! Pass Data
-let response = await fetch(
+let data = await (await fetch(
   "https://script.google.com/macros/s/AKfycbyxdiJmE_Tim7NxQJN6FStbIK0lZ154BWTKE6j4-N0MzbcKG7zEMKUCsZdp-cj5owYtWQ/exec"
-);
-
-let data = await response.json();
+)).json();
 
 let categories = {
   bl: "tops",
@@ -98,8 +96,7 @@ fetch("http://localhost:8888/milulu", {
 
 //! Create Coordinate
 
-let response = await fetch(`http://localhost:8888/milulu`);
-let data = await response.json();
+let data = await (await fetch(`http://localhost:8888/milulu`)).json();
 
 let categories = {
   bl: "tops",
@@ -118,13 +115,12 @@ let coordinateTexts = coordinateInput
   .match(/\S{6,}/g);
 data.coordinateSubtitles = coordinateTexts.filter((_, i) => i % 4 < 2);
 data.coordinateTitles = coordinateTexts.filter((_, i) => i % 4 >= 2);
+document.querySelector(".productArea").innerHTML = "";
 
 let coordinateItems = data.coordinateUrls.map(async (url, i) => {
   let coordinateNumber = url.split("/")[url.split("/").length - 2];
-  let res = await fetch("http://localhost:8888/scrape/" + coordinateNumber);
-  let scrapeData = await res.json();
-  let thumbnail = scrapeData?.thumbnail ?? false;
-
+  const {thumbnail} = await (await fetch("http://localhost:8888/scrape/" + coordinateNumber)).json();
+  
   let coordinateCategory =
     data.productNumber[0] == "k"
       ? "accessories"
@@ -309,10 +305,37 @@ document.querySelectorAll("[type=text], textarea").forEach((input) => {
   input.dispatchEvent(new Event("change", { bubbles: true }));
 });
 
+document.querySelectorAll(
+  `#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(2),
+  #root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(11) > div.rms-form.form-border.form-full > div:nth-child(1),
+  #root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(12)
+  `
+).forEach(element => element.style.backgroundColor = "#ff0");
+
+// Rakuten find DirectoryID
+
+let searchQuery = prompt('Category');
+
+(function searchCategory () {
+  let found = 0
+  document.querySelectorAll('[class^=treeviewer-list-] li')
+  .forEach((li) => {
+    if (new RegExp(searchQuery).test(li.innerText)){
+      li.scrollIntoView({behavior:"smooth"})
+      li.style.backgroundColor = "#ff0"
+      found++
+    }
+    })
+
+    if (!found) { 
+      document.querySelectorAll('[class^=treeviewer-list-] :not([class^=expanded]) [class^=parent-label]').forEach(li => li.click())
+      searchCategory()
+    }
+})()
+
 //! Rakuten variations
 
-let response = await fetch("http://localhost:8888/milulu");
-let data = await response.json();
+let data = await (await fetch("http://localhost:8888/milulu")).json();
 
 let sizeInputs = document.querySelectorAll(
   "#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(1) > div > div > div:nth-child(2) .rms-col-14 input"
@@ -645,8 +668,7 @@ document
   );
 
 //! Yahoo Submit Product
-let response = await fetch("http://localhost:8888/milulu");
-let data = await response.json();
+let data = await (await fetch("http://localhost:8888/milulu")).json();
 
 let inputs = {
   productNumberInput: document.querySelector("[name=__submit__product_code]"),
@@ -656,6 +678,17 @@ let inputs = {
     "[name=__submit__original_price]"
   ),
 };
+
+[inputs.priceInput, 
+  inputs.productNumberInput,
+  [...document.querySelectorAll(`
+  #react-tabs-1 > div > div:nth-child(13) > div:nth-child(2),
+  #react-tabs-1 > div > div:nth-child(13) > div:nth-child(4),
+  #react-tabs-1 > div > div:nth-child(14) > div.uiGridB > div.uiGridB__gridB2 > div > div:nth-child(2) > div.uiGridB__gridB5 > div.formParts,
+  #react-tabs-2
+  `)]
+].flat().forEach(input => input.style.backgroundColor = "#ff0")
+
 let manageNumberInput = document.querySelector("[name=__submit__code]");
 let memberPriceInput = document.querySelector("[name=__submit__member_price]");
 

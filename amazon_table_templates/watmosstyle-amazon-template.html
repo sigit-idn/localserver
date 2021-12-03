@@ -90,43 +90,56 @@
         const getProductType = (query) => {
           const categories = {
             空気清浄機: { productType: "airpurifier", browseNode: "4083011" },
+            除湿器: { productType: "airpurifier", browseNode: "4083011" },
+            かんざし: { productType: "accessories", browseNode: "2131534051", shippingPattern: "マケプレお急ぎ便配送パターン" },
           };
 
           const categoryKey = Object.keys(categories).find((key) =>
             new RegExp(key).test(titles[0])
           );
 
+
           return categories[categoryKey][query];
         };
+
+        skus[0] = skus[1] ? skus[1].match(/(\w|-)+(?=X0)/)?.[0] : skus[0]
 
         const parentValues = {
           feed_product_type: getProductType("productType"),
           item_sku: skus[0],
-          product_description: descriptions[0].productDescription,
+          part_number: skus[0],
+          // product_description: descriptions[0].productDescription,
+          product_description: descriptions[0].productDescription.replace(/\n|<br>+/g, "&lt;br&gt;"),
           item_name: titles[0],
+          standard_price: colors ? "" : prices[0],
+          quantity: colors ? "" : quantity,
           brand_name: "ｗａｔｍｏｓｓｔｙｌｅ",
+          manufacturer: "watmosstyle",
           bullet_point1: descriptions[0].bulletPoint1,
           bullet_point2: descriptions[0].bulletPoint2,
           bullet_point3: descriptions[0].bulletPoint3,
           bullet_point4: descriptions[0].bulletPoint4,
           bullet_point5: descriptions[0].bulletPoint5,
-          variation_theme: colors.length
+          variation_theme: colors?.length
             ? 
             // sizes?.length > 1
             //   ? "SizeColor"
             //   : 
               "Color"
             : "",
-          parent_child: colors.length ? "Parent" : "",
+          parent_child: colors?.length ? "Parent" : "",
           update_delete: "Update",
           generic_keywords: descriptions[0].genericKeywords,
-          merchant_shipping_group_name: "マケプレお急ぎ便用",
+          merchant_shipping_group_name:  "マケプレお急ぎ便配送パターン",
           condition_type: "新品",
           recommended_browse_nodes: getProductType("browseNode"),
-          fulfillment_latency: 4,
+          fulfillment_latency: 1,
         };
 
-        const tableHeaders = prompt("Table Headers").match(/\w+/g);
+        const tableHeadersInput = prompt("Table Headers")
+        !!tableHeadersInput && localStorage.setItem('tableHeaders', tableHeadersInput)
+
+        const tableHeaders = tableHeadersInput.match(/\w+/g) ?? localStorage.getItem('tableHeaders').match(/\w+/g);
         tableHeaders.forEach((header) => {
           document.querySelector("#tableHeader").innerHTML += `
            	<th class="px-4 py-3">${header}</th>`;
@@ -136,21 +149,23 @@
        	</td>`;
         });
 
-        colors.forEach((color, i) => {
-          const {productDescription, bulletPoint1, bulletPoint2, bulletPoint3, bulletPoint4, bulletPoint5, genericKeywords} = descriptions[i]
+        colors?.forEach((color, i) => {
+          const {productDescription, bulletPoint1, bulletPoint2, bulletPoint3, bulletPoint4, bulletPoint5, genericKeywords} = descriptions[i+1]
           const values = {
             feed_product_type: getProductType("productType"),
             item_sku: skus[i+1],
-            product_description: productDescription,
-            item_name:
-              titles[i],
-              brand_name: "ｗａｔｍｏｓｓｔｙｌｅ",
+            part_number: skus[i+1],
+            // product_description: productDescription,
+            product_description: productDescription.replace(/\n|<br>+/g, "&lt;br&gt;"),
+            item_name: titles[i+1],
+            brand_name: "ｗａｔｍｏｓｓｔｙｌｅ",
+            manufacturer: "watmosstyle",
             bullet_point1 : bulletPoint1,
             bullet_point2 : bulletPoint2,
             bullet_point3 : bulletPoint3,
             bullet_point4 : bulletPoint4,
             bullet_point5 : bulletPoint5,
-            quantity: 1,
+            quantity : quantity[i],
             relationship_type: colors.length ? "variation" : "",
             variation_theme: "Color",
             // variations.length
@@ -165,12 +180,12 @@
             size_name: "",
             size_map: "",
             color_name: colors[i],
-            color_map: colorMaps[i],
+            color_map: colorMaps[i] ?? colors[i].match(/[ア-ヴー]+/),
             merchant_shipping_group_name: "マケプレお急ぎ便配送パターン",
             condition_type: "新品",
             standard_price: prices[i],
             recommended_browse_nodes: getProductType("browseNode"),
-            fulfillment_latency: 4,
+            fulfillment_latency: 1,
           };
 
           document.querySelector("#tableBody").innerHTML += `

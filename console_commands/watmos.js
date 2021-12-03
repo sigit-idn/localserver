@@ -738,11 +738,18 @@ let titles = document
 let prices = document
   .querySelectorAll("[id$=price-price] input")
   .map((element) => element.value.match(/\d+/g)?.join(""));
+let quantity = document
+  .querySelectorAll("[id$=quantity-quantity].mt-popover")
+  .map((element) => element.innerText.match(/\d+/g)?.join(""));
+
+  quantity = quantity.length ? quantity : document
+  .querySelectorAll("[id$=quantity-quantity]")
+  .map((element) => element.innerText.match(/\d+/g)?.join(""));
 
 fetch("http://localhost:8888/watmos-style", {
   method: "POST",
   "Content-Type": "application/json",
-  body: JSON.stringify({ skus, titles, prices }),
+  body: JSON.stringify({ skus, titles, prices, quantity }),
 })
   .then((res) => console.log("Written succesfuly", res))
   .catch((error) => console.log("Error", error));
@@ -751,20 +758,19 @@ fetch("http://localhost:8888/watmos-style", {
 document.querySelector("#variations-link").click();
 NodeList.prototype.map = Array.prototype.map;
 
-let response = await fetch("http://localhost:8888/watmos-style");
-let data = await response.json();
+let data = await (await fetch("http://localhost:8888/watmos-style")).json();
 
 let colors = document
   .querySelectorAll("[id^=color_name-gio]")
-  .map((element) => element.innerHTML.match(/\S.+\S/)[0]);
+  .map((element) => element.innerHTML.match(/\S.+\S/)?.[0]);
 let colorMaps = document
   .querySelectorAll("[id^=color_map-gio]")
-  .map((parent) => parent.shadowRoot.querySelector("input[id^=katal-id]"))
-  .map((element) => element.value.match(/\S.+\S/)[0]);
-let quantity = document
+  .map((parent) => parent?.shadowRoot.querySelector("input[id^=katal-id]"))
+  .map((element) => element.value.match(/\S.+\S/)?.[0]);
+let quantity = data.quantity.length ? data.quantity : document
   .querySelectorAll("[id^=quantity-gio]")
-  .map((parent) => parent.shadowRoot.querySelector("input[id^=katal-id]"))
-  .map((element) => element.value.match(/\d+/)[0]);
+  .map((parent) => parent?.shadowRoot.querySelector("input[id^=katal-id]"))
+  .map((element) => element.value.match(/\d+/)?.[0]);
 
 fetch("http://localhost:8888/watmos-style", {
   method: "POST",
@@ -779,30 +785,29 @@ document.querySelector("#tang_description-link").click();
 document.querySelector("#tang_keywords-link").click();
 NodeList.prototype.map = Array.prototype.map;
 
-let response = await fetch("http://localhost:8888/watmos-style");
-let data = await response.json();
+let data = await (await fetch("http://localhost:8888/watmos-style")).json();
 
 let productDescription = document
   .querySelector("#product_description")
-  .shadowRoot.querySelector("[id^=katal-id]").value;
+  ?.shadowRoot.querySelector("[id^=katal-id]").value;
 let bulletPoint1 = document
   .querySelector("#bullet_point1")
-  .shadowRoot.querySelector("[id^=katal-id]").value;
+  ?.shadowRoot.querySelector("[id^=katal-id]").value;
 let bulletPoint2 = document
   .querySelector("#bullet_point2")
-  .shadowRoot.querySelector("[id^=katal-id]").value;
+  ?.shadowRoot.querySelector("[id^=katal-id]").value;
 let bulletPoint3 = document
   .querySelector("#bullet_point3")
-  .shadowRoot.querySelector("[id^=katal-id]").value;
+  ?.shadowRoot.querySelector("[id^=katal-id]").value;
 let bulletPoint4 = document
   .querySelector("#bullet_point4")
-  .shadowRoot.querySelector("[id^=katal-id]").value;
+  ?.shadowRoot.querySelector("[id^=katal-id]").value;
 let bulletPoint5 = document
   .querySelector("#bullet_point5")
-  .shadowRoot.querySelector("[id^=katal-id]").value;
+  ?.shadowRoot.querySelector("[id^=katal-id]").value;
 let genericKeywords = document
   .querySelector("#generic_keywords")
-  .shadowRoot.querySelector("[id^=katal-id]").value;
+  ?.shadowRoot.querySelector("[id^=katal-id]").value;
 
 if (data.descriptions) {
   data.descriptions.push({
