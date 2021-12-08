@@ -106,6 +106,4 @@ class RequestHandler(BaseHTTPRequestHandler):
 			print(str(datetime.now()) + " Data written " + filename)
 			self.wfile.close()
 
-
-
 HTTPServer(("localhost", 8888), RequestHandler).serve_forever()

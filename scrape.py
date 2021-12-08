@@ -44,7 +44,8 @@ def scrape(product_number):
 				category = categories[re.search("(?<=\d)\D{2}", product_number)[0]]
 
 		if category == "スーツ":
-			category = re.findall("[ア-ヴ]+スーツ", pageSoup.text)[-1]
+			# category = re.findall("[ァ-ヴー]+スーツ", pageSoup.text)[-1]
+			category = re.search("(パンツ|スカート|ワンピース)スーツ", pageSoup.text)[0]
 
 		res = {
 				"thumbnail": thumbnail,
@@ -53,7 +54,7 @@ def scrape(product_number):
 		}
 
 		iframe = requests.get(pageSoup.select_one(
-				"#productArea iframe").get("src"))
+				".sale_desc iframe").get("src"))
 
 		# if iframe.status_code == 404:
 		# 		iframe = requests.get(
@@ -65,11 +66,9 @@ def scrape(product_number):
 
 		if iframeSoup.select('#rw-paHead1 > h1, #rw-paHead1 > h2'):
 				h2 = iframeSoup.select_one('#rw-paHead1 > h2').text
-				h1 = h2 + "<br>" + iframeSoup.select_one('#rw-paHead1 > h1').text
-				res = {**res, "h1": h1}
-
-		print(res)
-
+				h1 = iframeSoup.select_one('#rw-paHead1 > h1').text
+				res = {**res, "h1": h1, "h2": h2}
+		
 		return res
 
-scrape("m205053st0")
+# scrape("b215038st0")

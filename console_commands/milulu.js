@@ -66,9 +66,11 @@ sizeRows = sizeRows
 copy(sizeHeaders + "\n" + sizeRows);
 
 //! Pass Data
-let data = await (await fetch(
-  "https://script.google.com/macros/s/AKfycbyxdiJmE_Tim7NxQJN6FStbIK0lZ154BWTKE6j4-N0MzbcKG7zEMKUCsZdp-cj5owYtWQ/exec"
-)).json();
+let data = await (
+  await fetch(
+    "https://script.google.com/macros/s/AKfycbyxdiJmE_Tim7NxQJN6FStbIK0lZ154BWTKE6j4-N0MzbcKG7zEMKUCsZdp-cj5owYtWQ/exec"
+  )
+).json();
 
 let categories = {
   bl: "tops",
@@ -119,8 +121,10 @@ document.querySelector(".productArea").innerHTML = "";
 
 let coordinateItems = data.coordinateUrls.map(async (url, i) => {
   let coordinateNumber = url.split("/")[url.split("/").length - 2];
-  const {thumbnail} = await (await fetch("http://localhost:8888/scrape/" + coordinateNumber)).json();
-  
+  const { thumbnail } = await (
+    await fetch("http://localhost:8888/scrape/" + coordinateNumber)
+  ).json();
+
   let coordinateCategory =
     data.productNumber[0] == "k"
       ? "accessories"
@@ -179,12 +183,19 @@ prompt("関連商品")
             ＜${data.category?.replace(/<br>|\s/g, "")}＞
           </font>
           <br>
-          ${data.h1?.replace(/<br>|<br\/>|\s/g, "")}
+          ${
+            (data.h2 + data.h1).length >= 50
+              ? data.h2.replace(/<br>|<br\/>|\s/g, "")
+              : data.h2.replace(/<br>|<br\/>|\s/g, "") +
+                "<br>" +
+                data.h1.replace(/<br>|<br\/>|\s/g, "")
+          }
         </u>
       </span>
     </a>
   </li>
   `;
+    console.log(productNumber);
   });
 
 document.addEventListener("mousewheel", () =>
@@ -305,33 +316,38 @@ document.querySelectorAll("[type=text], textarea").forEach((input) => {
   input.dispatchEvent(new Event("change", { bubbles: true }));
 });
 
-document.querySelectorAll(
-  `#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(2),
+document
+  .querySelectorAll(
+    `#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(2),
   #root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(11) > div.rms-form.form-border.form-full > div:nth-child(1),
   #root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(12)
   `
-).forEach(element => element.style.backgroundColor = "#ff0");
+  )
+  .forEach((element) => (element.style.backgroundColor = "#ff0"));
 
 // Rakuten find DirectoryID
 
-let searchQuery = prompt('Category');
+let searchQuery = prompt("Category");
 
-(function searchCategory () {
-  let found = 0
-  document.querySelectorAll('[class^=treeviewer-list-] li')
-  .forEach((li) => {
-    if (new RegExp(searchQuery).test(li.innerText)){
-      li.scrollIntoView({behavior:"smooth"})
-      li.style.backgroundColor = "#ff0"
-      found++
+(function searchCategory() {
+  let found = 0;
+  document.querySelectorAll("[class^=treeviewer-list-] li").forEach((li) => {
+    if (new RegExp(searchQuery).test(li.innerText)) {
+      li.scrollIntoView({ behavior: "smooth" });
+      li.style.backgroundColor = "#ff0";
+      found++;
     }
-    })
+  });
 
-    if (!found) { 
-      document.querySelectorAll('[class^=treeviewer-list-] :not([class^=expanded]) [class^=parent-label]').forEach(li => li.click())
-      searchCategory()
-    }
-})()
+  if (!found) {
+    document
+      .querySelectorAll(
+        "[class^=treeviewer-list-] :not([class^=expanded]) [class^=parent-label]"
+      )
+      .forEach((li) => li.click());
+    searchCategory();
+  }
+})();
 
 //! Rakuten variations
 
@@ -464,7 +480,6 @@ document.querySelector("[name=product_sales_price]").value = shoplistPrice;
 document.querySelectorAll("[name=tax_flg]")[1].checked = true;
 document.querySelectorAll("[name='product_sex_type[]']")[1].checked = true;
 document.querySelectorAll("[name=stock_type]")[2].checked = true;
-document.querySelector("select[name=multi_type]").value = 2;
 document.querySelector("[name=stock_name_width]").value = "サイズ";
 document.querySelector("[name=stock_name_height]").value = "カラー";
 document.querySelector("[name=product_subject_mobile]").value =
@@ -538,6 +553,8 @@ document
       (td.lastElementChild.src =
         td.nextElementSibling.querySelector('input[size="40"]').value)
   );
+
+document.querySelector("select[name=multi_type]").value = 2;
 
 // Shoplist Create Size Description
 
@@ -679,21 +696,26 @@ let inputs = {
   ),
 };
 
-[inputs.priceInput, 
-  inputs.productNumberInput,
-  [...document.querySelectorAll(`
-  #react-tabs-1 > div > div:nth-child(13) > div:nth-child(2),
-  #react-tabs-1 > div > div:nth-child(13) > div:nth-child(4),
-  #react-tabs-1 > div > div:nth-child(14) > div.uiGridB > div.uiGridB__gridB2 > div > div:nth-child(2) > div.uiGridB__gridB5 > div.formParts,
-  #react-tabs-2
-  `)]
-].flat().forEach(input => input.style.backgroundColor = "#ff0")
-
 let manageNumberInput = document.querySelector("[name=__submit__code]");
 let memberPriceInput = document.querySelector("[name=__submit__member_price]");
 
 let yahooCatchCopyInput = document.querySelector("[name=__submit__headline]");
 let descriptionInput = document.querySelector("[name=__submit__explanation]");
+
+[
+  inputs.priceInput,
+  manageNumberInput,
+  [
+    ...document.querySelectorAll(`
+  #react-tabs-1 > div > div:nth-child(13) > div:nth-child(2),
+  #react-tabs-1 > div > div:nth-child(13) > div:nth-child(4),
+  #react-tabs-1 > div > div:nth-child(14) > div.uiGridB > div.uiGridB__gridB2 > div > div:nth-child(2) > div.uiGridB__gridB5 > div.formParts,
+  #react-tabs-2
+  `),
+  ],
+]
+  .flat()
+  .forEach((input) => (input.style.backgroundColor = "#ff0"));
 
 let descriptionText =
   descriptionInput.value.split("【")[0] +
@@ -763,7 +785,7 @@ document
           .find((row) => row.innerHTML.includes(`sp${number}.jpg`))
           ?.querySelector("input[id^=Upload]")
           ?.click();
-      }, i * 800);
+      }, i * 860);
     }
   });
 
@@ -774,7 +796,7 @@ setTimeout(() => {
     )
     .click();
   document.querySelector("input#Upload1")?.click();
-}, 800 * 20);
+}, 860 * 20);
 
 textareaValueChanger.call(
   descriptionInput,
@@ -808,6 +830,11 @@ document.querySelectorAll("[type=text], textarea").forEach((input) => {
   input.dispatchEvent(new Event("input", { bubbles: true }));
   input.dispatchEvent(new Event("change", { bubbles: true }));
 });
+
+
+document.querySelector("#EditItem > div.formButton > div > div > ul > li:nth-child(2) > span > span > a").addEventListener('click', () =>
+  localStorage.setItem('category', document.querySelector('.categoryPath__breadCrumb').innerText)
+)
 
 //! Yahoo komoku sentaku
 
@@ -905,6 +932,7 @@ document.querySelectorAll("input, textarea").forEach((input) => {
   input.dispatchEvent(new Event("change", { bubbles: true }));
 });
 
+
 //! Yahoo variation table
 
 document
@@ -969,11 +997,40 @@ document.querySelectorAll("img")?.forEach((img) => {
     img.removeEventListener("error", replaceSrc);
   });
   img.src = img.src;
+  img.src = "../images/" + filename;
 });
 
 document
   .querySelectorAll("li.up")
   ?.forEach((li) => (li.style.listStyle = "none"));
+
+eval(
+  await (
+    await fetch(
+      "https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"
+    )
+  ).text()
+);
+
+let number = localStorage.getItem("spNumber") ?? 1;
+
+// [...document.querySelectorAll("div")].filter(
+//   ({ clientWidth, clientHeight, innerHTML }) =>
+//     clientWidth === 780 && clientHeight <= 1200 && !/thumbnail/.test(innerHTML)
+// );
+
+document.querySelectorAll("div").forEach(async (div) => {
+  if (div.clientWidth === 780 && div.clientHeight <= 1200 && !/thumbnail/.test(div.innerHTML)) {
+      const dataUrl = await domtoimage.toJpeg(div);
+      const link = document.createElement("a");
+      link.download = `k215058mk0-sp${number}.jpg`;
+      link.href = dataUrl;
+      link.click();
+      console.log(number);
+      number++;
+      localStorage.setItem("spNumber", number);
+  }
+});
 
 // Delete images from shoplist
 
