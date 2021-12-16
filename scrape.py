@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 import re
 
-
 def scrape(product_number):
 		page = requests.get(f"https://item.rakuten.co.jp/milulu/{product_number}",
 			headers={
@@ -26,6 +25,7 @@ def scrape(product_number):
 				"jk": "ジャケット",
 				"ba": "バッグ",
 				"cg": "コサージュ",
+				"hg": "シュシュ",
 				"be": "ベルト",
 				"ka": "傘",
 				"sp": "ストッキング",
@@ -71,4 +71,4 @@ def scrape(product_number):
 		
 		return res
 
-# scrape("b215038st0")
+# scrape("k215060hg0")

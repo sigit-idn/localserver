@@ -29,7 +29,7 @@ let sizeInput = prompt("Size");
 let sizeHeaders = sizeInput
   .replace(/"/g, "")
   .replace(/\n（/g, "（")
-  .match(/(\(|（)*([一-龠ァ-ヴーぁ-ゔｱ-ﾝ々〆〤])\S+/gu);
+  .match(/((\(|（)*([一-龠ァ-ヴーぁ-ゔｱ-ﾝ々〆〤])\S+)|丈/gu);
 let sizeValues = sizeInput
   .split(sizeHeaders[sizeHeaders.length - 1])[1]
   .match(/(\w|[ａ-ｚ])\S*/giu);
@@ -65,8 +65,9 @@ sizeRows = sizeRows
 
 copy(sizeHeaders + "\n" + sizeRows);
 
+
 //! Pass Data
-let data = await (
+let data = await(
   await fetch(
     "https://script.google.com/macros/s/AKfycbyxdiJmE_Tim7NxQJN6FStbIK0lZ154BWTKE6j4-N0MzbcKG7zEMKUCsZdp-cj5owYtWQ/exec"
   )
@@ -96,9 +97,10 @@ fetch("http://localhost:8888/milulu", {
   .then(async (res) => console.log("Written succesfuly", await res.text()))
   .catch((error) => console.log("Error", error));
 
+
 //! Create Coordinate
 
-let data = await (await fetch(`http://localhost:8888/milulu`)).json();
+let data = await(await fetch(`http://localhost:8888/milulu`)).json();
 
 let categories = {
   bl: "tops",
@@ -119,11 +121,10 @@ data.coordinateSubtitles = coordinateTexts.filter((_, i) => i % 4 < 2);
 data.coordinateTitles = coordinateTexts.filter((_, i) => i % 4 >= 2);
 document.querySelector(".productArea").innerHTML = "";
 
-let coordinateItems = data.coordinateUrls.map(async (url, i) => {
-  let coordinateNumber = url.split("/")[url.split("/").length - 2];
-  const { thumbnail } = await (
-    await fetch("http://localhost:8888/scrape/" + coordinateNumber)
-  ).json();
+let coordinateItems = data.coordinateUrls.map( (url, i, arr) => {
+  setTimeout(async () => {
+  let coordinateNumber = url.split("/")[4];
+  const { thumbnail } = await (await fetch("http://localhost:8888/scrape/" + coordinateNumber)).json();
 
   let coordinateCategory =
     data.productNumber[0] == "k"
@@ -132,15 +133,13 @@ let coordinateItems = data.coordinateUrls.map(async (url, i) => {
   document.querySelector(".productArea").innerHTML += `
 <a href="${url}" target="_blank"><!-- ← 商品URL指定欄 -->	
 	<div class="rw-coBanner">
-		<p><img src="https://image.rakuten.co.jp/milulu/cabinet/${data.category}/${
-    data.productNumber
-  }-co_${i + 1}.jpg"></p>	
+		<p><img src="https://image.rakuten.co.jp/milulu/cabinet/${data.category}/${data.productNumber
+    }-co_${i + 1}.jpg"></p>	
 	<div>	
 		<ul>
-			<li><p><img src="${
-        thumbnail ??
-        `https://image.rakuten.co.jp/milulu/cabinet/${coordinateCategory}/${coordinateNumber}-thumbnail.jpg`
-      }"></p>
+			<li><p><img src="${thumbnail ??
+    `https://image.rakuten.co.jp/milulu/cabinet/${coordinateCategory}/${coordinateNumber}-thumbnail.jpg`
+    }"></p>
 				<p><s>${data.coordinateSubtitles[i]}
 				</s><!-- ← 小タイトル（s～s 消してもOK） -->
 				${data.coordinateTitles[i]}
@@ -153,25 +152,24 @@ let coordinateItems = data.coordinateUrls.map(async (url, i) => {
 	</div>
 	</a>
 `;
+
+if (i >= arr.length - 1) innerCopy(document.querySelector(".productArea").outerHTML)
+}, 600)
 });
 
-let productArea = document.querySelector(".productArea");
-// productArea.innerHTML = coordinateItems.join("\n");
-productArea.addEventListener("mousewheel", () =>
-  navigator.clipboard.writeText(productArea.outerHTML)
-);
 
 // Create Related Product
 let relatedItems = "";
+let innerCopy = copy
 
 prompt("関連商品")
   .match(/\w{1,2}\d{5,7}\w{1,2}\d{1,2}/g)
   .filter((val, i, arr) => arr.indexOf(val) === i)
-  .forEach(async (productNumber) => {
-    let response = await fetch("http://localhost:8888/scrape/" + productNumber);
-    let data = await response.json();
+  .forEach((productNumber, i, arr) => {
+    setTimeout(async () => {
+      let data = await (await fetch("http://localhost:8888/scrape/" + productNumber)).json();
 
-    relatedItems += `  <li style="box-shadow: 0 -4px 0 0 #FFF inset;">
+      relatedItems += `  <li style="box-shadow: 0 -4px 0 0 #FFF inset;">
     <a href="https://item.rakuten.co.jp/milulu/${productNumber}/" target="_top">
       <i>
         <img src="${data.thumbnail}">
@@ -183,19 +181,20 @@ prompt("関連商品")
             ＜${data.category?.replace(/<br>|\s/g, "")}＞
           </font>
           <br>
-          ${
-            (data.h2 + data.h1).length >= 50
-              ? data.h2.replace(/<br>|<br\/>|\s/g, "")
-              : data.h2.replace(/<br>|<br\/>|\s/g, "") +
-                "<br>" +
-                data.h1.replace(/<br>|<br\/>|\s/g, "")
-          }
+          ${(data.h2 + data.h1).length >= 50
+          ? data.h2.replace(/<br>|<br\/>|\s/g, "")
+          : data.h2.replace(/<br>|<br\/>|\s/g, "") +
+          "<br>" +
+          data.h1.replace(/<br>|<br\/>|\s/g, "")
+        }
         </u>
       </span>
     </a>
   </li>
   `;
-    console.log(productNumber);
+      console.log(productNumber);
+      if (i >= arr.length) innerCopy(relatedItems)
+    }, 600 * i)
   });
 
 document.addEventListener("mousewheel", () =>
@@ -331,13 +330,15 @@ let searchQuery = prompt("Category");
 
 (function searchCategory() {
   let found = 0;
-  document.querySelectorAll("[class^=treeviewer-list-] li").forEach((li) => {
-    if (new RegExp(searchQuery).test(li.innerText)) {
-      li.scrollIntoView({ behavior: "smooth" });
-      li.style.backgroundColor = "#ff0";
-      found++;
-    }
-  });
+  document
+    .querySelectorAll("[class^=treeviewer-list-] label")
+    .forEach((label) => {
+      if (new RegExp(searchQuery).test(label.innerText)) {
+        label.scrollIntoView({ behavior: "smooth" });
+        label.style.backgroundColor = "#ff0";
+        found++;
+      }
+    });
 
   if (!found) {
     document
@@ -349,9 +350,33 @@ let searchQuery = prompt("Category");
   }
 })();
 
+// Rakuten find DirectoryID
+
+let searchQuery = prompt("Category");
+
+let found = 0;
+
+while (!found) {
+  document
+    .querySelectorAll(
+      "[class^=treeviewer-list-] :not([class^=expanded]) [class^=parent-label]"
+    )
+    .forEach((li) => li.click());
+
+  document
+    .querySelectorAll("[class^=treeviewer-list-] label")
+    .forEach((label) => {
+      if (new RegExp(searchQuery).test(label.innerText)) {
+        label.scrollIntoView({ behavior: "smooth" });
+        label.style.backgroundColor = "#ff0";
+        found++;
+      }
+    });
+}
+
 //! Rakuten variations
 
-let data = await (await fetch("http://localhost:8888/milulu")).json();
+let data = await(await fetch("http://localhost:8888/milulu")).json();
 
 let sizeInputs = document.querySelectorAll(
   "#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(1) > div > div > div:nth-child(2) .rms-col-14 input"
@@ -538,8 +563,8 @@ document.querySelectorAll("input[id^=image_url]").forEach((input, i) => {
   input.addEventListener(
     "input",
     () =>
-      (input.parentElement.previousElementSibling.lastElementChild.src =
-        input.value)
+    (input.parentElement.previousElementSibling.lastElementChild.src =
+      input.value)
   );
 });
 document.querySelector(
@@ -550,8 +575,8 @@ document
   .querySelectorAll('td[style="width:80px;"]')
   .forEach(
     (td) =>
-      (td.lastElementChild.src =
-        td.nextElementSibling.querySelector('input[size="40"]').value)
+    (td.lastElementChild.src =
+      td.nextElementSibling.querySelector('input[size="40"]').value)
   );
 
 document.querySelector("select[name=multi_type]").value = 2;
@@ -563,7 +588,7 @@ let sizeInput = prompt("Size");
 let sizeHeaders = sizeInput
   .replace(/"/g, "")
   .replace(/\n（/g, "（")
-  .match(/(\(|（)*([一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤]|ｻ|ｽ|ﾊﾞ)\S+/gu);
+  .match(/(\(|（)*([一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤]|ｻ|ｽ|ﾊﾞ)\S*/gu);
 let sizeValues = sizeInput
   .split(sizeHeaders[sizeHeaders.length - 1])[1]
   .match(/(\w|[ａ-ｚ])\S*/giu);
@@ -622,21 +647,20 @@ document
   .querySelectorAll("input[name^=color_image_url]")
   .forEach(
     (color, i) =>
-      (color.value =
-        i < colors.length
-          ? `http://img.shop-list.com/res/up/shoplist/shp/milulu/${productNumber}/${productNumber.toLowerCase()}-parts${
-              i + 1
-            }.jpg`
-          : "")
+    (color.value =
+      i < colors.length
+        ? `http://img.shop-list.com/res/up/shoplist/shp/milulu/${productNumber}/${productNumber.toLowerCase()}-parts${i + 1
+        }.jpg`
+        : "")
   );
 
 document
   .querySelectorAll("select[name^=product_color_id]")
   .forEach(
     (select, i) =>
-      (select.value = [...select.querySelectorAll("option")].filter((option) =>
-        option.label?.includes(colors[i] || colors[i].slice(3, 6))
-      )[0]?.value)
+    (select.value = [...select.querySelectorAll("option")].filter((option) =>
+      option.label?.includes(colors[i] || colors[i].slice(3, 6))
+    )[0]?.value)
   ) || "";
 
 //! Shoplist JANCODE
@@ -653,11 +677,11 @@ document
   .querySelectorAll("input[name^=jan_code]")
   .forEach(
     (janInput, i) =>
-      (janInput.value = String(
-        janObject[
-          janInput.parentElement.previousElementSibling.innerText.toLowerCase()
-        ]
-      ).replaceAll(undefined, ""))
+    (janInput.value = String(
+      janObject[
+      janInput.parentElement.previousElementSibling.innerText.toLowerCase()
+      ]
+    ).replaceAll(undefined, ""))
   );
 
 //! Shoplist JANCODE(reverse)
@@ -679,13 +703,14 @@ document
   .querySelectorAll("input[name^=jan_code]")
   .forEach(
     (janInput, i) =>
-      (janInput.value = String(
-        janObject[janInput.parentElement.parentElement.children[2].innerText]
-      ).replaceAll(undefined, ""))
+    (janInput.value = String(
+      janObject[janInput.parentElement.parentElement.children[2].innerText]
+    ).replaceAll(undefined, ""))
   );
 
+
 //! Yahoo Submit Product
-let data = await (await fetch("http://localhost:8888/milulu")).json();
+let data = await(await fetch("http://localhost:8888/milulu")).json();
 
 let inputs = {
   productNumberInput: document.querySelector("[name=__submit__product_code]"),
@@ -785,7 +810,7 @@ document
           .find((row) => row.innerHTML.includes(`sp${number}.jpg`))
           ?.querySelector("input[id^=Upload]")
           ?.click();
-      }, i * 860);
+      }, i * 950);
     }
   });
 
@@ -796,7 +821,7 @@ setTimeout(() => {
     )
     .click();
   document.querySelector("input#Upload1")?.click();
-}, 860 * 20);
+}, 950 * 20);
 
 textareaValueChanger.call(
   descriptionInput,
@@ -831,10 +856,11 @@ document.querySelectorAll("[type=text], textarea").forEach((input) => {
   input.dispatchEvent(new Event("change", { bubbles: true }));
 });
 
+localStorage.setItem(
+  "category",
+  document.querySelector(".categoryPath__breadCrumb").innerText
+);
 
-document.querySelector("#EditItem > div.formButton > div > div > ul > li:nth-child(2) > span > span > a").addEventListener('click', () =>
-  localStorage.setItem('category', document.querySelector('.categoryPath__breadCrumb').innerText)
-)
 
 //! Yahoo komoku sentaku
 
@@ -878,28 +904,28 @@ document
       yahooSizeCode == "フリー"
         ? "fl"
         : yahooSizeCode.length == 1
-        ? "0" + yahooSizeCode
-        : yahooSizeCode;
+          ? "0" + yahooSizeCode
+          : yahooSizeCode;
     inputValueChanger.call(
       input,
       data.productNumber +
-        SizeCode +
-        data.colorCode[
-          input.parentElement.parentElement.parentElement.parentElement
-            .parentElement.parentElement.parentElement.parentElement
-            .nextElementSibling.innerText
-        ]
+      SizeCode +
+      data.colorCode[
+      input.parentElement.parentElement.parentElement.parentElement
+        .parentElement.parentElement.parentElement.parentElement
+        .nextElementSibling.innerText
+      ]
     );
     input.addEventListener("focus", () =>
       inputValueChanger.call(
         input,
         data.productNumber +
-          SizeCode +
-          data.colorCode[
-            input.parentElement.parentElement.parentElement.parentElement
-              .parentElement.parentElement.parentElement.parentElement
-              .nextElementSibling.innerText
-          ]
+        SizeCode +
+        data.colorCode[
+        input.parentElement.parentElement.parentElement.parentElement
+          .parentElement.parentElement.parentElement.parentElement
+          .nextElementSibling.innerText
+        ]
       )
     );
   });
@@ -908,14 +934,12 @@ document
   .querySelectorAll(".stockList .stockList__tableWrap tr:nth-child(1) textarea")
   .forEach((textArea, i) => {
     textArea.tabIndex = i + 1;
-    textArea.value = `https://shopping.c.yimg.jp/lib/milulu-shop/${
-      data.productNumber
-    }-parts${i + 1}.jpg`;
+    textArea.value = `https://shopping.c.yimg.jp/lib/milulu-shop/${data.productNumber
+      }-parts${i + 1}.jpg`;
     textArea.addEventListener(
       "focus",
       () =>
-        (textArea.value = `https://shopping.c.yimg.jp/lib/milulu-shop/${
-          data.productNumber
+      (textArea.value = `https://shopping.c.yimg.jp/lib/milulu-shop/${data.productNumber
         }-parts${i + 1}.jpg`)
     );
   });
@@ -932,7 +956,6 @@ document.querySelectorAll("input, textarea").forEach((input) => {
   input.dispatchEvent(new Event("change", { bubbles: true }));
 });
 
-
 //! Yahoo variation table
 
 document
@@ -946,15 +969,15 @@ document
       yahooSizeCode == "フリー"
         ? "fl"
         : yahooSizeCode.length == 1
-        ? "0" + yahooSizeCode
-        : yahooSizeCode;
+          ? "0" + yahooSizeCode
+          : yahooSizeCode;
     input.value =
       productNumber +
       SizeCode +
       colorCode[
-        input.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.querySelector(
-          ".stockList__title"
-        ).innerText
+      input.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.querySelector(
+        ".stockList__title"
+      ).innerText
       ];
     input.dispatchEvent(new Event("focus"));
   });
@@ -962,9 +985,8 @@ document
 document
   .querySelectorAll(".stockList .stockList__tableWrap tr:nth-child(1) textarea")
   .forEach((textArea, i) => {
-    textArea.value = `https://shopping.c.yimg.jp/lib/milulu-shop/${productNumber}-parts${
-      i + 1
-    }.jpg`;
+    textArea.value = `https://shopping.c.yimg.jp/lib/milulu-shop/${productNumber}-parts${i + 1
+      }.jpg`;
   });
 
 document
@@ -997,7 +1019,6 @@ document.querySelectorAll("img")?.forEach((img) => {
     img.removeEventListener("error", replaceSrc);
   });
   img.src = img.src;
-  img.src = "../images/" + filename;
 });
 
 document
@@ -1005,7 +1026,7 @@ document
   ?.forEach((li) => (li.style.listStyle = "none"));
 
 eval(
-  await (
+  await(
     await fetch(
       "https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"
     )
@@ -1020,15 +1041,19 @@ let number = localStorage.getItem("spNumber") ?? 1;
 // );
 
 document.querySelectorAll("div").forEach(async (div) => {
-  if (div.clientWidth === 780 && div.clientHeight <= 1200 && !/thumbnail/.test(div.innerHTML)) {
-      const dataUrl = await domtoimage.toJpeg(div);
-      const link = document.createElement("a");
-      link.download = `k215058mk0-sp${number}.jpg`;
-      link.href = dataUrl;
-      link.click();
-      console.log(number);
-      number++;
-      localStorage.setItem("spNumber", number);
+  if (
+    div.clientWidth === 780 &&
+    div.clientHeight <= 1200 &&
+    !/thumbnail/.test(div.innerHTML)
+  ) {
+    const dataUrl = await domtoimage.toJpeg(div);
+    const link = document.createElement("a");
+    link.download = `k215058mk0-sp${number}.jpg`;
+    link.href = dataUrl;
+    link.click();
+    console.log(number);
+    number++;
+    localStorage.setItem("spNumber", number);
   }
 });
 

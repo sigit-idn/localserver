@@ -2,7 +2,7 @@
 let productNumber = prompt("商品番号")
 let response = await fetch(
   "https://script.google.com/macros/s/AKfycbxlhYFxrXAZ-3bXaivrv-ZTND-UtV2x5VRXPDR_bF3rNOTqOmv21GR9w0p6WaG7BfW5/exec?productNumber=" +
-    productNumber,
+  productNumber,
   {
     mode: "no-cors",
   }
@@ -50,9 +50,8 @@ if (parseInt(data.colorCount) <= 3) {
   data.romajiColors.forEach((romajiColor, i) => {
     document.querySelector(".colors-title + .images-flex").innerHTML += `
 <div>
-<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${
-      i + 1
-    }.jpg">
+<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${i + 1
+      }.jpg">
 <h2>${romajiColor}</h2>
 </div>
     `;
@@ -73,34 +72,29 @@ if (parseInt(data.colorCount) <= 3) {
     document.querySelector("section.variations").innerHTML += `
 <div class="variation">
 <div>
-<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${
-      i + 1
-    }-1.jpg">
+<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${i + 1
+      }-1.jpg">
 <span>
 ${color}
 </span>
 </div>
 <div>
-<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${
-      i + 1
-    }-2.jpg">
+<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${i + 1
+      }-2.jpg">
 </div>
 
 <div class="images-grid">
 <div>
-<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${
-      i + 1
-    }-3.jpg">
+<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${i + 1
+      }-3.jpg">
 </div>
 <div>
-<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${
-      i + 1
-    }-4.jpg">
+<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${i + 1
+      }-4.jpg">
 </div>
 <div>
-<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${
-      i + 1
-    }-5.jpg">
+<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${i + 1
+      }-5.jpg">
 </div>
 <!-- <p>model:160cm ／ Mサイズ着用</p> -->
 </div>
@@ -124,9 +118,8 @@ if (category == "terax") {
     if (i <= 2) {
       document.querySelector(".colors-title + .images-flex").innerHTML += `
 <div>
-<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${
-        i + 1
-      }.jpg">
+<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${i + 1
+        }.jpg">
 <h2>${romajiColor}</h2>
 </div>
       `;
@@ -138,23 +131,19 @@ if (category == "terax") {
 <h2>${data.romajiColors[i]}</h2>
 </div>
 <div>
-${
-  data.romajiColors[i + 1]
-    ? `<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${
-        i + 1
-      }.jpg">`
-    : ""
-}
+${data.romajiColors[i + 1]
+          ? `<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${i + 1
+          }.jpg">`
+          : ""
+        }
 <h2>${data.romajiColors[i + 1] ?? ""}</h2>
 </div>
 <div>
-${
-  data.romajiColors[i + 2]
-    ? `<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${
-        i + 2
-      }.jpg">`
-    : ""
-}
+${data.romajiColors[i + 2]
+          ? `<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${i + 2
+          }.jpg">`
+          : ""
+        }
 <h2>${data.romajiColors[i + 2] ?? ""}</h2>
 </div>
 </div>
@@ -170,9 +159,8 @@ ${
     document.querySelector("section.variations").innerHTML += `
 <div class="variation">
 <div>
-<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${
-      i + 1
-    }-1.jpg">
+<img src="https://image.rakuten.co.jp/limy/cabinet/${category}/${data.productNumber.toLowerCase()}-c${i + 1
+      }-1.jpg">
 <span>
 ${color}
 </span>
@@ -184,13 +172,13 @@ ${color}
 
 document.querySelector("span.sale_desc > section.detail > div:nth-child(3) > p")
   ? (document.querySelector(
-      "span.sale_desc > section.detail > div:nth-child(3) > p"
-    ).innerHTML = data.detailParagraph1?.replace(/。/g, "。<br>\n"))
+    "span.sale_desc > section.detail > div:nth-child(3) > p"
+  ).innerHTML = data.detailParagraph1?.replace(/。/g, "。<br>\n"))
   : null;
 document.querySelector("span.sale_desc > section.detail > div:nth-child(4) > p")
   ? (document.querySelector(
-      "span.sale_desc > section.detail > div:nth-child(4) > p"
-    ).innerHTML = data.detailParagraph2?.replace(/。/g, "。<br>\n"))
+    "span.sale_desc > section.detail > div:nth-child(4) > p"
+  ).innerHTML = data.detailParagraph2?.replace(/。/g, "。<br>\n"))
   : null;
 
 //       document.querySelector(
@@ -393,9 +381,9 @@ imageUrlInputs.forEach((input) => {
   input.addEventListener(
     "focus",
     () =>
-      (input.value = input.value
-        .replaceAll(oldProductNumber, data.productNumber.toLowerCase())
-        .replace(/(?<=cabinet\/)\w+(?=\/)/g, data.category))
+    (input.value = input.value
+      .replaceAll(oldProductNumber, data.productNumber.toLowerCase())
+      .replace(/(?<=cabinet\/)\w+(?=\/)/g, data.category))
   );
 });
 
@@ -410,6 +398,109 @@ document.querySelectorAll("[type=text], textarea").forEach((input) => {
   input.dispatchEvent(new Event("input", { bubbles: true }));
   input.dispatchEvent(new Event("change", { bubbles: true }));
 });
+
+
+//! Rakuten Submit Product from Prompt
+
+let input = prompt("Data");
+let data = new (function () {
+  this.productNumber = input.match(/[a-z]{3}\d{6}/i);
+  this.productName = input.match(/[一-龠a-z ァ-ヴーぁ-ゔｱ-ﾝ々〆〤【】／　]{10,}/i);
+  this.rakutenCatchCopy = this.productName;
+  this.rakutenMobileCatchCopy = this.productName;
+  this.priceWithTax = input.match(/(?<=(税込)*￥.*)(\d|,)+(?=.*(税込)*)/ig).replace(/,/, "");
+  this.category = this.productName.match(/セットアップ|トップス|パンツ|ルームウェア/);
+  // this.pageHtml = "";
+  this.sizes = input.match(/(?<=\s)[A-Z]{1,2}(?=\s)/g);
+  this.sortedColors = input.match(/(?<=\s)[ァ-ヴー杢]+(?=\s+\d)/g);
+}
+)()
+
+let manageNumberInput = document.querySelector("[name=itemManageNumber]");
+let productNumberInput = document.querySelector("[name=itemNumber]");
+let productNameInput = document.querySelector("[name=item_name]");
+let catchCopyInput = document.querySelector("[name=catch_copy]");
+let mobileCatchCopyInput = document.querySelector("[name=mobile_catch_copy]");
+let priceInput = document.querySelector("#salesPrice");
+let oldProductNumber = window.location.href.split("/")[8];
+
+let mobilePageInput = [...document.querySelectorAll("textarea")].find(
+  ({ value }) => value.includes("<!-- sp -->")
+);
+let pcPageInput = [...document.querySelectorAll("textarea")].find(({ value }) =>
+  value.includes("<!-- pc -->")
+);
+
+let asurakuInput = document.querySelector("select[name=asuraku]");
+
+let imageUrlInputs = document.querySelectorAll(`input[name^="url_"]`);
+let altInputs = document.querySelectorAll(`input[name^="alt_"]`);
+
+let inputValueChanger = Object.getOwnPropertyDescriptor(
+  window.HTMLInputElement.prototype,
+  "value"
+).set;
+let textareaValueChanger = Object.getOwnPropertyDescriptor(
+  window.HTMLTextAreaElement.prototype,
+  "value"
+).set;
+let selectValueChanger = Object.getOwnPropertyDescriptor(
+  window.HTMLSelectElement.prototype,
+  "value"
+).set;
+
+inputValueChanger.call(manageNumberInput, data.productNumber);
+inputValueChanger.call(productNumberInput, data.productNumber);
+textareaValueChanger.call(productNameInput, data.productName);
+// textareaValueChanger.call(catchCopyInput, data.rakutenCatchCopy)
+// textareaValueChanger.call(mobileCatchCopyInput, data.rakutenMobileCatchCopy)
+// inputValueChanger.call(priceInput, data.priceWithTax);
+// textareaValueChanger.call(
+//   mobilePageInput,
+//   mobilePageInput.value
+//     .replaceAll(oldProductNumber, data.productNumber.toLowerCase())
+//     .replace(/(?<=cabinet\/)\w+(?=\/)/g, data.category)
+// );
+// textareaValueChanger.call(
+//   pcPageInput,
+//   data.pageHtml
+//     .replaceAll(oldProductNumber, data.productNumber.toLowerCase())
+//     .replace(/(?<=cabinet\/)\w+(?=\/)/g, data.category)
+// );
+// selectValueChanger.call(asurakuInput, 1);
+//   imageUrlInputs.forEach((input) =>
+//   inputValueChanger.call(
+//     input,
+//     input.value.replaceAll(oldProductNumber, data.productNumber.toLowerCase())
+//     .replace(/(?<=cabinet\/)\w+(?=\/)/g, localData.category)
+// )
+// );
+
+imageUrlInputs.forEach((input) => {
+  input.value = input.value
+    .replaceAll(oldProductNumber, data.productNumber.toLowerCase())
+    .replace(/(?<=cabinet\/)\w+(?=\/)/g, data.category);
+  input.addEventListener(
+    "focus",
+    () =>
+    (input.value = input.value
+      .replaceAll(oldProductNumber, data.productNumber.toLowerCase())
+      .replace(/(?<=cabinet\/)\w+(?=\/)/g, data.category))
+  );
+});
+
+altInputs.forEach((input) =>
+  input.addEventListener("focus", () =>
+    inputValueChanger.call(input, data.productName)
+  )
+);
+
+document.querySelectorAll("[type=text], textarea").forEach((input) => {
+  input.dispatchEvent(new Event("focus", { bubbles: true }));
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  input.dispatchEvent(new Event("change", { bubbles: true }));
+});
+
 
 //! Rakuten variations
 let localResponse = await fetch("http://localhost:8888/toko");
@@ -468,6 +559,59 @@ data.sizes.forEach((size, i) => {
 data.sortedColors.forEach((color, i) => {
   inputValueChanger.call(colorInputs[i], color);
   inputValueChanger.call(colorCodeInputs[i], colorCode[color]);
+});
+
+document.querySelectorAll("input").forEach((input) => {
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  input.dispatchEvent(new Event("change", { bubbles: true }));
+  input.dispatchEvent(new Event("focus", { bubbles: true }));
+});
+
+//! Rakuten variations from prompt
+let input = prompt("Variation");
+
+let data = {
+  sizes: input.match(/[A-Z]{1,2}/g),
+  colors: input.match(/[ァ-ヴー杢]+/g),
+  colorCodes: input.match(/\d{2}/g),
+}
+
+
+let sizeInputs = document.querySelectorAll(
+  "#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(1) > div > div > div:nth-child(2) .rms-col-14 input"
+);
+let sizeCodeInputs = document.querySelectorAll(
+  "#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(1) > div > div > div:nth-child(2) .rms-col-8 input"
+);
+
+let colorInputs = document.querySelectorAll(
+  "#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(2) > div > div .rms-col-14 input"
+);
+let colorCodeInputs = document.querySelectorAll(
+  "#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(2) > div > div .rms-col-8 input"
+);
+
+let inputValueChanger = Object.getOwnPropertyDescriptor(
+  window.HTMLInputElement.prototype,
+  "value"
+).set;
+
+data.sizes.forEach((size, i, arr) => {
+  if (arr.indexOf(size) === i) {
+    sizeInputs.tabIndex = i + 1
+    sizeCodeInputs.tabIndex = i + 20
+    inputValueChanger.call(sizeInputs[i], size);
+    inputValueChanger.call(sizeCodeInputs[i], size);
+  }
+});
+
+data.colors.forEach((color, i, arr) => {
+  if (arr.indexOf(color) === i) {
+    colorInputs.tabIndex = i + 40
+    colorCodeInputs.tabIndex = i + 60
+    inputValueChanger.call(colorInputs[i], color);
+    inputValueChanger.call(colorCodeInputs[i], data.colorCodes[i]);
+  }
 });
 
 document.querySelectorAll("input").forEach((input) => {
@@ -630,27 +774,27 @@ specs.innerHTML = `<h1>Spec</h1>
           </thead>
           <tbody>
           ${data
-            .map(
-              (dt) =>
-                `<tr>
+    .map(
+      (dt) =>
+        `<tr>
               ${dt
-                .map((datum) => {
-                  const number = datum.match(/\d+(\d|\.)+/g);
-                  const splitSlash = datum.split("/");
-                  const splitTilde = datum.split("～");
+          .map((datum) => {
+            const number = datum.match(/\d+(\d|\.)+/g);
+            const splitSlash = datum.split("/");
+            const splitTilde = datum.split("～");
 
-                  if (splitSlash.length > 1) {
-                    return `<td>前 ${splitSlash[0]}<br>後 ${splitSlash[1]}</td>`;
-                  } else if (splitTilde.length > 1) {
-                    return `<td>${splitTilde[0]}～${splitTilde[1]}</td>`;
-                  } else {
-                    return `<td>${datum}</td>`;
-                  }
-                })
-                .join("")}
+            if (splitSlash.length > 1) {
+              return `<td>前 ${splitSlash[0]}<br>後 ${splitSlash[1]}</td>`;
+            } else if (splitTilde.length > 1) {
+              return `<td>${splitTilde[0]}～${splitTilde[1]}</td>`;
+            } else {
+              return `<td>${datum}</td>`;
+            }
+          })
+          .join("")}
               </tr>`
-            )
-            .join("\n")}
+    )
+    .join("\n")}
         </tbody>
         </table>
       </td>
@@ -670,14 +814,14 @@ specs.innerHTML = `<h1>Spec</h1>
       <td>
         <table class="material">
         ${materialHeaders
-          .map(
-            (header, i) =>
-              `<tr><th>${header}<th><td>${materialData[i]?.replace(
-                header,
-                ""
-              )}</td></tr>`
-          )
-          .join("\n")}
+    .map(
+      (header, i) =>
+        `<tr><th>${header}<th><td>${materialData[i]?.replace(
+          header,
+          ""
+        )}</td></tr>`
+    )
+    .join("\n")}
         </table>
       </td>
     </tr>
@@ -794,9 +938,9 @@ textareaValueChanger.call(
 );
 
 spSpecSlide.onfocus = ({ target }) =>
-  (target.value = `https://image.rakuten.co.jp/limy/cabinet/${imageUrlInputs[0].value.match(
-    /(?<=cabinet\/)\w+/
-  )}/${window.location.href.match(/[a-z]{3}\d{6}/)}-sp-s_2.jpg`);
+(target.value = `https://image.rakuten.co.jp/limy/cabinet/${imageUrlInputs[0].value.match(
+  /(?<=cabinet\/)\w+/
+)}/${window.location.href.match(/[a-z]{3}\d{6}/)}-sp-s_2.jpg`);
 
 document.querySelectorAll("[type=text], textarea").forEach((input) => {
   input.dispatchEvent(new Event("input", { bubbles: true }));
@@ -1015,3 +1159,99 @@ document
 
 document.querySelector('[data-component-id="module-6"]').click();
 
+// Pass Data from Rakuten
+
+let data = {};
+data.selection = [];
+data.catchCopy =
+  document
+    .querySelector(".catch_copy > b")?.innerText.replaceAll("あす楽", "") ??
+  document.querySelector(".catch_copy").innerText.replaceAll("あす楽", "");
+data.itemName = document.querySelector(".item_name").innerText.replaceAll("あす楽", "");
+data.itemNumber = document.querySelector(".item_number").innerText;
+data.price = parseInt(document.querySelector("[itemprop=price]").getAttribute("content"));
+data.priceNoTax = Math.ceil(data.price - data.price / 11);
+data.size = [...document.querySelectorAll("tr:first-child > td > span.inventory_choice_name")].map(({ innerText }) => innerText);
+data.color = [...document.querySelectorAll("tr:not(:first-child) > td > span.inventory_choice_name")].map(({ innerText }) => innerText);
+data.description = document.querySelector("span.item_desc").innerText;
+document.querySelector("span.choice") ? document.querySelectorAll("span.choice")?.forEach((option, i) =>
+  (data.selection[i] = { [option.innerText]: [...document.querySelectorAll("select[name=choice]")[i]?.children].map(({ innerText }) => innerText) }))
+  : "";
+
+fetch(`http://localhost:8888/toko`, {
+  method: "POST",
+  mode: "no-cors",
+  "Content-Type": "application/json",
+  body: JSON.stringify(data),
+})
+  .then((res) => console.log("Success", res))
+  .catch((err) => console.error("Error", err));
+
+
+// Create PC Description 
+
+let specs = []
+
+NodeList.prototype.map = Array.prototype.map
+
+let tables = document.querySelectorAll(".specs > table")
+
+tables.forEach((table) => {
+  const title = table.querySelector('[colspan="2"]').innerHTML
+  const headers = table.querySelectorAll('.specs table table:not(.material) th').map(cell => cell.innerHTML)
+  const values = table.querySelectorAll('.specs table table:not(.material) td').map(cell => cell.innerHTML)
+
+  const spec = `
+  ${title}<br>
+  ${headers.map((header, i) =>
+    header + ": " + values[i].trim()
+      .concat(/\d$/.test(values[i]) ? "cm" : ""))
+      .join('<br>\n')
+    }
+  `
+  specs.push(spec)
+})
+
+
+let specTitles = document.querySelectorAll('.specs [colspan="2"]')?.map(title => title.innerHTML)
+
+let specHeaders = document.querySelectorAll('.specs table table:not(.material) th')
+
+let description =
+  document.querySelector("section.product-top > article > h2").innerHTML +
+  `<br>\n` +
+  document.querySelector("section.product-top > article > p").innerHTML +
+  "<br><br>\n" +
+  "スペック<br>\n" +
+  specs.join('<br><br>\n')
+  // headers
+  //   .map((header, i) => {
+  //     const number = data.map((datum) =>
+  //       datum.map((dtm) => dtm.match(/\d+(\d|\.)*/g))
+  //     );
+  //     const splitSlash = data.map((datum) =>
+  //       datum.map((dtm) => dtm.split("/"))
+  //     );
+  //     const splitTilde = data.map((datum) =>
+  //       datum.map((dtm) => dtm.split("～"))
+  //     );
+
+  //     if (splitSlash.length > 1) {
+  //       return `${header}：前 ${splitSlash[0]}cm/後 ${splitSlash[1]}cm<br>`;
+  //     } else if (splitTilde.length > 1) {
+  //       return `${header}：${splitTilde[0]}cm～${splitTilde[1]}cm<br>`;
+  //     } else {
+  //       return `${header}：${data[i]}<br>`;
+  //     }
+  //   })
+  //   .join("\n") +
+  + `<br><br>
+  モデル（身長）：${document.querySelector("section.specs > table:nth-child(2) > tbody > tr:nth-child(2) > td").innerText
+  }<br><br>
+  素材<br>
+  ${document.querySelector(".material").innerText.replace(/\n/g, "<br>\n")
+  }<br><br>
+
+  ※サイズは平置きでの実寸サイズを測っているため、誤差がでる場合がある旨ご了承下さい。`;
+
+copy(description)

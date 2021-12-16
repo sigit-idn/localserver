@@ -840,3 +840,12 @@ fetch("http://localhost:8888/watmos-style", {
 })
   .then((res) => console.log("Written succesfuly", res))
   .catch((error) => console.log("Error", error));
+
+// Add newest arrival 
+let date = prompt("date")
+let [aHref] = document.querySelector("#root .dui-container.searchresults > div > div:nth-child(1) > div.image > a").href.replace(/%2F/g, "/").replace(/%3A/g, ":").match(/(?<=url=).+(?=&_cks)/)
+let [imgSrc] = document.querySelector("#root .dui-container.searchresults > div > div:nth-child(1) > div.image > a > img").src.match(/.+jpg/)
+let title = prompt("title")
+copy(
+  `<li><b>${date} UP</b><a href="${aHref}"><img src="${imgSrc}"></a><span>${title}</span></li>`
+)
