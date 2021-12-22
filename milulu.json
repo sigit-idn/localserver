@@ -1,48 +1,54 @@
 {
-  "productNumber": "k215055ka0",
-  "modelSize": "Free",
-  "asuRaku": "",
-  "headline": "蓄熱ライナー付撥水加工軽量トレンチコート",
-  "subtitle": "秋・冬・春・梅雨寒ロングシーズンOK!",
-  "title": "折り畳み傘ケース",
+  "productNumber": "b205051jk0",
+  "modelSize": "17号",
+  "asuRaku": "あす楽",
+  "headline": "ビジネスに最適！ スカート合わせしやすいコンパクトテーラードジャケット",
+  "subtitle": "ストレッチ＆ウォッシャブルで快適",
+  "title": "ウォッシャブルコンパクトテーラー",
   "rakutenCategory": [
-    "新着\\NEW",
-    "ママスーツ\\コート",
-    "ビジネス・リクルート\\コート",
-    "アウター\\トレンチコート"
+    "大きいサイズ\\新着\\NEW",
+    "大きいサイズ\\ジャケット"
   ],
   "yahooCategory": [
-    "新着\\NEW",
-    "ママスーツ\\コート",
-    "ビジネス・リクルート\\コート",
-    "アウター\\トレンチコート"
+    "大きいサイズ\\新着\\NEW",
+    "大きいサイズ\\ジャケット"
   ],
   "shoplistCategory": "",
   "sizes": [
-    "フリー"
+    "15号",
+    "17号",
+    "19号",
+    "21号",
+    "23号"
   ],
   "colors": [
-    "ネイビー",
-    "ブルー",
-    "グレー"
+    "ブラック",
+    "ネイビー"
   ],
-  "price": 1540,
-  "priceNoTax": 1400,
-  "rakutenCatchCopy": "",
-  "rakutenMobileCatchCopy": "",
-  "rakutenProductName": "",
-  "shoplistCatchCopy": "",
-  "shoplistProductName": "",
-  "shoplistDescription": "<br><br>",
-  "shoplistPrice": 2280,
+  "price": 3900,
+  "priceNoTax": 3546,
+  "rakutenCatchCopy": "冠婚葬祭 テレワーク Lサイズ 23号 21号 19号 17号 15号 フォーマル リクルートスーツ 上品 綺麗 母親 きちんと 制服 事務服 仕事 背抜き 両サイド ポケット セレモニー 働くママ",
+  "rakutenMobileCatchCopy": "冠婚葬祭 テレワーク Lサイズ 23号 21号 19号 17号 フォーマル",
+  "rakutenProductName": "ビジネススーツ レディース 洗える スーツ ストレッチ おしゃれ ママスーツ 春 夏 秋 冬 通勤 OL リクルート 就活 ビジネス テーラードジャケット コンパクト 黒 オフィス 紺 ブラック ネイビー ウォッシャブル 抗菌 消臭 大きいサイズ 在宅ワーク",
+  "shoplistCatchCopy": "冠婚葬祭 テレワーク Lサイズ 23号 21号 19号 17号 15号 フォーマル リクルートスーツ 上品 綺麗 母親 きちんと 制服 事務服 仕事 背抜き 両サイド ポケット セレモニー 働くママ",
+  "shoplistProductName": "ビジネススーツ レディース 洗える スーツ ストレッチ おしゃれ ママスーツ 春 夏 秋 冬 通勤 OL リクルート 就活 ビジネス テーラードジャケット コンパクト 黒 オフィス 紺 ブラック ネイビー ウォッシャブル 抗菌 消臭 大きいサイズ 在宅ワーク 冠婚葬祭 テレワーク",
+  "shoplistDescription": "ウォッシャブル+ストレッチ+デオドラント効果を備えた年間通して活躍する\n 「洗えるテーラードジャケット」スカートに合わせやすいコンパクトなデザインです。\n \n 【ブラック】\n 「洗える」「ストレッチ性」を兼ね備えた清潔で快適なテーラードジャケット。\n \n 【ネイビー】\n 定番のテーラード。\n 年間通してロングシーズン活躍する1着。<br><br>",
+  "shoplistPrice": null,
   "shoplistJanCode": [
-    "k215055ka0flBL X000Z47Q8F",
-    " k215055ka0flGY X000Z47Q5X",
-    " k215055ka0flNV X000YRHAFH"
+    "b205051jk015BK X000ZK3I6X",
+    " b205051jk015NV X000ZK3FC5",
+    " b205051jk017BK X000ZK3FBV",
+    " b205051jk017NV X000ZK3I5J",
+    " b205051jk019BK X000ZK3JL7",
+    " b205051jk019NV X000ZK3KQB",
+    " b205051jk021BK X000ZK3FCF",
+    " b205051jk021NV X000ZK3JLH",
+    " b205051jk023BK X000ZK3KQL",
+    " b205051jk023NV X000ZK3FED"
   ],
-  "yahooCatchCopy": "",
-  "yahooProductName": "",
-  "yahooBrandPrice": 1540,
+  "yahooCatchCopy": "オフィス ブラック ネイビー ウォッシャブル 抗菌 消臭 大きい",
+  "yahooProductName": "ビジネススーツ レディース 洗える スーツ ストレッチ おしゃれ ママスーツ 春 夏 秋 冬 通勤 OL リクルート 就活 ビジネス テーラードジャケット コンパクト 黒",
+  "yahooBrandPrice": 7900,
   "coordinateSubtitles": [
     "フレアスカートスーツ",
     "タイトスカートスーツ",
@@ -64,7 +70,7 @@
     "ポケット",
     "袖口"
   ],
-  "category": "accessories",
+  "category": "tops",
   "colorCode": {
     "ブラック": "BK",
     "オフホワイト": "WH",

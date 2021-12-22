@@ -54,11 +54,16 @@ let brandPriceMatch = text.split(priceMatch)[1].match(/(￥|¥)(\d|,)+/)[0]
 let yahooBrandPrice = Number(brandPriceMatch.replace(/\D/g, ""))
 let shoplistPrice   = Number(text.split(brandPriceMatch)[1].match(/(￥|¥)(\d|,)+/)?.[0].replace(/\D/g, "")) ?? price
 let sizes           = text.match(/\d{1,2}号|(?<=\s)[LMS]+(?=\s)/g).filter((item, i, arr) => arr.indexOf(item) === i) ?? "フリー"
-let colors = text.match(/(?<=ＩＳＴ価.+須.*)[一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤]+/g)
+let colors          = text.match(/(?<=ＩＳＴ価.+須.*)[一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤]+/g)
+let [
+	rakutenProductName, 
+	shoplistProductName,
+	yahooProductName
+] = text.match(/(?<=大文.+さい。*.+)(\S+( \S+ )*)+/g)
 
 // let title           = text.match(/(?<=^\n\t)[一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤]+(?=\t+$)/)
 // let title           = text.match(/(?<=\n\t)[一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤]+/g)
 // let title = text.match(/(?<=\n\s).+(?=(\t+|\n+)販売価格)/s)
 // let [title] = text.match(/.+(?=.*販売価格)/)
 
-console.log({shoplistJanCode});
+console.log({rakutenProductName, shoplistProductName, yahooProductName});
