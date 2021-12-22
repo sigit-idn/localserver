@@ -5,13 +5,13 @@ let comments = [prompt("コメント1"), prompt("コメント2"), prompt("コメ
 let commentsHtml = comments
   .map((comment) => {
     const modelHeight = comment.match(/\d{3}cm/);
-    const size = comment.match(/\w{1,2}(号|サイズ)(?=着)/)[0];
-    const statement = comment.match(/.*(\n.*)*(?=\n\w{1,2}(号|サイズ))/);
+    const size        = comment.match(/\w{1,2}(号|サイズ)(?=着)/)[0];
+    const statement   = comment.match(/.*(\n.*)*(?=\n\w{1,2}(号|サイズ))/);
 
     // [0]?.replace(/\n/g, "");
 
     return ` <ul>
-  <li id="rw-icon_1"><p><span>STAFF・1</span></p></li><li><dl>
+  <li id = "rw-icon_1"><p><span>STAFF・1</span></p></li><li><dl>
   <dt>身長：${modelHeight}</dt>
   <dd><b>着用：${size}</b>
     ${statement}
@@ -46,7 +46,7 @@ for (let i = 0; i < sizeValues.length - 1; i++) {
   }
 }
 
-sizeHeaders =
+sizeHeaders = 
   "<tr>" +
   sizeHeaders
     .map((header) => `<th>${header.replace(/（/g, "<br>（")}</th>`)
@@ -54,7 +54,7 @@ sizeHeaders =
   "</tr>";
 sizeRows = sizeRows
   .map(
-    (row) =>
+    (row) => 
       "<tr>" +
       row
         .map((col, i) => (i == 0 ? `<th>${col}</th>` : `<td>${col}</td>`))
@@ -90,9 +90,9 @@ if (data.productNumber[0] == "k") {
 }
 
 fetch("http://localhost:8888/milulu", {
-  method: "POST",
+  method        : "POST",
   "Content-Type": "application/json",
-  body: JSON.stringify(data),
+  body          : JSON.stringify(data),
 })
   .then(async (res) => console.log("Written succesfuly", await res.text()))
   .catch((error) => console.log("Error", error));
@@ -112,34 +112,34 @@ let categories = {
   ct: "tops",
 };
 
-let coordinateInput = prompt("Coordinate");
-data.coordinateUrls = coordinateInput.match(/http\S+/g);
-let coordinateTexts = coordinateInput
+let coordinateInput     = prompt("Coordinate");
+    data.coordinateUrls = coordinateInput.match(/http\S+/g);
+let coordinateTexts     = coordinateInput
   .replace(/(.*コーディネート|http|タイトル)\S*/g, "")
   .match(/\S{6,}/g);
-data.coordinateSubtitles = coordinateTexts.filter((_, i) => i % 4 < 2);
-data.coordinateTitles = coordinateTexts.filter((_, i) => i % 4 >= 2);
+                       data.coordinateSubtitles  = coordinateTexts.filter((_, i) => i % 4 < 2);
+                       data.coordinateTitles     = coordinateTexts.filter((_, i) => i % 4 >= 2);
 document.querySelector(".productArea").innerHTML = "";
 
-let coordinateItems = data.coordinateUrls.map( (url, i, arr) => {
+let coordinateItems = data.coordinateUrls.map((url, i, arr) => {
   setTimeout(async () => {
-  let coordinateNumber = url.split("/")[4];
-  const { thumbnail } = await (await fetch("http://localhost:8888/scrape/" + coordinateNumber)).json();
+    let   coordinateNumber = url.split("/")[4];
+    const { thumbnail }    = await (await fetch("http://localhost:8888/scrape/" + coordinateNumber)).json();
 
-  let coordinateCategory =
-    data.productNumber[0] == "k"
-      ? "accessories"
-      : categories[coordinateNumber.match(/(?<=\d)[a-z]{2,3}/i)];
-  document.querySelector(".productArea").innerHTML += `
-<a href="${url}" target="_blank"><!-- ← 商品URL指定欄 -->	
-	<div class="rw-coBanner">
-		<p><img src="https://image.rakuten.co.jp/milulu/cabinet/${data.category}/${data.productNumber
-    }-co_${i + 1}.jpg"></p>	
+    let                coordinateCategory = 
+    data.productNumber[0]                 =  = "k"
+        ? "accessories"
+        :  categories[coordinateNumber.match(/(?<=\d)[a-z]{2,3}/i)];
+    document.querySelector(".productArea").innerHTML += `
+<a      href  = "${url}" target = "_blank"><!-- ← 商品URL指定欄 -->
+<div    class = "rw-coBanner">
+<p><img src   = "https://image.rakuten.co.jp/milulu/cabinet/${data.category}/${data.productNumber
+      }-co_${i + 1}.jpg"></p>	
 	<div>	
 		<ul>
 			<li><p><img src="${thumbnail ??
-    `https://image.rakuten.co.jp/milulu/cabinet/${coordinateCategory}/${coordinateNumber}-thumbnail.jpg`
-    }"></p>
+      `https://image.rakuten.co.jp/milulu/cabinet/${coordinateCategory}/${coordinateNumber}-thumbnail.jpg`
+      }"></p>
 				<p><s>${data.coordinateSubtitles[i]}
 				</s><!-- ← 小タイトル（s～s 消してもOK） -->
 				${data.coordinateTitles[i]}
@@ -153,14 +153,14 @@ let coordinateItems = data.coordinateUrls.map( (url, i, arr) => {
 	</a>
 `;
 
-if (i >= arr.length - 1) innerCopy(document.querySelector(".productArea").outerHTML)
-}, 600)
+    if (i >= arr.length - 1) innerCopy(document.querySelector(".productArea").outerHTML)
+  }, 600)
 });
 
 
 // Create Related Product
 let relatedItems = "";
-let innerCopy = copy
+let innerCopy    = copy
 
 prompt("関連商品")
   .match(/\w{1,2}\d{5,7}\w{1,2}\d{1,2}/g)
@@ -170,20 +170,20 @@ prompt("関連商品")
       let data = await (await fetch("http://localhost:8888/scrape/" + productNumber)).json();
 
       relatedItems += `  <li style="box-shadow: 0 -4px 0 0 #FFF inset;">
-    <a href="https://item.rakuten.co.jp/milulu/${productNumber}/" target="_top">
+    <a href = "https://item.rakuten.co.jp/milulu/${productNumber}/" target = "_top">
       <i>
-        <img src="${data.thumbnail}">
+        <img src = "${data.thumbnail}">
       </i>
       <span>
         <u></u>
         <u>
-          <font size="0.5em" color="#6a5acd">
+          <font size = "0.5em" color = "#6a5acd">
             ＜${data.category?.replace(/<br>|\s/g, "")}＞
           </font>
           <br>
           ${(data.h2 + data.h1).length >= 50
           ? data.h2.replace(/<br>|<br\/>|\s/g, "")
-          : data.h2.replace(/<br>|<br\/>|\s/g, "") +
+          :  data.h2.replace(/<br>|<br\/>|\s/g, "") +
           "<br>" +
           data.h1.replace(/<br>|<br\/>|\s/g, "")
         }
@@ -204,7 +204,7 @@ document.addEventListener("mousewheel", () =>
 //! Rakuten Submit Product
 
 let response = await fetch(`http://localhost:8888/milulu`);
-let data = await response.json();
+let data     = await response.json();
 
 NodeList.prototype.find = Array.prototype.find;
 
@@ -212,13 +212,13 @@ document
   .querySelector("#root > .rms-layout .rms-content .rms-columns  button")
   .click();
 
-let manageNumberInput = document.querySelector("[name=itemManageNumber]");
-let productNumberInput = document.querySelector("[name=itemNumber]");
-let productNameInput = document.querySelector("[name=item_name]");
-let catchCopyInput = document.querySelector("[name=catch_copy]");
+let manageNumberInput    = document.querySelector("[name=itemManageNumber]");
+let productNumberInput   = document.querySelector("[name=itemNumber]");
+let productNameInput     = document.querySelector("[name=item_name]");
+let catchCopyInput       = document.querySelector("[name=catch_copy]");
 let mobileCatchCopyInput = document.querySelector("[name=mobile_catch_copy]");
-let priceInput = document.querySelector("#salesPrice");
-let categoryInputs = document
+let priceInput           = document.querySelector("#salesPrice");
+let categoryInputs       = document
   .querySelectorAll(".rms-form-row")
   .find((row) => /表示先カテゴリ/.test(row.innerHTML))
   .querySelectorAll("input");
@@ -233,16 +233,16 @@ let pcPageInput = [...document.querySelectorAll("textarea")].find(({ value }) =>
 let asurakuInput = document.querySelector("select[name=asuraku]");
 
 let imageUrlInputs = document.querySelectorAll("input[name^=url_]");
-let altInputs = document.querySelectorAll("input[name^=alt_]");
+let altInputs      = document.querySelectorAll("input[name^=alt_]");
 
-let mobilePageValue = mobilePageInput.value.split("<!-- specs -->");
-mobilePageValue[1] = `
+let             mobilePageValue = mobilePageInput.value.split("<!-- specs -->");
+mobilePageValue[1]              = `
 ${data.headline}<br>
 ${data.subtitle}
 <br>
-<font size="1"><b>カラー展開</b></font><br>
+<font size = "1"><b>カラー展開</b></font><br>
 ${data.colors.join("／")}<br>
-<font size="1"><b>サイズ</b></font><br>
+<font size = "1"><b>サイズ</b></font><br>
 ${data.sizes.join("／")}<br>
 `;
 
@@ -318,8 +318,8 @@ document.querySelectorAll("[type=text], textarea").forEach((input) => {
 document
   .querySelectorAll(
     `#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(2),
-  #root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(11) > div.rms-form.form-border.form-full > div:nth-child(1),
-  #root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(12)
+  #root > div.rms-layout > main > div.rms-content > div: nth-child(2) > div: nth-child(11) > div.rms-form.form-border.form-full > div: nth-child(1),
+  #root > div.rms-layout > main > div.rms-content > div: nth-child(2) > div: nth-child(12)
   `
   )
   .forEach((element) => (element.style.backgroundColor = "#ff0"));
@@ -398,11 +398,11 @@ let inputValueChanger = Object.getOwnPropertyDescriptor(
 ).set;
 
 data.sizes.forEach((size, i) => {
-  sizeInputs[i].tabIndex = i + 1;
+  sizeInputs    [i].tabIndex = i + 1;
   sizeCodeInputs[i].tabIndex = i + 1;
-  let sizeCode =
+  let            sizeCode    = 
     size.length < 3 ? "0" + size.replace("号", "") : size.replace("号", "");
-  sizeCode = !size.includes("フリー") ? sizeCode : "fl";
+    sizeCode    = !size.includes("フリー") ? sizeCode: "fl";
 
   inputValueChanger.call(sizeInputs[i], size);
   sizeInputs[i].onfocus = () => inputValueChanger.call(sizeInputs[i], size);
@@ -412,7 +412,7 @@ data.sizes.forEach((size, i) => {
 });
 
 data.colors.forEach((color, i) => {
-  colorInputs[i].tabIndex = i + 1;
+  colorInputs    [i].tabIndex = i + 1;
   colorCodeInputs[i].tabIndex = i + 1;
   inputValueChanger.call(colorInputs[i], color);
   colorInputs[i].onfocus = () => inputValueChanger.call(colorInputs[i], color);
@@ -434,8 +434,8 @@ document.querySelectorAll("input").forEach((input) => {
 
 //! Shoplist multiple image upload
 
-let tbody = document.querySelector("#main > form > table > tbody");
-let form = document.querySelector("form");
+let tbody    = document.querySelector("#main > form > table > tbody");
+let form     = document.querySelector("form");
 let formData = new FormData(form);
 
 tbody.querySelectorAll("input[type=file]").forEach((uploadInput) => {
@@ -450,12 +450,12 @@ tbody.querySelectorAll("input[type=file]").forEach((uploadInput) => {
 
 form.onsubmit = (event) => {
   event.preventDefault();
-  document.querySelector('[href="#Submit"]').innerHTML = `アップロード中...`;
+  document.querySelector('[href="#Submit"]').innerHTML             = `アップロード中...`;
   document.querySelector('[href="#Submit"]').style.backgroundColor = `#3338`;
-  document.querySelector('[href="#Submit"]').style.cursor = `wait`;
+  document.querySelector('[href="#Submit"]').style.cursor          = `wait`;
   fetch(form.action, {
     method: "POST",
-    body: formData,
+    body  : formData,
   })
     .then(async (res) => {
       console.log(await res.text());
@@ -488,41 +488,42 @@ let {
   shoplistProductName,
 } = await response.json();
 
-document.querySelector("[name=catch_copy_mobile]").value =
+document.querySelector("[name=catch_copy_mobile]").value = 
   shoplistCatchCopy.length > 130
     ? rakutenCatchCopy.replace(/あす楽/g, "")
-    : shoplistCatchCopy;
-document.querySelector("[name=product_name]").value = shoplistProductName;
-document.querySelector("[name=product_code]").value = productNumber;
+    :  shoplistCatchCopy;
+document.querySelector("[name=product_name]").value      = shoplistProductName;
+document.querySelector("[name=product_code]").value      = productNumber;
 document.querySelector("[name=shop_product_code]").value = productNumber;
-document.querySelector("[name=genre_id]").value =
+document.querySelector("[name=genre_id]").value          = 
   String(shoplistCategory).match(/\d+/);
 document.querySelector("[name=product_material_details]").value = prompt(
   "Material"
 ).replace(/\s{2,}|(?<=%)\s/g, "<br>\n");
 
-document.querySelector("[name=product_sales_price]").value = shoplistPrice;
-document.querySelectorAll("[name=tax_flg]")[1].checked = true;
+document.querySelector   ("[name=product_sales_price]").value       = shoplistPrice;
+document.querySelectorAll("[name=tax_flg]")[1].checked              = true;
 document.querySelectorAll("[name='product_sex_type[]']")[1].checked = true;
-document.querySelectorAll("[name=stock_type]")[2].checked = true;
-document.querySelector("[name=stock_name_width]").value = "サイズ";
-document.querySelector("[name=stock_name_height]").value = "カラー";
-document.querySelector("[name=product_subject_mobile]").value =
+document.querySelectorAll("[name=stock_type]")[2].checked           = true;
+document.querySelector   ("[name=stock_name_width]").value          = "サイズ";
+document.querySelector   ("[name=stock_name_height]").value         = "カラー";
+document.querySelector   ("[name=product_subject_mobile]").value    = 
   shoplistDescription
-    .replace(/\n/g, "")
-    .replace(/【/g, "\n<br><br>\n【")
-    .replace(/】/g, "】<br>\n") + "\n\n";
+    .replace(/\n{2,}/g, "\n")
+    .replace(/\n/g, "<br>\n")
+// .replace(/【/g, "\n<br><br>\n【")
+// .replace(/】/g, "】<br>\n") + "\n\n";
 
 if (!/^k/.test(productNumber)) {
-  let sizeInput = prompt("Size");
+  let sizeInput = prompt("Size") ?? "";
 
   let sizeHeaders = sizeInput
     .replace(/"/g, "")
     .replace(/\n（/g, "（")
-    .match(/(\(|（)*([一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤]|ｻ|ｽ|ﾊﾞ)\S+/gu);
+    ?.match(/(\(|（)*([一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤]|ｻ|ｽ|ﾊﾞ)\S+/gu) ?? [];
   let sizeValues = sizeInput
     .split(sizeHeaders[sizeHeaders.length - 1])[1]
-    .match(/(\w|[ａ-ｚ])\S*/giu);
+    ?.match(/(\w|[ａ-ｚ])\S*/giu);
 
   let sizeRows = [];
 
@@ -540,7 +541,7 @@ if (!/^k/.test(productNumber)) {
     .map((row) =>
       row
         .map((col, i) =>
-          i != 0 ? sizeHeaders[i] + ` ${col}cm` : col + "号<br>\n"
+          i! = 0 ? sizeHeaders[i] + ` ${col}cm` : col + "号<br>\n"
         )
         .join(" / ")
     )
@@ -552,17 +553,17 @@ document
   .querySelectorAll('td[style="width:80px;"]')
   .forEach((td) => td.appendChild(document.createElement("img")));
 
-let imagesLimit =
-  productNumber[0] == "k" ? parseInt(prompt("Images Limit")) : 19;
+let           imagesLimit = 
+productNumber[0]          =  = "k" ? parseInt(prompt("Images Limit")) : 19;
 
 document.querySelectorAll("input[id^=image_url]").forEach((input, i) => {
-  input.value =
+  input.value = 
     i < imagesLimit + 1
       ? `http://img.shop-list.com/res/up/shoplist/shp/milulu/${productNumber}/${productNumber.toLowerCase()}-sp${i}.jpg`
-      : "";
+      :  "";
   input.addEventListener(
     "input",
-    () =>
+    () => 
     (input.parentElement.previousElementSibling.lastElementChild.src =
       input.value)
   );
@@ -574,7 +575,7 @@ document.querySelector(
 document
   .querySelectorAll('td[style="width:80px;"]')
   .forEach(
-    (td) =>
+    (td) => 
     (td.lastElementChild.src =
       td.nextElementSibling.querySelector('input[size="40"]').value)
   );
@@ -610,7 +611,7 @@ copy(
     .map((row) =>
       row
         .map((col, i) =>
-          i != 0 ? sizeHeaders[i] + ` ${col}cm` : col + "号<br>\n"
+          i! = 0 ? sizeHeaders[i] + ` ${col}cm` : col + "号<br>\n"
         )
         .join(" / ")
     )
@@ -620,7 +621,7 @@ copy(
 
 //! Shoplist Variation
 
-let response = await fetch("http://localhost:8888/milulu");
+let response                                    = await fetch("http://localhost:8888/milulu");
 let { sizes, colors, productNumber, colorCode } = await response.json();
 
 document
@@ -631,7 +632,7 @@ document
   .querySelectorAll("input[name^=product_width_child_no]")
   .forEach((size, i) => {
     size.value = sizes[i]?.replaceAll("号", "") || "";
-    size.value = size.value.length == 1 ? "0" + size.value : size.value;
+    size.value = size.value.length =  = 1 ? "0" + size.value : size.value;
     size.value = !sizes[i]?.includes("フリー") ? size.value : "fl";
   });
 
@@ -646,7 +647,7 @@ document
 document
   .querySelectorAll("input[name^=color_image_url]")
   .forEach(
-    (color, i) =>
+    (color, i) => 
     (color.value =
       i < colors.length
         ? `http://img.shop-list.com/res/up/shoplist/shp/milulu/${productNumber}/${productNumber.toLowerCase()}-parts${i + 1
@@ -657,18 +658,19 @@ document
 document
   .querySelectorAll("select[name^=product_color_id]")
   .forEach(
-    (select, i) =>
+    (select, i) => 
     (select.value = [...select.querySelectorAll("option")].filter((option) =>
       option.label?.includes(colors[i] || colors[i].slice(3, 6))
     )[0]?.value)
   ) || "";
 
+
 //! Shoplist JANCODE
 
-let janObject = {};
-let response = await fetch("http://localhost:8888/milulu");
+let janObject           = {};
+let response            = await fetch("http://localhost:8888/milulu");
 let { shoplistJanCode } = await response.json();
-shoplistJanCode = shoplistJanCode.map((jan) => jan.trim());
+    shoplistJanCode     = shoplistJanCode.map((jan) => jan.trim());
 
 shoplistJanCode.forEach(
   (jan) => (janObject[jan.split(" ")[0].toLowerCase()] = jan.split(" ")[1])
@@ -676,13 +678,14 @@ shoplistJanCode.forEach(
 document
   .querySelectorAll("input[name^=jan_code]")
   .forEach(
-    (janInput, i) =>
+    (janInput, i) => 
     (janInput.value = String(
       janObject[
       janInput.parentElement.previousElementSibling.innerText.toLowerCase()
       ]
     ).replaceAll(undefined, ""))
   );
+
 
 //! Shoplist JANCODE(reverse)
 
@@ -702,7 +705,7 @@ shoplistJanCode.forEach((jan) => {
 document
   .querySelectorAll("input[name^=jan_code]")
   .forEach(
-    (janInput, i) =>
+    (janInput, i) => 
     (janInput.value = String(
       janObject[janInput.parentElement.parentElement.children[2].innerText]
     ).replaceAll(undefined, ""))
@@ -713,28 +716,28 @@ document
 let data = await(await fetch("http://localhost:8888/milulu")).json();
 
 let inputs = {
-  productNumberInput: document.querySelector("[name=__submit__product_code]"),
+  productNumberInput   : document.querySelector("[name=__submit__product_code]"),
   yahooProductNameInput: document.querySelector("[name=__submit__name]"),
-  priceInput: document.querySelector("[name=__submit__price]"),
-  yahooBrandPriceInput: document.querySelector(
+  priceInput           : document.querySelector("[name=__submit__price]"),
+  yahooBrandPriceInput : document.querySelector(
     "[name=__submit__original_price]"
   ),
 };
 
 let manageNumberInput = document.querySelector("[name=__submit__code]");
-let memberPriceInput = document.querySelector("[name=__submit__member_price]");
+let memberPriceInput  = document.querySelector("[name=__submit__member_price]");
 
 let yahooCatchCopyInput = document.querySelector("[name=__submit__headline]");
-let descriptionInput = document.querySelector("[name=__submit__explanation]");
+let descriptionInput    = document.querySelector("[name=__submit__explanation]");
 
 [
   inputs.priceInput,
   manageNumberInput,
   [
     ...document.querySelectorAll(`
-  #react-tabs-1 > div > div:nth-child(13) > div:nth-child(2),
-  #react-tabs-1 > div > div:nth-child(13) > div:nth-child(4),
-  #react-tabs-1 > div > div:nth-child(14) > div.uiGridB > div.uiGridB__gridB2 > div > div:nth-child(2) > div.uiGridB__gridB5 > div.formParts,
+  #react-tabs-1 > div > div: nth-child(13) > div                                          : nth-child(2),
+  #react-tabs-1 > div > div: nth-child(13) > div                                          : nth-child(4),
+  #react-tabs-1 > div > div: nth-child(14) > div.uiGridB > div.uiGridB__gridB2 > div > div: nth-child(2) > div.uiGridB__gridB5 > div.formParts,
   #react-tabs-2
   `),
   ],
@@ -742,14 +745,14 @@ let descriptionInput = document.querySelector("[name=__submit__explanation]");
   .flat()
   .forEach((input) => (input.style.backgroundColor = "#ff0"));
 
-let descriptionText =
+let descriptionText = 
   descriptionInput.value.split("【")[0] +
   "【カラー】" +
   data.colors.join("／") +
   "\n【サイズ】" +
   data.sizes.join(" ");
 
-descriptionText =
+descriptionText = 
   descriptionText.split("\n\n")[0] +
   "\n\n" +
   data.headline +
@@ -795,7 +798,7 @@ document
   )
   .forEach((a, i) => {
     if (i < 19) {
-      const number =
+      const number = 
         a.parentElement.parentElement.parentElement.parentElement.textContent.match(
           /\d{1,2}/
         );
@@ -832,7 +835,7 @@ textareaValueChanger.call(yahooCatchCopyInput, data.yahooCatchCopy);
 inputValueChanger.call(manageNumberInput, data.productNumber);
 inputValueChanger.call(memberPriceInput, data.price - 1);
 
-let searchValue = document.querySelector("#now_page_key").value;
+let searchValue  = document.querySelector("#now_page_key").value;
 let replaceValue = data.productNumber.toLowerCase();
 document
   .querySelectorAll("[type=text]")
@@ -894,18 +897,18 @@ document
 document
   .querySelectorAll(".stockList td:nth-child(1) span > input")
   .forEach((input, i) => {
-    input.tabIndex = i + 1;
-    const yahooSizeCode =
+          input.tabIndex = i + 1;
+    const yahooSizeCode  = 
       input.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerText.replaceAll(
         "号",
         ""
       );
-    let SizeCode =
-      yahooSizeCode == "フリー"
+    let SizeCode      = 
+        yahooSizeCode =  = "フリー"
         ? "fl"
-        : yahooSizeCode.length == 1
+        : yahooSizeCode.length =  = 1
           ? "0" + yahooSizeCode
-          : yahooSizeCode;
+          :  yahooSizeCode;
     inputValueChanger.call(
       input,
       data.productNumber +
@@ -934,11 +937,11 @@ document
   .querySelectorAll(".stockList .stockList__tableWrap tr:nth-child(1) textarea")
   .forEach((textArea, i) => {
     textArea.tabIndex = i + 1;
-    textArea.value = `https://shopping.c.yimg.jp/lib/milulu-shop/${data.productNumber
+    textArea.value    = `https://shopping.c.yimg.jp/lib/milulu-shop/${data.productNumber
       }-parts${i + 1}.jpg`;
     textArea.addEventListener(
       "focus",
-      () =>
+      () => 
       (textArea.value = `https://shopping.c.yimg.jp/lib/milulu-shop/${data.productNumber
         }-parts${i + 1}.jpg`)
     );
@@ -961,17 +964,17 @@ document.querySelectorAll("input, textarea").forEach((input) => {
 document
   .querySelectorAll(".stockList td:nth-child(1) span > input")
   .forEach((input, i) => {
-    const yahooSizeCode =
+    const yahooSizeCode = 
       input.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement
         .querySelector("td:nth-child(3)")
         .innerText.replaceAll("号", "");
-    let SizeCode =
-      yahooSizeCode == "フリー"
+    let SizeCode      = 
+        yahooSizeCode =  = "フリー"
         ? "fl"
-        : yahooSizeCode.length == 1
+        : yahooSizeCode.length =  = 1
           ? "0" + yahooSizeCode
-          : yahooSizeCode;
-    input.value =
+          :  yahooSizeCode;
+    input.value = 
       productNumber +
       SizeCode +
       colorCode[
@@ -1002,14 +1005,14 @@ document.querySelector("#iFixed")?.remove();
 document.querySelector("#rakutenLimitedId_header")?.remove();
 document.querySelector("#chat_widget")?.remove();
 if (document.querySelector("#pagebody > div:nth-child(10)")) {
-  document.querySelector("#pagebody > div:nth-child(10)").style.marginLeft =
+  document.querySelector("#pagebody > div:nth-child(10)").style.marginLeft = 
     -280 ?? "";
 }
 document
   .querySelectorAll("#pageGallery div dl, #pageSpec > div")
   .forEach(({ style }, i) => {
-    style.paddingRight = 1;
-    style.marginRight = i % 2 == 1 ? 0 : 1;
+    style.paddingRight  = 1;
+    style.marginRight   = i % 2 =  = 1 ? 0 : 1;
     style.paddingBottom = 2;
   });
 document.querySelectorAll("img")?.forEach((img) => {
@@ -1042,19 +1045,19 @@ let number = localStorage.getItem("spNumber") ?? 1;
 
 document.querySelectorAll("div").forEach(async (div) => {
   if (
-    div.clientWidth === 780 &&
-    div.clientHeight <= 1200 &&
-    !/thumbnail/.test(div.innerHTML)
+    div.clientWidth  = =  = 780 &&
+    div.clientHeight < = 1200 &&
+        !/thumbnail/.test(div.innerHTML)
   ) {
-    const dataUrl = await domtoimage.toJpeg(div);
-    const link = document.createElement("a");
-    link.download = `k215058mk0-sp${number}.jpg`;
-    link.href = dataUrl;
-    link.click();
-    console.log(number);
-    number++;
-    localStorage.setItem("spNumber", number);
-  }
+  const dataUrl       = await domtoimage.toJpeg(div);
+  const link          = document.createElement("a");
+        link.download = `k215058mk0-sp${number}.jpg`;
+        link.href     = dataUrl;
+  link.click();
+  console.log(number);
+  number++;
+  localStorage.setItem("spNumber", number);
+}
 });
 
 // Delete images from shoplist
@@ -1065,7 +1068,7 @@ document.querySelectorAll("div").forEach(async (div) => {
 
 // Amazon select modules
 let response = await fetch(`http://localhost:8888/milulu`);
-let data = await response.json();
+let data     = await response.json();
 
 document
   .querySelector("#app-main > div > div > div > div > div > div > div > div")

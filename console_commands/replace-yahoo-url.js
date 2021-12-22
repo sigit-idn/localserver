@@ -1,3 +1,5 @@
+// Yahoo Replace Image URL
+
 let inputValueChanger = Object.getOwnPropertyDescriptor(
   window.HTMLInputElement.prototype,
   "value"
@@ -6,27 +8,36 @@ let textareaValueChanger = Object.getOwnPropertyDescriptor(
   window.HTMLTextAreaElement.prototype,
   "value"
 ).set;
-let searchValues = prompt("Search").split(";");
-let replaceValues = prompt("Replace").split(";");
-searchValues.forEach((searchValue, i) => {
+let searchValues = prompt("Image number").split(";");
+let [searchValue] = searchValues
+let productNumber = document.querySelector("#now_page_key").value;
+
+String.prototype.replaceSrc = function () {
+  return this.replace(
+    new RegExp("http.+i\/n.+_" + searchValue, "g"),
+    `https://shopping.c.yimg.jp/lib/milulu-shop/${productNumber}-sp${searchValue}.jpg`
+  )
+}
+
+searchValues.forEach((_) => {
   document.querySelectorAll("[type=text]").forEach((input) => {
     inputValueChanger.call(
       input,
-      input.value.replaceAll(searchValue, replaceValues[i])
+      input.value.replaceSrc()
     );
     inputValueChanger.onfocus = inputValueChanger.call(
       input,
-      input.value.replaceAll(searchValue, replaceValues[i])
+      input.value.replaceSrc()
     );
   });
   document.querySelectorAll("textarea").forEach((textarea) => {
     textareaValueChanger.call(
       textarea,
-      textarea.value.replaceAll(searchValue, replaceValues[i])
+      textarea.value.replaceSrc()
     );
     textareaValueChanger.onfocus = textareaValueChanger.call(
       textarea,
-      textarea.value.replaceAll(searchValue, replaceValues[i])
+      textarea.value.replaceSrc()
     );
   });
 });

@@ -1,10 +1,10 @@
 {
-  "productNumber": "m225108st0",
-  "modelSize": "7号",
-  "asuRaku": "あす楽",
+  "productNumber": "k215055ka0",
+  "modelSize": "Free",
+  "asuRaku": "",
   "headline": "蓄熱ライナー付撥水加工軽量トレンチコート",
   "subtitle": "秋・冬・春・梅雨寒ロングシーズンOK!",
-  "title": "蓄熱ライナー付軽量トレンチコート",
+  "title": "折り畳み傘ケース",
   "rakutenCategory": [
     "新着\\NEW",
     "ママスーツ\\コート",
@@ -19,37 +19,30 @@
   ],
   "shoplistCategory": "",
   "sizes": [
-    "7号",
-    "9号",
-    "11号",
-    "13号"
+    "フリー"
   ],
   "colors": [
-    "ベージュ",
-    "ブラック"
+    "ネイビー",
+    "ブルー",
+    "グレー"
   ],
-  "price": 9980,
-  "priceNoTax": 9073,
-  "rakutenCatchCopy": "コート ミドル丈 3シーズン 20代 30代 40代 50代 60代 女性 高級感 上品 長袖 七五三 法事 法要 弔事 慶事 通夜 ベルト 取り外し可能 品格 ガンフラップ 箱ポケット タッタソール柄 防寒",
-  "rakutenMobileCatchCopy": "コート ミドル丈 3シーズン 20代 30代 40代 50代 60代 高級感",
-  "rakutenProductName": "トレンチコート レディース 秋冬 アウター 上着 撥水 蓄熱 計量 ライナー 入園式 卒園式 入学式 卒業式 冠婚葬祭 結婚式 パーティー 二次会 OL オフィスカジュアル 仕事 通勤 リクルート 就活 ビジネス おしゃれ 定番 ベージュ ブラック シンプル 防汚 速乾性 テフロン加工",
-  "shoplistCatchCopy": "コート ミドル丈 3シーズン 20代 30代 40代 50代 60代 女性 高級感 上品 長袖 七五三 法事 法要 弔事 慶事 通夜 ベルト 取り外し可能 品格 ガンフラップ 箱ポケット タッタソール柄 防寒",
-  "shoplistProductName": "トレンチコート レディース 秋冬 アウター 上着 撥水 蓄熱 計量 ライナー 入園式 卒園式 入学式 卒業式 冠婚葬祭 結婚式 パーティー 二次会 OL オフィスカジュアル 仕事 通勤 リクルート 就活 ビジネス おしゃれ 定番 ベージュ ブラック シンプル 防汚 速乾性 テフロン加工",
-  "shoplistDescription": "飽きのこない正統派トレンチコート。\n 柔らかく軽量、シワになりにくく撥水加工を施した3シーズン着用可能な本格トレンチコート。\n 取り外し可能なライナーはおしゃれなタッタソール柄に蓄熱保温効果のあるフィールサーモ裏地を縫い合わせています。\n \n 【ベージュ】\n トレンチの王道カラーのベージュ。\n 飽きのこないベージュは一枚は持っていたいカラー。\n \n 【ブラック】\n 知的でクールなブラック。\n きちんと感がありビジネススタイルにも最適。<br><br>",
-  "shoplistPrice": 10900,
+  "price": 1540,
+  "priceNoTax": 1400,
+  "rakutenCatchCopy": "",
+  "rakutenMobileCatchCopy": "",
+  "rakutenProductName": "",
+  "shoplistCatchCopy": "",
+  "shoplistProductName": "",
+  "shoplistDescription": "<br><br>",
+  "shoplistPrice": 2280,
   "shoplistJanCode": [
-    "m215025ct007BG X000Y97FH3",
-    " m215025ct007BK X000Y972F3",
-    " m215025ct009BG X000Y97FGT",
-    " m215025ct009BK X000Y972ET",
-    " m215025ct011BG X000Y97HIF",
-    " m215025ct011BK X000Y97HIP",
-    " m215025ct013BG X000Y97FHD",
-    " m215025ct013BK X000Y97S7F"
+    "k215055ka0flBL X000Z47Q8F",
+    " k215055ka0flGY X000Z47Q5X",
+    " k215055ka0flNV X000YRHAFH"
   ],
-  "yahooCatchCopy": "仕事 通勤 リクルート 就活 ビジネス おしゃれ 定番 ベージュ",
-  "yahooProductName": "トレンチコート レディース 秋冬 アウター 上着 撥水 蓄熱 計量 ライナー 入園式 卒園式 入学式 卒業式 冠婚葬祭 結婚式 パーティー 二次会 オフィスカジュアル",
-  "yahooBrandPrice": 15900,
+  "yahooCatchCopy": "",
+  "yahooProductName": "",
+  "yahooBrandPrice": 1540,
   "coordinateSubtitles": [
     "フレアスカートスーツ",
     "タイトスカートスーツ",
@@ -71,7 +64,7 @@
     "ポケット",
     "袖口"
   ],
-  "category": "suit",
+  "category": "accessories",
   "colorCode": {
     "ブラック": "BK",
     "オフホワイト": "WH",

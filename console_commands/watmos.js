@@ -319,12 +319,8 @@ let pcPageInput = [...document.querySelectorAll("textarea")].find((textArea) =>
 
 let asurakuInput = document.querySelector("select[name=asuraku]");
 
-let imageUrlInputs = [...document.querySelectorAll("input")].filter((input) =>
-  input.name.includes("url_")
-);
-let altInputs = [...document.querySelectorAll("input")].filter((input) =>
-  input.name.includes("alt_")
-);
+let imageUrlInputs = document.querySelectorAll("input[name*=url_]");
+let altInputs = document.querySelectorAll("input[name*=alt_]");
 
 let selectValueChanger = Object.getOwnPropertyDescriptor(
   window.HTMLSelectElement.prototype,
@@ -505,12 +501,8 @@ let pcPageInput = [...document.querySelectorAll("textarea")].find((textArea) =>
 
 let asurakuInput = document.querySelector("select[name=asuraku]");
 
-let imageUrlInputs = [...document.querySelectorAll("input")].filter((input) =>
-  input.name.includes("url_")
-);
-let altInputs = [...document.querySelectorAll("input")].filter((input) =>
-  input.name.includes("alt_")
-);
+let imageUrlInputs = document.querySelectorAll("input[name*=url_]")
+let altInputs = document.querySelectorAll("input[name*=alt_]")
 
 let selectValueChanger = Object.getOwnPropertyDescriptor(
   window.HTMLSelectElement.prototype,

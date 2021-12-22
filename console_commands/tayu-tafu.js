@@ -1,18 +1,16 @@
 //*Set Rakuten Variations
 
-let data = await fetch("https://script.google.com/macros/s/AKfycbwhQNXQSsQFmXQyz1W_qj70ni_VRM4saTic2yEvVzQLHAXkgVKcWkUa2l6_glVJn5YNYg/exec")
-  .then((res) => res.json())
-  .then((data) => data);
+let data = await(await fetch("https://script.google.com/macros/s/AKfycbwhQNXQSsQFmXQyz1W_qj70ni_VRM4saTic2yEvVzQLHAXkgVKcWkUa2l6_glVJn5YNYg/exec")).json()
 
-let sizeInputs = document.querySelectorAll("#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(1) > div > div > div:nth-child(2) .rms-col-14 input");
+let sizeInputs     = document.querySelectorAll("#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(1) > div > div > div:nth-child(2) .rms-col-14 input");
 let sizeCodeInputs = document.querySelectorAll("#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(1) > div > div > div:nth-child(2) .rms-col-8 input");
 
-let colorInputs = document.querySelectorAll("#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(2) > div > div .rms-col-14 input");
+let colorInputs     = document.querySelectorAll("#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(2) > div > div .rms-col-14 input");
 let colorCodeInputs = document.querySelectorAll("#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(2) > div > div .rms-col-8 input");
 
 let inputValueChanger = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
 
-let sizes = data.sizes[0].filter(size => size)
+let sizes = data.sizes[0].filter(Boolean)
 
 sizes.forEach((size, i) => {
   inputValueChanger.call(sizeInputs[i], size);
@@ -25,88 +23,86 @@ data.colors.forEach((color, i) => {
 });
 
 document.querySelectorAll('input').forEach(input => {
-  input.dispatchEvent(new Event('input', {bubbles: true}))
-  input.dispatchEvent(new Event('change', {bubbles: true}))
-  input.dispatchEvent(new Event('focus', {bubbles: true}))
+  input.dispatchEvent(new Event('input', { bubbles: true }))
+  input.dispatchEvent(new Event('change', { bubbles: true }))
+  input.dispatchEvent(new Event('focus', { bubbles: true }))
 })
+
 
 //* Pass data from RAKUTEN
 
 let kintoHtml = `
 <!-- ▼▼タイトル▼▼ -->
-<div id="item-title" style="margin-top:10px;margin-bottom:20px;">
+<div id = "item-title" style = "margin-top:10px;margin-bottom:20px;">
 ${document.querySelector(".pageCatch dd")?.innerHTML}
 </div>
     <!-- ▲▲タイトル▲▲ -->
     <!-- ▼▼コメント▼▼ -->
-    <div id="snapAnchor"></div>
-    <div class="toggle" id="toggleContent" onclick="toggleContent()">
-    <dl><img class="item-icon" src="https://tayutafu.itembox.design/item/icon-comment32.png"></dl>
-    <dt>コメント<p style="float:right;"><img id="content-arrow-up"src="https://tayutafu.itembox.design/item/icon-arrow-up16.png"><img id="content-arrow-down" src="https://tayutafu.itembox.design/item/icon-arrow-down16.png"></p></dt>
+    <div       id    = "snapAnchor"></div>
+    <div       class = "toggle" id            = "toggleContent" onclick = "toggleContent()">
+    <dl><img   class = "item-icon" src        = "https://tayutafu.itembox.design/item/icon-comment32.png"></dl>
+    <dt>コメント<p style = "float:right;"><img id = "content-arrow-up"src   = "https://tayutafu.itembox.design/item/icon-arrow-up16.png"><img id = "content-arrow-down" src = "https://tayutafu.itembox.design/item/icon-arrow-down16.png"></p></dt>
     </div>
-    <div id="item-content">
+    <div id = "item-content">
     <!-- ▼▼内容▼▼ -->
 ${document.querySelector(".pageMain")?.outerHTML}
 
 ${document.querySelector(".pageFloat")?.outerHTML}
     
 <!-- ▲▲内容▲▲ -->
-<div class="item-back" onclick="backContent()">閉じる<p><img class="icon-back" src="https://tayutafu.itembox.design/item/icon-back32.png"></p></div>
+<div class = "item-back" onclick = "backContent()">閉じる<p><img class = "icon-back" src = "https://tayutafu.itembox.design/item/icon-back32.png"></p></div>
 </div>
 <!-- ▲▲コメント▲▲ -->
 
     <!-- ▼▼サイズ▼▼ -->
-    <div id="reviewAnchor"></div>
-    <div class="toggle" onclick="toggleSize()">
-    <dl><img class="item-icon" src="https://tayutafu.itembox.design/item/icon-size32.png"></dl>
-    <dt>サイズ<p style="float:right;"><img id="size-arrow-up"src="https://tayutafu.itembox.design/item/icon-arrow-up16.png" style="top:0;display:none;"><img id="size-arrow-down" src="https://tayutafu.itembox.design/item/icon-arrow-down16.png" style="top:0;"></p></dt>
+    <div      id    = "reviewAnchor"></div>
+    <div      class = "toggle" onclick       = "toggleSize()">
+    <dl><img  class = "item-icon" src        = "https://tayutafu.itembox.design/item/icon-size32.png"></dl>
+    <dt>サイズ<p style = "float:right;"><img id = "size-arrow-up"src = "https://tayutafu.itembox.design/item/icon-arrow-up16.png" style = "top:0;display:none;"><img id = "size-arrow-down" src = "https://tayutafu.itembox.design/item/icon-arrow-down16.png" style = "top:0;"></p></dt>
     </div>
-    <div id="item-size">
+    <div id = "item-size">
     <!-- ▼▼内容▼▼ -->
     
-    <div id="spec" class="clearfix">
-    <div class="specTitle">商品の詳細</div>
-    <div class="specText">
+    <div id    = "spec" class = "clearfix">
+    <div class = "specTitle">商品の詳細</div>
+    <div class = "specText">
     <dl>
-    <dt>サイズ,容量</dt><dd>${
-      document
-        .querySelector("span.item_desc")
-        ?.innerText.split("サイズ,容量：")[1]
-        ?.split("素材,")[0]
-    }</dd>
-    <dt>素材,生産</dt><dd>${
-      document
-        .querySelector("span.item_desc")
-        .innerText?.split("素材,生産：")[1]
-        ?.split("\n")[0]
-    }</dd>
-    ${
-      document.querySelector("span.item_desc").innerText.includes("セット内容")
-        ? "<dt>セット内容</dt><dd>" +
-          document.querySelector("span.item_desc").innerText?.split("セット内容：")[1]?.split("\n")[0] +
-          "</dd>"
-        : ""
-    }
+    <dt>サイズ,容量</dt><dd>${document
+    .querySelector("span.item_desc")
+    ?.innerText.split("サイズ,容量：")[1]
+    ?.split("素材,")[0]
+  }</dd>
+    <dt>素材,生産</dt><dd>${document
+    .querySelector("span.item_desc")
+    .innerText?.split("素材,生産：")[1]
+    ?.split("\n")[0]
+  }</dd>
+    ${document.querySelector("span.item_desc").innerText.includes("セット内容")
+    ? "<dt>セット内容</dt><dd>" +
+    document.querySelector("span.item_desc").innerText?.split("セット内容：")[1]?.split("\n")[0] +
+    "</dd>"
+    :  ""
+  }
     </dl>
     </div>
     </div>
     <!-- ▲▲内容▲▲ -->
-    <div class="item-back" onclick="backSize()">閉じる<p><img class="icon-back" src="https://tayutafu.itembox.design/item/icon-back32.png"></p></div>
+    <div class = "item-back" onclick = "backSize()">閉じる<p><img class = "icon-back" src = "https://tayutafu.itembox.design/item/icon-back32.png"></p></div>
     <!-- ▲▲サイズ▲▲ --></div>
     `.replaceAll(undefined, "");
 
 let notKintoHtml = `<!-- ▼▼タイトル▼▼ -->
- <div id="item-title" style="margin-top:10px;margin-bottom:20px;">
- ${document.querySelector(".pageCatch dd").innerHTML}
+ <div id = "item-title" style = "margin-top:10px;margin-bottom:20px;">
+ ${document.querySelector(".pageCatch dd")?.innerHTML}
  </div>
  <!-- ▲▲タイトル▲▲ -->
  <!-- ▼▼コメント▼▼ -->
- <div id="snapAnchor"></div>
- <div class="toggle" id="toggleContent" onclick="toggleContent()">
- <dl><img class="item-icon" src="https://tayutafu.itembox.design/item/icon-comment32.png"></dl>
- <dt>コメント<p style="float:right;"><img id="content-arrow-up"src="https://tayutafu.itembox.design/item/icon-arrow-up16.png""><img id="content-arrow-down" src="https://tayutafu.itembox.design/item/icon-arrow-down16.png"></p></dt>
+ <div       id    = "snapAnchor"></div>
+ <div       class = "toggle" id            = "toggleContent" onclick = "toggleContent()">
+ <dl><img   class = "item-icon" src        = "https://tayutafu.itembox.design/item/icon-comment32.png"></dl>
+ <dt>コメント<p style = "float:right;"><img id = "content-arrow-up"src   = "https://tayutafu.itembox.design/item/icon-arrow-up16.png""><img id="content-arrow-down" src="https://tayutafu.itembox.design/item/icon-arrow-down16.png"></p></dt>
  </div>
- <div id="item-content">
+ <div id = "item-content">
  <!-- ▼▼内容▼▼ -->
  ${document.querySelector(".pageMain")?.outerHTML}
  
@@ -115,18 +111,18 @@ let notKintoHtml = `<!-- ▼▼タイトル▼▼ -->
  <br>
  
  <!-- ▲▲内容▲▲ -->
- <div class="item-back" onclick="backContent()">閉じる<p><img class="icon-back" src="https://tayutafu.itembox.design/item/icon-back32.png"></p></div>
+ <div class = "item-back" onclick = "backContent()">閉じる<p><img class = "icon-back" src = "https://tayutafu.itembox.design/item/icon-back32.png"></p></div>
  </div>
  <!-- ▲▲コメント▲▲ -->
  
  
  
  <!-- ▼▼スナップ▼▼ -->
- <div id="sizeAnchor"></div>
- <div class="toggle" onclick="toggleSnap()">
- <dl><img class="item-icon" src="https://tayutafu.itembox.design/item/icon-snap32.png"></dl>
- <dt>スナップ<p style="float:right;"><img id="snap-arrow-up"src="https://tayutafu.itembox.design/item/icon-arrow-up16.png" style="top:0;display:none;"><img id="snap-arrow-down" src="https://tayutafu.itembox.design/item/icon-arrow-down16.png" style="top:0; "></p></dt></div>
- <div id="item-snap" display="none">
+ <div       id    = "sizeAnchor"></div>
+ <div       class = "toggle" onclick       = "toggleSnap()">
+ <dl><img   class = "item-icon" src        = "https://tayutafu.itembox.design/item/icon-snap32.png"></dl>
+ <dt>スナップ<p style = "float:right;"><img id = "snap-arrow-up"src = "https://tayutafu.itembox.design/item/icon-arrow-up16.png" style = "top:0;display:none;"><img id = "snap-arrow-down" src = "https://tayutafu.itembox.design/item/icon-arrow-down16.png" style = "top:0; "></p></dt></div>
+ <div       id    = "item-snap" display    = "none">
  <!-- ▼▼内容▼▼ -->
  ${document.querySelector("#pageSnap")?.outerHTML}
  <br><br>
@@ -134,81 +130,84 @@ let notKintoHtml = `<!-- ▼▼タイトル▼▼ -->
  ${document.querySelector("#pageShot")?.outerHTML}
  
  <br><br>
- <p class="colorVari">▼カラーバリエーション</p>
+ <p class = "colorVari">▼カラーバリエーション</p>
  ${document.querySelector("#colors")?.outerHTML}
  
  <br>
  
  ${[...document.querySelectorAll(".look")].map(
-   ({outerHTML}) => outerHTML + "<br><br>"
- )}
+  ({ outerHTML }) => outerHTML + "<br><br>"
+)}
  
  <!-- ▲▲内容▲▲ -->
- <div class="item-back" onclick="backSnap()">閉じる<p><img class="icon-back" src="https://tayutafu.itembox.design/item/icon-back32.png"></p></div>
+ <div class = "item-back" onclick = "backSnap()">閉じる<p><img class = "icon-back" src = "https://tayutafu.itembox.design/item/icon-back32.png"></p></div>
  </div>
  <!-- ▲▲スナップ▲▲ -->
  
  
  <!-- ▼▼サイズ▼▼ -->
- <div id="reviewAnchor"></div>
- <div class="toggle" onclick="toggleSize()">
- <dl><img class="item-icon" src="https://tayutafu.itembox.design/item/icon-size32.png"></dl>
- <dt>サイズ<p style="float:right;"><img id="size-arrow-up"src="https://tayutafu.itembox.design/item/icon-arrow-up16.png" style="top:0;display:none;"><img id="size-arrow-down" src="https://tayutafu.itembox.design/item/icon-arrow-down16.png" style="top:0;"></p></dt>
+ <div      id    = "reviewAnchor"></div>
+ <div      class = "toggle" onclick       = "toggleSize()">
+ <dl><img  class = "item-icon" src        = "https://tayutafu.itembox.design/item/icon-size32.png"></dl>
+ <dt>サイズ<p style = "float:right;"><img id = "size-arrow-up"src = "https://tayutafu.itembox.design/item/icon-arrow-up16.png" style = "top:0;display:none;"><img id = "size-arrow-down" src = "https://tayutafu.itembox.design/item/icon-arrow-down16.png" style = "top:0;"></p></dt>
  </div>
  <style> #spec iframe{ height: calc(${parseInt(document.querySelector("#spec iframe")?.height)}px - 13.66px + 1vw); }</style>
- <div id="item-size">
+ <div id = "item-size">
  <!-- ▼▼内容▼▼ -->
  ${document.querySelector("#spec")?.outerHTML}
  
  <!-- ▲▲内容▲▲ -->
- <div class="item-back" onclick="backSize()">閉じる<p><img class="icon-back" src="https://tayutafu.itembox.design/item/icon-back32.png"></p></div>
+ <div class = "item-back" onclick = "backSize()">閉じる<p><img class = "icon-back" src = "https://tayutafu.itembox.design/item/icon-back32.png"></p></div>
  </div>
  <!-- ▲▲サイズ▲▲ -->
  
  
  <!-- ▼▼レビュー▼▼ -->
- <div class="toggle" onclick="toggleReview()">
- <dl><img class="item-icon" src="https://tayutafu.itembox.design/item/icon-review32.png"></dl>
- <dt>レビュー<p style="float:right;"><img id="review-arrow-up"src="https://tayutafu.itembox.design/item/icon-arrow-up16.png" style="top:0;display:none;"><img id="review-arrow-down" src="https://tayutafu.itembox.design/item/icon-arrow-down16.png" style="top:0; "></p></dt>
+ <div       class = "toggle" onclick       = "toggleReview()">
+ <dl><img   class = "item-icon" src        = "https://tayutafu.itembox.design/item/icon-review32.png"></dl>
+ <dt>レビュー<p style = "float:right;"><img id = "review-arrow-up"src = "https://tayutafu.itembox.design/item/icon-arrow-up16.png" style = "top:0;display:none;"><img id = "review-arrow-down" src = "https://tayutafu.itembox.design/item/icon-arrow-down16.png" style = "top:0; "></p></dt>
  </div>
- <div id="item-review">
+ <div id = "item-review">
  <!-- ▼▼内容▼▼ -->
  
  ${document.querySelector("#sizeReview")?.outerHTML}
  
  <!-- ▲▲内容▲▲ -->
- <div class="item-back" onclick="backReview()">閉じる<p><img class="icon-back" src="https://tayutafu.itembox.design/item/icon-back32.png"></p></div>
+ <div class = "item-back" onclick = "backReview()">閉じる<p><img class = "icon-back" src = "https://tayutafu.itembox.design/item/icon-back32.png"></p></div>
  </div>
  <!-- ▲▲レビュー▲▲ -->
  `.replaceAll(undefined, "");
 
-let data = {};
-data.selection = [];
-data.catchCopy =
+let data           = {};
+    data.selection = [];
+    data.catchCopy = 
   document
     .querySelector(".catch_copy > b")?.innerText.replaceAll("あす楽", "") ??
   document.querySelector(".catch_copy").innerText.replaceAll("あす楽", "");
-data.itemName = document.querySelector(".item_name").innerText.replaceAll("あす楽", "");
-data.itemNumber = document.querySelector(".item_number").innerText;
-data.price = parseInt(document.querySelector("[itemprop=price]").getAttribute("content"));
-data.priceNoTax = Math.ceil(data.price - data.price / 11);
-data.size = [...document.querySelectorAll("tr:first-child > td > span.inventory_choice_name")].map(({innerText}) => innerText);
-data.color = [...document.querySelectorAll("tr:not(:first-child) > td > span.inventory_choice_name")].map(({innerText}) => innerText);
+data.itemName    = document.querySelector(".item_name").innerText.replaceAll("あす楽", "");
+data.itemNumber  = document.querySelector(".item_number").innerText;
+data.price       = parseInt(document.querySelector("[itemprop=price]").getAttribute("content"));
+data.priceNoTax  = Math.ceil(data.price - data.price / 11);
+data.size        = [...document.querySelectorAll("tr:first-child > td > span.inventory_choice_name")].map(({ innerText }) => innerText);
+data.color       = [...document.querySelectorAll("tr:not(:first-child) > td > span.inventory_choice_name")].map(({ innerText }) => innerText);
 data.description = document.querySelector("span.item_desc").innerText;
 document.querySelector("span.choice") ? document.querySelectorAll("span.choice")?.forEach((option, i) =>
-          (data.selection[i] = {[option.innerText]: [...document.querySelectorAll("select[name=choice]")[i]?.children].map(({innerText}) => innerText)}))
-  : "";
+  (data.selection[i] = { [option.innerText]: [...document.querySelectorAll("select[name=choice]")[i]?.children].map(({ innerText }) => innerText) }))
+  :  "";
 data.futureshopHtml = data.itemName.includes("KINTO")
   ? kintoHtml
-  : notKintoHtml;
+  :  notKintoHtml;
+data.isMailShipping = /メール便/.test(document.querySelector(".dsf-cheapest-shipping-method").innerText)
+data.deliveryDays   = document.querySelector('[data-delivery-date]')?.dataset?.deliveryDate
 fetch(`http://localhost:8888/tayutafu`, {
-  method: "POST",
-  mode: "no-cors",
+  method        : "POST",
+  mode          : "no-cors",
   "Content-Type": "application/json",
-  body: JSON.stringify(data),
+  body          : JSON.stringify(data),
 })
-  .then((res) => console.log("Success", res))
-  .catch((err) => console.log("Error", err));
+  .then((res) => console.log({ res }) & document.querySelector('.floating-cart-options-table').scrollIntoView({ block: "center", behavior: "smooth" }))
+  .catch((err) => console.log({ err }));
+
 
 //*Download slide images
 
@@ -217,15 +216,14 @@ document
     "#pagebody > div:nth-child(11) > div:nth-child(2) > table:nth-child(3) td[valign=top]:first-child img"
   )
   .forEach(async (img) => {
-    const imgUrl = img.src.split("?")[0];
+    const imgUrl        = img.src.split("?")[0];
     const filenameArray = imgUrl.split("/");
-    const downloadUrl = await fetch(imgUrl, { mode: "no-cors" })
+    const downloadUrl   = await fetch(imgUrl, { mode: "no-cors" })
       .then((res) => res.blob())
       .then((blob) => window.URL.createObjectURL(blob));
 
-    img.parentElement.outerHTML =
-      `<a href="${downloadUrl}" download="${
-        filenameArray[filenameArray.length - 1]
+    img.parentElement.outerHTML = 
+      `<a href="${downloadUrl}" download="${filenameArray[filenameArray.length - 1]
       }">` +
       img.outerHTML +
       "</a>";
@@ -237,45 +235,88 @@ document
   )
   .forEach((a) => a.click());
 
-//*Selection from data to Yahoo
+// Yahoo Selection Dropdown
+
+document.querySelectorAll(".optionSelection__closeButton").forEach((close, i) => {
+  setTimeout(() =>
+    console.log(close)
+    , 600 * i)
+})
+
+let data = await(await fetch("http://localhost:8888/tayutafu")).json();
+
+if (!new RegExp(data.itemNumber).test(window.location.href)) window.location.href = `https://editor10.store.yahoo.co.jp/RT/tayu-tafu/PageEdit/Index?page_key=${data.itemNumber}&parent_page_key=c1aaa4d9a4&page_mode=Edit&undefined`
 
 let inputValueChanger = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
 
-document.querySelectorAll(".optionSelection__column:last-child [name=optionSelectionItem]")
-.forEach((input, i) => {
-	input.addEventListener('focus', () =>
-  inputValueChanger.call(input, "+" + data.selection[3][Object.keys(data.selection[3])[0]][i])
-	)
-  input.dispatchEvent(new Event('input', {bubbles : true}));
-  input.dispatchEvent(new Event('change', {bubbles : true}));
-  input.dispatchEvent(new Event('click', {bubbles : true}));
-  input.dispatchEvent(new Event('focus', {bubbles : true}));
-});
+let tabIndex = i
 
+document.querySelector('[name^="optionSelectionTitle"]').scrollIntoView({ behavior: "smooth" })
+document.querySelector('[name^="optionSelectionTitle"]').focus()
 
+document
+  .querySelectorAll('[name^="optionSelectionTitle"]').forEach((title, i) => {
+    title.tabIndex = tabIndex
+    tabIndex++
+    inputValueChanger.call(title, [Object.keys(data.selection[i])])
+    title.onfocus = () => inputValueChanger.call(title, [Object.keys(data.selection[i])])
+    title.dispatchEvent(new Event('input', { bubbles: true }))
+    title
+      .parentElement
+      .parentElement
+      .parentElement
+      .parentElement
+      .parentElement
+      .parentElement
+      .parentElement
+      .parentElement
+      .parentElement
+      .parentElement
+      .parentElement
+      .parentElement
+      .parentElement
+      .parentElement
+      .parentElement
+      .querySelectorAll('[name=optionSelectionItem]').forEach((item, j) => {
+        item.tabIndex = tabIndex
+        inputValueChanger.call(item, data.selection[i][Object.keys(data.selection[i])][j])
+        item.onfocus = () => inputValueChanger.call(item, data.selection[i][Object.keys(data.selection[i])][j] ?? "")
+        item.dispatchEvent(new Event('input', { bubbles: true }))
+        tabIndex++
+      })
+  }
+  )
 
-document.querySelectorAll("input[name=]")
-  .forEach((input, i) => {
-    input.value = data.selection[0]["【兵児帯】"][i];
-  });
 
 //* Yahoo Submit Product
-  let data = await fetch("http://localhost:8888/tayutafu")
-  .then((res) => res.json())
-.then((data) => data);
+let data = await(await fetch("http://localhost:8888/tayutafu")).json();
 
-let inputValueChanger = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+let inputValueChanger    = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
 let textareaValueChanger = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
 
 let itemNumberInput = document.querySelector("[name=__submit__product_code]");
-let itemNameInput = document.querySelector("[name=__submit__name]"); 
-let priceInput = document.querySelector("[name=__submit__price]")
+let itemNameInput   = document.querySelector("[name=__submit__name]");
+let priceInput      = document.querySelector("[name=__submit__price]")
 
 let manageNumberInput = document.querySelector("[name=__submit__code]");
 
 let yahooCatchCopyInput = document.querySelector("[name=__submit__headline]");
-let descriptionInput = document.querySelector("[name=__submit__explanation]")
+let descriptionInput    = document.querySelector("[name=__submit__explanation]");
 
+[
+  priceInput,
+  manageNumberInput,
+  [
+    ...document.querySelectorAll(`
+  #react-tabs-1 > div > div: nth-child(13) > div                                          : nth-child(2),
+  #react-tabs-1 > div > div: nth-child(13) > div                                          : nth-child(4),
+  #react-tabs-1 > div > div: nth-child(14) > div.uiGridB > div.uiGridB__gridB2 > div > div: nth-child(2) > div.uiGridB__gridB5 > div.formParts,
+  #react-tabs-2
+  `),
+  ],
+]
+  .flat()
+  .forEach((input) => (input.style.backgroundColor = "#ff0"));
 
 document.querySelector("select[name=__submit__lead_time_outstock]").value = 3;
 
@@ -287,23 +328,33 @@ textareaValueChanger.call(yahooCatchCopyInput, data.catchCopy.replace(/(【|】)
 
 inputValueChanger.call(manageNumberInput, data.itemNumber);
 
-priceInput.value = data.price;
+inputValueChanger.call(priceInput, data.price);
 
-let searchValue = document.querySelector("#now_page_key").value;
+let searchValue  = document.querySelector("#now_page_key").value;
 let replaceValue = data.itemNumber.toLowerCase();
-document.querySelectorAll('[type=text]').forEach(input => inputValueChanger.call(input, input.value.replaceAll(searchValue, replaceValue)))
-document.querySelectorAll('textarea').forEach(textarea => textareaValueChanger.call(textarea, textarea.value.replaceAll(searchValue, replaceValue)))
+document.querySelectorAll('[type=text]').forEach(input => {
+  inputValueChanger.call(input, input.value.replaceAll(searchValue, replaceValue))
+  input.onfocus = () => inputValueChanger.call(input, input.value.replaceAll(searchValue, replaceValue))
+})
+document.querySelectorAll('textarea').forEach(textarea => {
+  textareaValueChanger.call(textarea, textarea.value.replaceAll(searchValue, replaceValue))
+  textarea.onfocus = () => textareaValueChanger.call(textarea, textarea.value.replaceAll(searchValue, replaceValue))
+})
 
-// Count characters
-document.querySelector("#react-tabs-1 > div > div:nth-child(16) > div:nth-child(4) > div.uiGridA__gridA2 > div > div > div.formParts__list > ul > li:nth-child(1) > span > span > textarea").oninput = ({target}) => 
-console.log(target.value.length);
+priceInput.onfocus = () => priceInput.value = data.price;
+
+descriptionInput.oninput = ({ target }) => {
+                                                                                                       descriptionInput.style.backgroundColor = target.value.length > 500 ? "#ff0" : ""
+  descriptionInput.parentElement.parentElement.parentElement.parentElement.parentElement.querySelector('.formParts__validation').innerText    = target.value.length;
+}
 
 document
-.querySelectorAll("[type=text], textarea")
-.forEach((input) => {
-input.dispatchEvent(new Event("input", {bubbles: true}));
-input.dispatchEvent(new Event("change", {bubbles: true}));
-});
+  .querySelectorAll("[type=text], textarea")
+  .forEach((input) => {
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+
 
 //* Yahoo komoku sentaku
 
@@ -339,16 +390,16 @@ document
   .querySelectorAll(".stockList td:nth-child(1) span > input")
   .forEach((input, i) => {
     input.tabIndex = i + 1;
-    yValue = Math.floor(i / data.size.length);
+    yValue         = Math.floor(i / data.size.length);
     inputValueChanger.call(
       input,
       data.itemNumber + "X" + (1000 + xValue) + "Y" + (1000 + yValue)
     );
-    let newValue = input.value;
-    input.onfocus = () => {
+    let newValue      = input.value;
+        input.onfocus = () => {
       inputValueChanger.call(input, newValue);
     };
-    xValue = xValue >= data.size.length - 1 ? 0 : xValue + 1;
+    xValue = xValue > = data.size.length - 1 ? 0 : xValue + 1;
   });
 
 document
@@ -360,17 +411,18 @@ document
       `https://shopping.c.yimg.jp/lib/tayu-tafu/${data.itemNumber}-${i + 1}.jpg`
     );
     // textareaValueChanger.call(textArea, `https://shopping.c.yimg.jp/lib/tayu-tafu/${data.itemNumber}-c100${i}.jpg`)
-    const newValue = textArea.value;
-    textArea.onfocus = () => textareaValueChanger.call(textArea, newValue);
+    const newValue         = textArea.value;
+          textArea.onfocus = () => textareaValueChanger.call(textArea, newValue);
   });
 
 document.querySelectorAll('input, textarea').forEach(input => {
-input.dispatchEvent(new Event('input', {bubbles: true}))
-input.dispatchEvent(new Event('change', {bubbles: true}))
+  input.dispatchEvent(new Event('input', { bubbles: true }))
+  input.dispatchEvent(new Event('change', { bubbles: true }))
 })
 
 
-//* Load data into futureshop
+//* Futureshop submit product
+if (document.querySelector('a.copyEntry')) document.querySelector('a.copyEntry').click()
 document.querySelector(".dataTable_01").scrollIntoView({ behavior: "smooth" });
 
 let data = await fetch(`http://localhost:8888/tayutafu`)
@@ -382,9 +434,9 @@ document
   .querySelectorAll("#goodsName, input#goodsTitleExternal")
   .forEach((input) => (input.value = data.itemName.split("【")[0]));
 document.querySelector("#goodsDescriptionExternal").value = data.description;
-document.querySelector("#goodsNo").value = data.itemNumber;
-document.querySelector("#goodsUrl").value = data.itemNumber;
-document.querySelector("#unitPrice").value = data.priceNoTax;
+document.querySelector("#goodsNo").value                  = data.itemNumber;
+document.querySelector("#goodsUrl").value                 = data.itemNumber;
+document.querySelector("#unitPrice").value                = data.priceNoTax;
 
 document.querySelector("#submit_0").click();
 
@@ -395,17 +447,17 @@ let data = await fetch(`http://localhost:8888/tayutafu`)
   .then((data) => data);
 document.querySelectorAll("input[id*=selectionItemName]")
   .forEach(
-    (dorpdownItem, i) =>
-      (dorpdownItem.value = data.selection[i]
-        ? Object.keys(data.selection[i])
-        : null)
+    (dorpdownItem, i) => 
+    (dorpdownItem.value = data.selection[i]
+      ? Object.keys(data.selection[i])
+      : null)
   );
 document.querySelectorAll("input[id*=selectionName]")
   .forEach(
-    (dorpdownItem, i) =>
-      (dorpdownItem.value = data.selection[i]
-        ? data.selection[i][Object.keys(data.selection[i])].join("~")
-        : null)
+    (dorpdownItem, i) => 
+    (dorpdownItem.value = data.selection[i]
+      ? data.selection[i][Object.keys(data.selection[i])].join("~")
+      : null)
   );
 
 //* futureshop variations
@@ -420,7 +472,7 @@ document.querySelectorAll("input[id*=verticalItemName]")
   );
 document.querySelectorAll("input[id*=verticalAdminNo]")
   .forEach(
-    (colorInput, i) =>
+    (colorInput, i) => 
       (colorInput.value = data.color[i] ? "Y" + (1000 + i) : "")
   );
 document.querySelectorAll("input[id*=horizontalItemName]")
@@ -437,28 +489,28 @@ document.querySelectorAll("input[name*=horizontalDelete]")
   .forEach((sizeDelete, i) => (sizeDelete.checked = !data.size[i] && true));
 document.querySelector("#itemNameVertical").value = data.color[0]
   ? "カラー"
-  : "";
+  :  "";
 document.querySelector("#itemNameHorizontal").value = data.size[0]
   ? "サイズ"
-  : "";
+  :  "";
 document.querySelector("#submit_0").click();
 
 //* FUTURESHOP set zaikosuu to 0
 [...document.querySelectorAll("input")]
   .filter((input) => input.name.includes("janCode"))
   .forEach(
-    (janInput) =>
-      (janInput.value =
-        janInput.parentElement.previousElementSibling.innerText)
+    (janInput) => 
+    (janInput.value =
+      janInput.parentElement.previousElementSibling.innerText)
   );
 document.querySelector(".local_menu").scrollIntoView({ behavior: "smooth" });
 
 [...document.querySelectorAll("input")]
   .filter((input) => input.id.includes("addStockCount"))
   .forEach(
-    (newStock, i) =>
-      (newStock.value = -document.querySelectorAll("table td:nth-child(6)")[i]
-        .innerText)
+    (newStock, i) => 
+    (newStock.value = -document.querySelectorAll("table td:nth-child(6)")[i]
+      .innerText)
   );
 
 // * Tayutafu futureshop set selection gift box
@@ -467,8 +519,8 @@ let data = await fetch(`http://localhost:8888/tayutafu`)
   .then((response) => response.json())
   .then((data) => data);
 
-[...document.querySelectorAll("td:nth-child(4) input")].filter(input => input.id.includes('optionSelection')).forEach((ip, i) => 
-ip.value = ( i > 0 ? '+' : '' ) + data.selection[0][Object.keys(data.selection[0])[0]][i].split('(')[0]);
+[...document.querySelectorAll("td:nth-child(4) input")].filter(input => input.id.includes('optionSelection')).forEach((ip, i) =>
+  ip.value = (i > 0 ? '+' : '') + data.selection[0][Object.keys(data.selection[0])[0]][i].split('(')[0]);
 [...document.querySelectorAll("input")].filter(input => input.id.includes('optionSelectionRank')).forEach((ip, i) => ip.value = i + 1);
 [...document.querySelectorAll("input")].filter(input => input.id.includes('optionSelectionPrice')).forEach((ip, i) => ip.value = i > 0 ? data.selection[0][Object.keys(data.selection[0])[0]][i].replaceAll(/\D+/g, '') / 11 * 10 : ip.value);
 
@@ -480,11 +532,11 @@ let data = await fetch(`http://localhost:8888/tayutafu`)
   .then((data) => data);
 
 document.querySelector("#title").value = data.itemName.split("【")[0];
-document.querySelector("#mpn").value = data.itemNumber.replace("-", "");
+document.querySelector("#mpn").value   = data.itemNumber.replace("-", "");
 
 document.querySelectorAll("#form tr:nth-child(12) tr:nth-child(3) table input").forEach((input, i, inputs) => {
   const initialNumber = parseInt(inputs[0].value.match(/(?<=-)\d\d(?=-)/))
-  input.value = inputs[0].value.replace(inputs[0].value.match(/(?<=-)\d\d(?=-)/), initialNumber + i)
+        input.value   = inputs[0].value.replace(inputs[0].value.match(/(?<=-)\d\d(?=-)/), initialNumber + i)
 }
 )
 
@@ -496,27 +548,27 @@ let data = await fetch(`http://localhost:8888/tayutafu`)
   .then((response) => response.json())
   .then((data) => data);
 
-  document
-    .querySelectorAll("#form > div > table:nth-child(6) input[maxlength='500']")
-    .forEach((input) => (input.value = data.itemName.split("【")[0]));
-  let selectedIndex = 50, selectedValue
-  document.querySelectorAll("select[name*=VerticalSelect]").forEach((select, i) => {
-    if (select.value) {
-      selectedIndex = i
-      selectedValue = select.value
+document
+  .querySelectorAll("#form > div > table:nth-child(6) input[maxlength='500']")
+  .forEach((input) => (input.value = data.itemName.split("【")[0]));
+let selectedIndex = 50, selectedValue
+document.querySelectorAll("select[name*=VerticalSelect]").forEach((select, i) => {
+  if (select.value) {
+    selectedIndex = i
+    selectedValue = select.value
+  }
+
+  if (i > selectedIndex) {
+    const number       = selectedValue.match(/\d+$/)
+    const newValue     = selectedValue.replace(number, parseInt(number) + i - selectedIndex)
+          select.value = newValue
+    if (select.querySelector(`[value=${newValue}]`)) {
+      select.querySelector(`[value=${newValue}]`).selected = true
     }
-  
-    if (i > selectedIndex) {
-      const number = selectedValue.match(/\d+$/)
-      const newValue = selectedValue.replace(number, parseInt(number) + i - selectedIndex)
-      select.value = newValue
-      if(select.querySelector(`[value=${newValue}]`)) {
-        select.querySelector(`[value=${newValue}]`).selected = true
-      }
-    }
-  })
-  
-  document.querySelectorAll("[type=checkbox][name*=VerticalThumbnail]")
+  }
+})
+
+document.querySelectorAll("[type=checkbox][name*=VerticalThumbnail]")
   .forEach((check) => check.click());
 !document.querySelector(
   "#form > div > table:nth-child(6) > tbody > tr:nth-child(2) > th > label > input[type=radio]"
@@ -534,52 +586,53 @@ let data = await fetch(`http://localhost:8888/tayutafu`)
   .then((response) => response.json())
   .then((data) => data);
 
-document.querySelector("#outline").value = data.itemName.split("【")[0];
+document.querySelector("#outline").value         = data.itemName.split("【")[0];
 document.querySelector("#descriptionLong").value = data.futureshopHtml;
 
 document.querySelector("#submit_0").click();
 
-//* Load data into Aupay
+// Aupay Submit Product
 let data = await fetch(`http://localhost:8888/tayutafu`)
   .then((response) => response.json())
   .then((data) => data);
 
-document.querySelector("#productCd_ctl").value = data.itemNumber;
-document.querySelector("#productName_ctl").value = data.itemName;
-document.querySelector("#sellPrice").value = data.priceNoTax;
+document.querySelector("#productCd_ctl").value                                     = data.itemNumber;
+document.querySelector("#productName_ctl").value                                   = data.itemName;
+document.querySelector("#sellPrice").value                                         = data.priceNoTax;
 document.querySelector("#alterstock > dl:nth-child(1) > dd").style.backgroundColor = "#ff0"
-let countChars = () => {
-  const target = document.querySelector("#_main_frm > div:nth-child(20) > dl:nth-child(1) > dd > div.wm-input-comment")
-  const {length} = document.querySelector("#productExplnCmn_ctl").value
-  target.style.backgroundColor = length > 512 ? "#ff0" : "transparent"
-  target.innerHTML = 
-  `全角512文字（半角1,024文字）以内<br />
+let                    countChars                                                  = () => {
+  const target                       = document.querySelector("#_main_frm > div:nth-child(20) > dl:nth-child(1) > dd > div.wm-input-comment")
+  const { length }                   = document.querySelector("#productExplnCmn_ctl").value
+        target.style.backgroundColor = length > 512 ? "#ff0" : "transparent"
+        target.innerHTML             = 
+    `全角512文字（半角1,024文字）以内<br />
   ※使用できるHTMLタグ： &lt;br&gt;　&lt;center&gt;　&lt;font&gt;　&lt;hr&gt;　&lt;a&gt;
-  <h5 style="color: #000">${length}</h5>`}
+  <h5 style="color: #000">${length}</h5>`
+}
 document.querySelector("#productExplnCmn_ctl").addEventListener('input', countChars)
-document.querySelector("#productExplnCmn_ctl").value =
+document.querySelector("#productExplnCmn_ctl").value = 
   data.description.replaceAll("\n", "<br>\n");
 document.querySelectorAll("input[name*=productBuyOptTitle]")
   .forEach(
-    (dorpdownItem, i) =>
-      (dorpdownItem.value = data.selection[i]
-        ? Object.keys(data.selection[i])
-        : null)
+    (dorpdownItem, i) => 
+    (dorpdownItem.value = data.selection[i]
+      ? Object.keys(data.selection[i])
+      : null)
   );
 document.querySelectorAll("textarea[name*=productBuyOptChoices]")
   .forEach(
-    (dorpdownItem, i) =>
-      (dorpdownItem.value = data.selection[i]
-        ? data.selection[i][Object.keys(data.selection[i])].join("\n")
-        : null)
+    (dorpdownItem, i) => 
+    (dorpdownItem.value = data.selection[i]
+      ? data.selection[i][Object.keys(data.selection[i])].join("\n")
+      : null)
   );
 
-  let oldProductNumber = document.querySelector('#productExplnSp_ctl').value.match(/\d{3}-\d{4}/) ?? prompt("Old Product Number")
+let oldProductNumber = document.querySelector('#productExplnSp_ctl').value.match(/\d{3}-\d{4}/) ?? prompt("Old Product Number")
 
-  document.querySelectorAll('[type=text], textarea').forEach(input => input.value = input.value.replaceAll(oldProductNumber, data.itemNumber));
+document.querySelectorAll('[type=text], textarea').forEach(input => input.value = input.value.replaceAll(oldProductNumber, data.itemNumber));
 
 document.querySelectorAll('input[name*=productImgUrl]')
-.forEach((imageUrl, i) => imageUrl.value = imageUrl.value.replaceAll(oldProductNumber, data.itemNumber));
+  .forEach((imageUrl, i) => imageUrl.value = imageUrl.value.replaceAll(oldProductNumber, data.itemNumber));
 
 countChars()
 
@@ -630,9 +683,9 @@ document
   .forEach((input) => (input.value = ""));
 
 //?PARK insert <BR> duplicate title SHOPIFY
-let newTitle = document.querySelector(`[placeholder="半袖Tシャツ"]`);
-let brandValue = document.querySelector("[placeholder='例: Nike']").value;
-newTitle.value = newTitle.value
+let newTitle       = document.querySelector(`[placeholder="半袖Tシャツ"]`);
+let brandValue     = document.querySelector("[placeholder='例: Nike']").value;
+    newTitle.value = newTitle.value
   .split(brandValue)
   .join("<br>" + brandValue + "<br>");
 
@@ -645,9 +698,9 @@ selections.forEach((selection, i) => {
 //* Add Rental Cancel Banner 
 
 let request = await fetch("http://localhost:8888/watmos");
-let data = await request.json();
+let data    = await request.json();
 
-let inputValueChanger = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype,"value").set;
+let inputValueChanger    = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
 let textareaValueChanger = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
 // let searchValues = [
 //   /<p class="order">(.|\n)*/,
@@ -664,8 +717,8 @@ let textareaValueChanger = Object.getOwnPropertyDescriptor(window.HTMLTextAreaEl
 
 
 let pcDescriptionInput = document.querySelector("#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(1) > div.rms-form-col.rms-col-20 > div > div > div > textarea");
-let pcPageInput = document.querySelector("#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(3) > div.rms-form-col.rms-col-20 > div > div > div > textarea");
-let spPageInput = document.querySelector("#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(2) > div.rms-form-col.rms-col-20 > div > div > div > textarea");
+let pcPageInput        = document.querySelector("#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(3) > div.rms-form-col.rms-col-20 > div > div > div > textarea");
+let spPageInput        = document.querySelector("#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(2) > div.rms-form-col.rms-col-20 > div > div > div > textarea");
 
 let spReplace = spPageInput.value.match(/<table width="100%" cellspacing="0" cellpadding="30" bgcolor="#FAFAFA">\n<tr><td>\n<table width="100%" cellspacing="0" cellpadding="5">\n<tr><td><font size="3" color="red">キャンセルについて<\/font><\/td><\/tr>(.|\n)+/)
 
@@ -680,19 +733,19 @@ if (spReplace) {
   textareaValueChanger.call(spPageInput, spPageInput.value + data.spPage);
 }
 
-document.querySelectorAll('input, textarea').forEach(input =>{
-		input.dispatchEvent(new Event('input', {bubbles: true}))
-		input.dispatchEvent(new Event('change', {bubbles: true}))
-		input.dispatchEvent(new Event('focus', {bubbles: true}))
-		})
+document.querySelectorAll('input, textarea').forEach(input => {
+  input.dispatchEvent(new Event('input', { bubbles: true }))
+  input.dispatchEvent(new Event('change', { bubbles: true }))
+  input.dispatchEvent(new Event('focus', { bubbles: true }))
+})
 
 
 //* featureshop erase yellow price option
 
 document.querySelectorAll('tr').forEach(tr => {
-	if (tr.innerHTML.includes("イエロー")) {
-		tr.firstElementChild.firstElementChild.checked = true;
-	}
+  if (tr.innerHTML.includes("イエロー")) {
+    tr.firstElementChild.firstElementChild.checked = true;
+  }
 })
 document.querySelector("#submit_3").click()
 
@@ -701,23 +754,23 @@ document.querySelector("#submit_3").click()
 let iframe = `<iframe src="https://www.rakuten.ne.jp/gold/tayu-tafu/iframe/colors/220-0037-c.html" scrolling="no" allowtransparency="true" frameborder="0" width="100%" height="570"></iframe>\n`
 
 document.querySelector("#descriptionLong").value = document.querySelector("#descriptionLong").value.replace(
-	`<img src="https://www.rakuten.ne.jp/gold/tayu-tafu/img/page/704/airkaol_sentaku.jpg`,
-	iframe + `<img src="https://www.rakuten.ne.jp/gold/tayu-tafu/img/page/704/airkaol_sentaku.jpg`
- ).replace('<img src="https://image.rakuten.co.jp/tayu-tafu/cabinet/220/220-0037/220-0037-sp-c3.jpg" width="100%"><br><br>', '')
+  `<img src="https://www.rakuten.ne.jp/gold/tayu-tafu/img/page/704/airkaol_sentaku.jpg`,
+  iframe + `<img src="https://www.rakuten.ne.jp/gold/tayu-tafu/img/page/704/airkaol_sentaku.jpg`
+).replace('<img src="https://image.rakuten.co.jp/tayu-tafu/cabinet/220/220-0037/220-0037-sp-c3.jpg" width="100%"><br><br>', '')
 
- if (!document.querySelector("#descriptionLong").value.includes(iframe)) {
-	document.querySelector("#descriptionLong").value = document.querySelector("#descriptionLong").value.replace(`<!-- ▲▲内容▲▲ -->\n<div class="item-back" onclick="backReview()">閉じる<p>`, iframe + `<!-- ▲▲内容▲▲ -->\n<div class="item-back" onclick="backReview()">閉じる<p>`)
- }
+if (!document.querySelector("#descriptionLong").value.includes(iframe)) {
+  document.querySelector("#descriptionLong").value = document.querySelector("#descriptionLong").value.replace(`<!-- ▲▲内容▲▲ -->\n<div class="item-back" onclick="backReview()">閉じる<p>`, iframe + `<!-- ▲▲内容▲▲ -->\n<div class="item-back" onclick="backReview()">閉じる<p>`)
+}
 
- document.querySelector("#submit_0").click();
+document.querySelector("#submit_0").click();
 
 //* Futureshop Erase yellow dropdown option
 
 document.querySelectorAll('[type=text]').forEach(input => input.value = input.value.replace('イエロー~', ''))
 
-// *Filter products
+  // *Filter products
 
-`704-0016
+  `704-0016
 704-0008
 704-0014
 704-0054
@@ -744,86 +797,99 @@ document.querySelectorAll('[type=text]').forEach(input => input.value = input.va
 202-0510
 202-0511
 202-0341`.split('\n')
-.forEach(number => 
-	document.querySelectorAll('td').forEach(td => 
-			td.style.backgroundColor = td.innerText.includes(number) && "yellow"
-	))
+  .forEach(number =>
+    document.querySelectorAll('td').forEach(td =>
+      td.style.backgroundColor = td.innerText.includes(number) && "yellow"
+    ))
 
-	document.querySelectorAll('a').forEach(a => a.addEventListener('click', () => a.style.backgroundColor = "yellow"))
+document.querySelectorAll('a').forEach(a => a.addEventListener('click', () => a.style.backgroundColor = "yellow"))
 
-	// * Wowma Erase Yellow Wrap
+// * Wowma Erase Yellow Wrap
 
-	document.querySelector("#dispImg").click();
-	document.querySelectorAll('textarea').forEach(textarea => textarea.value = textarea.value.replaceAll(
-		'https://image.wowma.jp/54002551/tayu-tafu/cabinet/220/220-0037-sp-c.jpg',
-		'https://image.wowma.jp/54002551/tayu-tafu/cabinet/220/220-0037-sp-c4.jpg',
-	))
-	document.querySelectorAll('input').forEach(input => {
-		input.value = input.value.replaceAll(
-		'https://image.wowma.jp/54002551/tayu-tafu/cabinet/220/220-0037-sp-c.jpg',
-		'https://image.wowma.jp/54002551/tayu-tafu/cabinet/220/220-0037-sp-c4.jpg',
-	)
-		if (input.value.includes('イエロー') && input.value.includes('ちぎり花')) {
-			input.value = ''
-			input.nextElementSibling.nextElementSibling.nextElementSibling.value = ""
-		}}
-	)
+document.querySelector("#dispImg").click();
+document.querySelectorAll('textarea').forEach(textarea => textarea.value = textarea.value.replaceAll(
+  'https://image.wowma.jp/54002551/tayu-tafu/cabinet/220/220-0037-sp-c.jpg',
+  'https://image.wowma.jp/54002551/tayu-tafu/cabinet/220/220-0037-sp-c4.jpg',
+))
+document.querySelectorAll('input').forEach(input => {
+  input.value = input.value.replaceAll(
+    'https://image.wowma.jp/54002551/tayu-tafu/cabinet/220/220-0037-sp-c.jpg',
+    'https://image.wowma.jp/54002551/tayu-tafu/cabinet/220/220-0037-sp-c4.jpg',
+  )
+  if (input.value.includes('イエロー') && input.value.includes('ちぎり花')) {
+    input.value                                                          = ''
+    input.nextElementSibling.nextElementSibling.nextElementSibling.value = ""
+  }
+}
+)
 
-	document.querySelector("#btnSave_bottom").dispatchEvent(new Event('click', {bubbles: true}))
+document.querySelector("#btnSave_bottom").dispatchEvent(new Event('click', { bubbles: true }))
 
-	// * Open new tabs
+  // * Open new tabs
 
-	`704-0014
-	704-0054
-	704-0035
-	704-0031
-	704-0027
-	704-0021
-	704-0013
-	704-0060
-	704-0057
-	704-0053
-	704-0052
-	704-0037
-	704-0038
-	202-0155
-	202-0138
-	202-0396
-	202-0351
-	202-0339
-	202-0297
-	202-0186
-	202-0180
-	202-0179
-	202-0510
-	202-0511
-	202-0341`.split('\n')
-	.forEach(number => 
-		window.open(`https://editor10.store.yahoo.co.jp/RT/tayu-tafu/PageEdit/Index?page_key=${number}&parent_page_key=a5a8a5a2a1&page_mode=Edit&undefined`,
-		"_blank"))
+`202-0177
+202-0184
+202-0202
+202-0308
+202-0137
+202-0307
+202-0466
+202-0309
+202-0452
+202-0454
+202-0296
+202-0250
+202-0480
+202-0481
+704-0014
+704-0016
+704-0037
+704-0038
+704-0057
+704-0060
+202-0124
+202-0147
+202-0214
+202-0284
+202-0432
+202-0136
+202-0216
+202-0217
+202-0218
+202-0287
+704-0052
+704-0053
+202-0253
+704-0049
+704-0019
+704-0050
+202-0182`.split('\n')
+  .forEach(number =>
+    window.open(`https://editor10.store.yahoo.co.jp/RT/tayu-tafu/PageEdit/Index?page_key=${number}&parent_page_key=a5a8a5a2a1&page_mode=Edit&undefined`,
+      "_blank"))
 
 // * Yahoo Erase Yellow Wrap
 
 let inputValueChanger = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set
 
-let element = document.querySelector('[value="+イエロー　ちぎり花"]');
+let element      = document.querySelector('[value="+イエロー　ちぎり花"]');
 let priceElement = element.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.querySelector('input').value = ''
 
-element.scrollIntoView({behavior:"smooth"});
+element.scrollIntoView({ behavior: "smooth" });
 inputValueChanger.call(element, "")
 inputValueChanger.call(priceElement, "");
 
 //* Amazon Change Category
 
-[...document.querySelectorAll(".browseNodeText")].find(({innerHTML}) => innerHTML.includes('ファッション')).click();
+[...document.querySelectorAll(".browseNodeText")].find(({ innerHTML }) => innerHTML.includes('ファッション')).click();
 setTimeout(() => {
-  [...document.querySelectorAll(".browseNodeText")].find(({innerHTML}) => innerHTML.includes('レディース')).click();
+  [...document.querySelectorAll(".browseNodeText")].find(({ innerHTML }) => innerHTML.includes('レディース')).click();
 }, 700);
 setTimeout(() => {
-  [...document.querySelectorAll(".browseNodeText")].find(({innerHTML}) => innerHTML.includes('和装')).click();
+  [...document.querySelectorAll(".browseNodeText")].find(({ innerHTML }) => innerHTML.includes('和装')).click();
 }, 1400);
 setTimeout(() => {
-  [...document.querySelectorAll(".browseNodeText")].find(({innerHTML}) => innerHTML.includes('はんてん')).click();
+  [...document.querySelectorAll(".browseNodeText")].find(({ innerHTML }) => innerHTML.includes('はんてん')).click();
 }, 2100);
 setTimeout(() => {
   document.querySelector("#browseCategoriesLevel-4 > span > button > span").click();
@@ -837,7 +903,45 @@ document.querySelector("#goodsImage2Upload").files[0] = document.querySelector("
 //* Amazon Reset Zaiko
 
 document.querySelectorAll('[value="8010"]').forEach(input => {
-  input.value = 0
+  input.value   = 0
   input.onfocus = () => input.value = 0
-  input.dispatchEvent(new Event("input", {bubbles : true}))
+  input.dispatchEvent(new Event("input", { bubbles: true }))
 })
+
+// Amazon copy asinCode
+
+let data = await(await fetch("http://localhost:8888/tayutafu")).json();
+
+data.asinCodes = [...document.querySelectorAll(".mt-text-content.mt-table-detail")]
+  .map(span => span.innerText.match(/^[0-9A-Z]{10}$/)?.[0])
+  .filter(Boolean)
+
+fetch(`http://localhost:8888/tayutafu`, {
+  method        : "POST",
+  mode          : "no-cors",
+  "Content-Type": "application/json",
+  body          : JSON.stringify(data),
+})
+  .then((res) => console.log({ res }))
+  .catch((err) => console.log({ err }));
+
+
+
+// Amazon apply asinCode
+
+let { asinCodes }     = await(await fetch("http://localhost:8888/tayutafu")).json();
+let inputValueChanger = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set;
+let asinInput         = document.querySelector("[id^=awsui-autosuggest]")
+
+const findAsin = function (index) {
+  inputValueChanger.call(asinInput, asinCodes[index]);
+  document.querySelectorAll('input').forEach(input => input.dispatchEvent(new Event("input", { bubbles: true })));
+  asinInput.onkeyup = function keyupFunc({ key }) {
+    setTimeout(() => {
+      document.querySelector("#ApplyContentButton > button").click()
+      findAsin(index + (key === "Enter"))
+    }, 600)
+  }
+}
+
+findAsin(0)
