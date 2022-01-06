@@ -481,6 +481,7 @@ form.onsubmit = (event) => {
     .catch((error) => console.error(error));
 };
 
+
 //! SHOPLIST Submit Product
 
 let {
@@ -674,23 +675,17 @@ document
 
 //! Shoplist JANCODE
 
-let janObject = {};
-let response = await fetch("http://localhost:8888/milulu");
-let { shoplistJanCode } = await response.json();
-shoplistJanCode = shoplistJanCode.map((jan) => jan.trim());
+let { shoplistJanCode } = await (await fetch("http://localhost:8888/milulu")).json();
 
-shoplistJanCode.forEach(
-  (jan) => (janObject[jan.split(" ")[0].toLowerCase()] = jan.split(" ")[1])
-);
-document
-  .querySelectorAll("input[name^=jan_code]")
+document.querySelectorAll("input[name^=jan_code]")
   .forEach(
-    (janInput, i) =>
-    (janInput.value = String(
-      janObject[
-      janInput.parentElement.previousElementSibling.innerText.toLowerCase()
-      ]
-    ).replaceAll(undefined, ""))
+    (janInput, i) => {
+      console.log(janInput.parentElement.previousElementSibling.innerText.toLowerCase());
+      (janInput.value = 
+        shoplistJanCode[
+          janInput.parentElement.previousElementSibling.innerText
+        ] ?? "")
+      }
   );
 
 
@@ -1174,3 +1169,13 @@ document
   .forEach((input) =>
     input.dispatchEvent(new Event("input", { bubbles: true }))
   );
+
+// Sleep
+const sleep = (ms) => {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > ms){
+      break;
+    }
+  }
+}

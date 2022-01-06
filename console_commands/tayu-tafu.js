@@ -29,7 +29,7 @@ document.querySelectorAll('input').forEach(input => {
 })
 
 
-//* Pass data from RAKUTEN
+//* Store data from RAKUTEN
 
 let kintoHtml = `
 <!-- ▼▼タイトル▼▼ -->
