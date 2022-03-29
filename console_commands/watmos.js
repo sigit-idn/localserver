@@ -1,47 +1,6 @@
-//!Search and Replace
 
-let inputValueChanger = Object.getOwnPropertyDescriptor(
-  window.HTMLInputElement.prototype,
-  "value"
-).set;
-let textareaValueChanger = Object.getOwnPropertyDescriptor(
-  window.HTMLTextAreaElement.prototype,
-  "value"
-).set;
-let searchValues = prompt("Search").split(";");
-let replaceValues = prompt("Replace").split(";");
-searchValues.forEach((searchValue, i) => {
-  document.querySelectorAll("[type=text]").forEach((input) => {
-    inputValueChanger.call(
-      input,
-      input.value.replaceAll(searchValue, replaceValues[i])
-    );
-    input.addEventListener("focus", () =>
-      inputValueChanger.call(
-        input,
-        input.value.replaceAll(searchValue, replaceValues[i])
-      )
-    );
-  });
-  document.querySelectorAll("textarea").forEach((textarea) => {
-    textareaValueChanger.call(
-      textarea,
-      textarea.value.replaceAll(searchValue, replaceValues[i])
-    );
-    textarea.addEventListener("focus", () =>
-      textareaValueChanger.call(
-        textarea,
-        textarea.value.replaceAll(searchValue, replaceValues[i])
-      )
-    );
-  });
-});
 
-document.querySelectorAll("input, textarea").forEach((input) => {
-  input.dispatchEvent(new Event("input", { bubbles: true }));
-  input.dispatchEvent(new Event("change", { bubbles: true }));
-  input.dispatchEvent(new Event("focus", { bubbles: true }));
-});
+
 
 //! Search and Replace Only
 
@@ -84,7 +43,7 @@ document
     input.dispatchEvent(new Event("input", { bubbles: true }))
   );
 
-//! watmos pass data
+//! watmos pass data from spreadsheet
 
 let data = await fetch(
   "https://script.google.com/macros/s/AKfycbyxfqTB5rnnuxaDwmONtAkyGAuml3Ci_xANO40ZJFdfGpQiyiEYc9CNuG57EDTbzEHp/exec"
@@ -544,46 +503,6 @@ document.querySelectorAll("[type=text], textarea").forEach((input) => {
   input.dispatchEvent(new Event("focus", { bubbles: true }));
 });
 
-//! Rakuten variations no sizes
-
-let response = await fetch("http://localhost:8888/watmos");
-let data = await response.json();
-
-data.colors = data.colors.map((color) => color[0]);
-
-let sizeInputs = document.querySelectorAll(
-  "#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(1) > div > div > div:nth-child(2) .rms-col-14 input"
-);
-let sizeCodeInputs = document.querySelectorAll(
-  "#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(1) > div > div > div:nth-child(2) .rms-col-8 input"
-);
-
-let colorInputs = document.querySelectorAll(
-  "#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(2) > div > div .rms-col-14 input"
-);
-let colorCodeInputs = document.querySelectorAll(
-  "#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(2) > div > div .rms-col-8 input"
-);
-
-let inputValueChanger = Object.getOwnPropertyDescriptor(
-  window.HTMLInputElement.prototype,
-  "value"
-).set;
-
-data.colors.forEach((color, i) => {
-  inputValueChanger.call(colorInputs[i], color);
-  inputValueChanger.call(colorCodeInputs[i], "Y0" + (i + 1));
-});
-
-inputValueChanger.call(sizeInputs[0], "-");
-inputValueChanger.call(sizeCodeInputs[0], "X01");
-
-document.querySelectorAll("input").forEach((input) => {
-  input.dispatchEvent(new Event("input", { bubbles: true }));
-  input.dispatchEvent(new Event("change", { bubbles: true }));
-  input.dispatchEvent(new Event("focus", { bubbles: true }));
-});
-
 //! watmos Rakuten variations with sizes
 
 let response = await fetch("http://localhost:8888/watmos");
@@ -841,3 +760,107 @@ let title = prompt("title")
 copy(
   `<li><b>${date} UP</b><a href="${aHref}"><img src="${imgSrc}"></a><span>${title}</span></li>`
 )
+
+
+
+// Set LocalStorage Rental Page
+
+let systemCondition = `<font color="red">4.システムの都合上、予約カレンダーが「×」の場合でもご注文ができてしまうため、楽天からの自動確認メールの後、予約の可否についてご連絡させていただきます。<br>
+また、カレンダーが「◯」でも、他のお客様と注文が重なり、ご利用日にお送りすることができない場合についても、楽天からの自動確認メールの後、予約の可否をご連絡させていただきます。</font>`
+
+let spBanners = `<a href="https://www.rakuten.ne.jp/gold/watmosphere/rental-test/111b-s_cal2.html" target="blank"><img src="https://image.rakuten.co.jp/watmosphere/cabinet/banner/rental-s.jpg" width="100%"></a><br><br>
+<a href="https://www.rakuten.ne.jp/gold/watmosphere/rental-test/111b-m_cal2.html" target="blank"><img src="https://image.rakuten.co.jp/watmosphere/cabinet/banner/rental-m.jpg" width="100%"></a><br><br>
+<a href="https://www.rakuten.ne.jp/gold/watmosphere/rental-test/111b-l_cal2.html" target="blank"><img src="https://image.rakuten.co.jp/watmosphere/cabinet/banner/rental-l.jpg" width="100%"></a>`
+
+let pcBanners = `<p style="margin: 20 0 30px 0px;"><a href="https://www.rakuten.ne.jp/gold/watmosphere/rental-test/111b-s_cal2.html" target="blank"><img src="https://image.rakuten.co.jp/watmosphere/cabinet/banner/rental-s.jpg" width="100%"></a></p>
+<p style="margin: 20 0 30px 0px;"><a href="https://www.rakuten.ne.jp/gold/watmosphere/rental-test/111b-m_cal2.html" target="blank"><img src="https://image.rakuten.co.jp/watmosphere/cabinet/banner/rental-m.jpg" width="100%"></a></p>
+<p style="margin: 20 0 30px 0px;"><a href="https://www.rakuten.ne.jp/gold/watmosphere/rental-test/111b-l_cal2.html" target="blank"><img src="https://image.rakuten.co.jp/watmosphere/cabinet/banner/rental-l.jpg" width="100%"></a></p>`
+
+let selections = ["ご利用日（年）", "2022年", "2023年"]
+
+let slideImage = "https://image.rakuten.co.jp/watmosphere/cabinet/banner/rental-hakama_sp.jpg"
+
+localStorage.setItem(rental, JSON.stringify({systemCondition, spBanners, pcBanners, selections, slideImage}))
+
+
+// Edit RENTAL Page
+let inputValueChanger = Object.getOwnPropertyDescriptor(
+  window.HTMLInputElement.prototype,
+  "value"
+).set;
+let textareaValueChanger = Object.getOwnPropertyDescriptor(
+  window.HTMLTextAreaElement.prototype,
+  "value"
+).set;
+let selectValueChanger = Object.getOwnPropertyDescriptor(
+  window.HTMLSelectElement.prototype,
+  "value"
+).set;
+
+let rentalData = JSON.parse(localStorage.rental)
+
+let pcDescription = document.querySelector("#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(1) > div.rms-form-col.rms-col-20 > div > div > div > textarea")
+let spPage = document.querySelector("#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(2) > div.rms-form-col.rms-col-20 > div > div > div > textarea")
+let pcPage = document.querySelector("#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(3) > div.rms-form-col.rms-col-20 > div > div > div > textarea")
+
+textareaValueChanger.call(pcDescription, pcDescription.value + "<br>\n" + rentalData.systemCondition)
+
+document.querySelectorAll("[type=text], textarea").forEach((input) => {
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  input.dispatchEvent(new Event("change", { bubbles: true }));
+});
+
+textareaValueChanger.call(spPage, spPage.value.replace(/(?<=([一-龠ァ-ヴーぁ-ゔｱ-ﾝ々〆〤。])+(<br>)+\n*)<img/u, "<br><br>" + rentalData.spBanners.replace(/111b/g, window.location.href.match(/(\w|-)+$/)[0]) + "<br>\n<img") 
++ "<br>\n" + rentalData.systemCondition 
++ "\n\n<br><br>" + rentalData.spBanners.replace(/111b/g, window.location.href.match(/(\w|-)+$/)[0]))
+
+document.querySelectorAll("[type=text], textarea").forEach((input) => {
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  input.dispatchEvent(new Event("change", { bubbles: true }));
+});
+
+textareaValueChanger.call(pcPage, 
+  pcPage.value.replace(/<\/dd>\n*.*<\/dl>\n*.*<\/div>\n*/u, "</dd>\n</dl>\n</div>\n" + rentalData.pcBanners.replace(/111b/g, window.location.href.split("/").slice(-1)[0]))
+  .replace(/<!.+live(.|\n)+tal.+>/, "") + rentalData.pcBanners.replace(/111b/g, window.location.href.split("/").slice(-1)[0]))
+
+  document.querySelectorAll("[type=text], textarea").forEach((input) => {
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+
+document.querySelector("#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(8) > div:nth-child(3) > div.rms-columns > div > div > button").click()
+
+document.querySelectorAll("[type=text], textarea").forEach((input) => {
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  input.dispatchEvent(new Event("change", { bubbles: true }));
+});
+
+
+document.querySelector('[name=url_19]').onfocus = inputValueChanger.call(
+  document.querySelector('[name=url_19]'),
+  rentalData.slideImage
+)
+
+document.querySelectorAll("[type=text], textarea").forEach((input) => {
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  input.dispatchEvent(new Event("change", { bubbles: true }));
+});
+
+
+
+// fdsaasdf
+
+for (let i = 0; i < 26; i++) {
+  document.querySelector("#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div.rms-modal.modal.fade.rms-modal--34tfX.show.show--1x9ik > div > div > div.modal-body > div.rms-form.form-border.form-full > div:nth-child(4) > div.rms-form-col.rms-col-20 > div > div.ma-t-8 > div > div > div:nth-child(1) > button").click()
+}
+
+document.querySelectorAll('[name^="selection_"]').forEach((selection, i) => {
+  selection.onfocus = () => selection.value = i +1 + "日"
+  inputValueChanger.call(selection, i + 1 + "日")}
+  )
+
+
+  document.querySelectorAll("[type=text], textarea").forEach((input) => {
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  });

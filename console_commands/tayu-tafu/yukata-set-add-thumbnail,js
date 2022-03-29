@@ -1,0 +1,44 @@
+// Yukata Set Edit Rakuten
+
+let {
+  data,
+  productNames,
+  detailImages,
+  yukataTexts,
+  beltTexts,
+  mainThemes,
+  subThemes,
+  pricesWithTax,
+  descriptionSizes
+} = await (await fetch('http://localhost:8888/yukata-set')).json();
+
+
+NodeList.prototype.forEach = Array.prototype.forEach
+NodeList.prototype.find = Array.prototype.find
+NodeList.prototype.filter = Array.prototype.filter
+
+let inputValueChanger = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+let textareaValueChanger = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+
+let getTextFieldByTitle = (title) =>
+document.querySelectorAll('.rms-form-row').find(row => new RegExp(title).test(row.innerText)).querySelector('textarea, input[type=text]')
+
+let imageUrlInputs = document.querySelectorAll("input[name^=url_]");
+let thumbnailInputs = imageUrlInputs[0]
+thumbnailInputs.scrollIntoView({behavior: 'smooth', block: 'center'})
+
+thumbnailInputs.tabIndex = 1
+imageUrlInputs[1].tabIndex = 2
+thumbnailInputs.addEventListener('focus', 
+async function focusHandler () {
+  const productNumber = window.location.pathname.split('/').pop()
+  let value = `https://image.rakuten.co.jp/tayu-tafu/cabinet/202plus2/${productNumber}-text.jpg`  
+
+  inputValueChanger.call(thumbnailInputs, value)
+})
+
+  document.querySelectorAll("input, textarea").forEach((input) => {
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+    input.dispatchEvent(new Event("focus", { bubbles: true }));
+  });

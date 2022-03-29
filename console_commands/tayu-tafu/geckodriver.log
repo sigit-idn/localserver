@@ -1,0 +1,55 @@
+1646788438347	geckodriver	INFO	Listening on 127.0.0.1:60972
+1646788605765	geckodriver	INFO	Listening on 127.0.0.1:51330
+1646788673950	geckodriver	INFO	Listening on 127.0.0.1:57851
+1646788767408	geckodriver	INFO	Listening on 127.0.0.1:59414
+1646788804529	geckodriver	INFO	Listening on 127.0.0.1:59447
+1646788943516	geckodriver	INFO	Listening on 127.0.0.1:65518
+1646795678729	geckodriver	INFO	Listening on 127.0.0.1:58881
+1646795757343	geckodriver	INFO	Listening on 127.0.0.1:53875
+1646795855915	geckodriver	INFO	Listening on 127.0.0.1:62438
+1646795858981	mozrunner::runner	INFO	Running command: "C:\\Users\\nobor\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "62439" "-no-remote" "-profile" "C:\\Users\\nobor\\AppData\\Local\\Temp\\rust_mozprofileJbmkiL"
+1646795860192	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\nobor\\AppData\\Local\\Temp\\rust_mozprofileJbmkiL\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:62439/devtools/browser/da36b2ab-d261-4613-ad9e-4c2805fb14c9
+1646795863228	Marionette	INFO	Listening on port 62446
+1646795863406	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1646800141449	Marionette	INFO	Stopped listening on port 62446
+6796023107	mozrunner::runner	INFO	Running command: "C:\\Users\\nobor\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "54881" "-no-remote" "-profile" "C:\\Users\\nobor\\AppData\\Local\\Temp\\rust_mozprofileafyTcC"
+LdrLoadDll: Blocking load of 'wrusr.dll' -- see http://www.mozilla.com/en-US/blocklist/
+1646796023633	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\nobor\\AppData\\Local\\Temp\\rust_mozprofileafyTcC\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:54881/devtools/browser/97c47c51-c814-4b32-bea9-53b557fae37b
+1646796026553	Marionette	INFO	Listening on port 54896
+1646796026800	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: , line 0: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+console.warn: "Async method failed in safeAsyncMethod" (new Error("Connection closed, pending request to server0.conn1.windowGlobal2147483651/layout31, type getGrids failed\n\nRequest stack:\nrequest@resource://devtools/shared/protocol/Front.js:292:14\ngenerateRequestMethods/</frontProto[name]@resource://devtools/shared/protocol/Front/FrontClassWithSpec.js:46:19\ngetAllGrids@resource://devtools/client/fronts/layout.js:171:17\nexports.safeAsyncMethod/<@resource://devtools/shared/async-utils.js:61:25\ngetGrids@resource://devtools/client/inspector/grids/grid-inspector.js:449:35\n", "resource://devtools/shared/protocol/Front.js", 106))
+console.warn: "Async method failed in safeAsyncMethod" (new Error("Connection closed, pending request to server0.conn1.windowGlobal2147483651/performanceActor11, type connect failed\n\nRequest stack:\nrequest@resource://devtools/shared/protocol/Front.js:292:14\ngenerateRequestMethods/</frontProto[name]@resource://devtools/shared/protocol/Front/FrontClassWithSpec.js:46:19\nconnect@resource://devtools/client/fronts/performance.js:63:36\n", "resource://devtools/shared/protocol/Front.js", 106))
+JavaScript error: , line 0: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+console.error: "Error while calling actor 'pagestyle's method 'getApplied'" "this.pageStyle is null"
+console.error: (new TypeError("this.pageStyle is null", "resource://devtools/server/actors/style-rule.js", 584))
+console.error: "Error while calling actor 'pagestyle's method 'getApplied'" "this.pageStyle is null"
+console.error: (new TypeError("this.pageStyle is null", "resource://devtools/server/actors/style-rule.js", 584))
+JavaScript error: , line 0: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+console.error: "Error while calling actor 'pagestyle's method 'getApplied'" "this.pageStyle is null"
+console.error: (new TypeError("this.pageStyle is null", "resource://devtools/server/actors/style-rule.js", 584))
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 575: NotFoundError: No such JSWindowActor 'DevToolsFrame'
+1646796410975	Marionette	INFO	Stopped listening on port 54896
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+JavaScript error: chrome://remote/content/marionette/cert.js, line 55: NS_ERROR_NOT_AVAILABLE: Component returned failure code: 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsICertOverrideService.setDisableAllSecurityChecksAndLetAttackersInterceptMyData]
+
+###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
+
+1646796536584	geckodriver	INFO	Listening on 127.0.0.1:53305
+1646796539525	mozrunner::runner	INFO	Running command: "C:\\Users\\nobor\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "53306" "-no-remote" "-profile" "C:\\Users\\nobor\\AppData\\Local\\Temp\\rust_mozprofileg5OiOW"
+LdrLoadDll: Blocking load of 'wrusr.dll' -- see http://www.mozilla.com/en-US/blocklist/
+1646796540356	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\nobor\\AppData\\Local\\Temp\\rust_mozprofileg5OiOW\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:53306/devtools/browser/30b2e01d-c3c3-4558-90f2-02aadec26859
+1646796543369	Marionette	INFO	Listening on port 53315
+1646796543749	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1646796563092	Marionette	INFO	Stopped listening on port 53315
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+JavaScript error: chrome://remote/content/marionette/cert.js, line 55: NS_ERROR_NOT_AVAILABLE: Component returned failure code: 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsICertOverrideService.setDisableAllSecurityChecksAndLetAttackersInterceptMyData]
+
+###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
+

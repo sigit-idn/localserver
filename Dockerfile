@@ -1,4 +1,7 @@
-FROM python:latest
+FROM python:alpine
 WORKDIR /app
+RUN pip install BeautifulSoup4
+RUN pip install requests
 COPY . .
-RUN python .
+EXPOSE "8888"
+CMD ["python", "."]

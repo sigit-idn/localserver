@@ -22,7 +22,7 @@ let commentsHtml = comments
 
 copy(commentsHtml);
 
-//* Create size table
+//* Create size TABLE
 
 let sizeInput = prompt("Size");
 
@@ -47,26 +47,25 @@ for (let i = 0; i < sizeValues.length - 1; i++) {
 }
 
 sizeHeaders =
-  "<tr>" +
+  "<thead>\n<tr>" +
   sizeHeaders
     .map((header) => `<th>${header.replace(/（/g, "<br>（")}</th>`)
     .join("") +
-  "</tr>";
-sizeRows = sizeRows
+  "</tr>\n</thead>";
+sizeRows = "<tbody>\n" + sizeRows
   .map(
     (row) =>
-      "<tr>" +
-      row
+      "<tr>" + row
         .map((col, i) => (i == 0 ? `<th>${col}</th>` : `<td>${col}</td>`))
         .join("") +
       "</tr>"
   )
-  .join("\n");
+  .join("\n") + "\n</tbody>";
 
 copy(sizeHeaders + "\n" + sizeRows);
 
 
-//! Pass Data
+//! Store Data
 let data = await(
   await fetch(
     "https://script.google.com/macros/s/AKfycbyxdiJmE_Tim7NxQJN6FStbIK0lZ154BWTKE6j4-N0MzbcKG7zEMKUCsZdp-cj5owYtWQ/exec"
@@ -98,7 +97,7 @@ fetch("http://localhost:8888/milulu", {
   .catch((error) => console.log("Error", error));
 
 
-//! Create Coordinate
+//! Create COORDINATE
 
 let innerCopy = copy
 let data = await(await fetch(`http://localhost:8888/milulu`)).json();
@@ -165,7 +164,7 @@ let coordinateItems = data.coordinateUrls.map((url, i, arr) => {
 });
 
 
-// Create Related Product
+// Create RELATED Product
 let relatedItems = "";
 let innerCopy = copy
 
@@ -208,10 +207,9 @@ document.addEventListener("mousewheel", () =>
   navigator.clipboard.writeText(relatedItems)
 );
 
-//! Rakuten Submit Product
+//! Rakuten SUBMIT Product
 
-let response = await fetch(`http://localhost:8888/milulu`);
-let data = await response.json();
+let data = await (await fetch(`http://localhost:8888/milulu`)).json();
 
 NodeList.prototype.find = Array.prototype.find;
 
@@ -231,10 +229,10 @@ let categoryInputs = document
   .querySelectorAll("input");
 
 let mobilePageInput = [...document.querySelectorAll("textarea")].find(
-  ({ value }) => value.includes("<!-- sp -->")
+  ({ value }) => /<!.+sp.+>/.test(value)
 );
 let pcPageInput = [...document.querySelectorAll("textarea")].find(({ value }) =>
-  value.includes("<!-- pc -->")
+/<!.+pc.+>/.test(value)
 );
 
 let asurakuInput = document.querySelector("select[name=asuraku]");
@@ -291,11 +289,20 @@ textareaValueChanger.call(
   pcPageInput.value
     .replaceAll(window.location.href.split("/")[8], data.productNumber)
     .replace(/(?<=cabinet\/)\D{4,12}(?=\/)/g, data.category)
-    .replaceAll("/html/", "/")
+    .replace(/[一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々。〆〤]([一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤。<br>\n])+/, data.description)
 );
+
+if (data.description) textareaValueChanger.call(
+  mobilePageInput,
+  mobilePageInput.value
+    .replaceAll(window.location.href.split("/")[8], data.productNumber)
+    .replace(/(?<=cabinet\/)\D{4,12}(?=\/)/g, data.category)
+    .replace(/[一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々。〆〤]([一-龠ァ-ヴーぁ-ゔｱ-ｳﾞ々〆〤。<br>\n])+/, data.description)
+);
+
 categoryInputs.forEach((input, i) => {
-  inputValueChanger.call(input, data.rakutenCategory[i] ?? "");
-  input.onfocus = () => (input.value = data.rakutenCategory[i]);
+  inputValueChanger.call(input, data.rakutenCategory?.[i] ?? "");
+  input.onfocus = () => (input.value = data.rakutenCategory?.[i]);
 });
 
 selectValueChanger.call(asurakuInput, 1);
@@ -305,7 +312,7 @@ imageUrlInputs.forEach((input) => {
     inputValueChanger.call(
       input,
       input.value
-        .replaceAll(window.location.href.split("/")[8], data.productNumber)
+        .replaceAll(window.location.href.match(/\w{10}$/)?.[0], data.productNumber)
         .replace(/(?<=cabinet\/)\D{4,12}(?=\/)/g, data.category)
     )
   );
@@ -326,10 +333,11 @@ document
   .querySelectorAll(
     `#root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(7) > div.rms-form.form-border.form-full > div:nth-child(2),
   #root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(11) > div.rms-form.form-border.form-full > div:nth-child(1),
-  #root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(12)
+  #root > div.rms-layout > main > div.rms-content > div:nth-child(2) > div:nth-child(12),
+  #salesPrice
   `
   )
-  .forEach((element) => (element.style.backgroundColor = "#ff0"));
+  .forEach((element) => (element?.style?.backgroundColor = "#ff0"));
 
 // Rakuten find DirectoryID
 
@@ -381,9 +389,9 @@ while (!found) {
     });
 }
 
-//! Rakuten variations
+// Rakuten VARIATIONS
 
-let data = await(await fetch("http://localhost:8888/milulu")).json();
+let {colorCode, sizes, colors} = await(await fetch("http://localhost:8888/milulu")).json();
 
 let sizeInputs = document.querySelectorAll(
   "#root > div > main > div.rms-content > div > div > div:nth-child(7) > div > div.rms-grid.pa-lr-0 > div > div > div > div:nth-child(2) > div:nth-child(1) > div > div > div:nth-child(2) .rms-col-14 input"
@@ -404,11 +412,11 @@ let inputValueChanger = Object.getOwnPropertyDescriptor(
   "value"
 ).set;
 
-data.sizes.forEach((size, i) => {
+sizes.filter((size,i) => sizes.indexOf(size) === i).forEach((size, i) => {
   sizeInputs[i].tabIndex = i + 1;
   sizeCodeInputs[i].tabIndex = i + 1;
   let sizeCode =
-    size.length < 3 ? "0" + size.replace("号", "") : size.replace("号", "");
+    size.length < 3 ? "0" + size.match(/\d{2}(?=(\D|$))/)?.[0] : size.match(/\d{2}(?=(\D|$))/)?.[0];
   sizeCode = !size.includes("フリー") ? sizeCode : "fl";
 
   inputValueChanger.call(sizeInputs[i], size);
@@ -418,19 +426,19 @@ data.sizes.forEach((size, i) => {
     inputValueChanger.call(sizeCodeInputs[i], sizeCode);
 });
 
-data.colors.forEach((color, i) => {
+colors.forEach((color, i) => {
   colorInputs[i].tabIndex = i + 1;
   colorCodeInputs[i].tabIndex = i + 1;
   inputValueChanger.call(colorInputs[i], color);
   colorInputs[i].onfocus = () => inputValueChanger.call(colorInputs[i], color);
   inputValueChanger.call(
     colorCodeInputs[i],
-    data.colorCode[color] ?? "0" + (i + 1)
+    colorCode[color] ?? "0" + (i + 1)
   );
   colorCodeInputs[i].onfocus = () =>
     inputValueChanger.call(
       colorCodeInputs[i],
-      data.colorCode[color] ?? "0" + (i + 1)
+      colorCode[color] ?? "0" + (i + 1)
     );
 });
 
@@ -439,7 +447,7 @@ document.querySelectorAll("input").forEach((input) => {
   input.dispatchEvent(new Event("change", { bubbles: true }));
 });
 
-//! Shoplist multiple image upload
+//! Shoplist MULTIPLE image upload
 
 let tbody = document.querySelector("#main > form > table > tbody");
 let form = document.querySelector("form");
@@ -482,19 +490,18 @@ form.onsubmit = (event) => {
 };
 
 
-//! SHOPLIST Submit Product
+//! Shoplist SUBMIT Product
 
 let {
   shoplistCatchCopy,
   shoplistDescription,
   shoplistJanCode,
   shoplistPrice,
-  price,
   productNumber,
   rakutenCatchCopy,
   shoplistCategory,
   shoplistProductName,
-} = await(await fetch("http://localhost:8888/milulu")).json();
+} = await (await fetch("http://localhost:8888/milulu")).json();
 
 document.querySelector("[name=catch_copy_mobile]").value =
   shoplistCatchCopy.length > 130
@@ -503,24 +510,23 @@ document.querySelector("[name=catch_copy_mobile]").value =
 document.querySelector("[name=product_name]").value = shoplistProductName;
 document.querySelector("[name=product_code]").value = productNumber;
 document.querySelector("[name=shop_product_code]").value = productNumber;
-document.querySelector("[name=genre_id]").value =
-  String(shoplistCategory).match(/\d+/);
+document.querySelector("[name=genre_id]").value = shoplistCategory;
 document.querySelector("[name=product_material_details]").value = prompt(
   "Material"
-).replace(/\s{2,}|(?<=%)\s/g, "<br>\n");
+).replace(/\n+/g, "<br>\n").replace(/\s{2,}/g, " ");
 
-document.querySelector("[name=product_sales_price]").value = shoplistPrice ?? price;
+document.querySelector("[name=product_sales_price]").value = shoplistPrice;
 document.querySelectorAll("[name=tax_flg]")[1].checked = true;
-document.querySelectorAll("[name='product_sex_type[]']")[1].checked = true;
+document.querySelectorAll("[name='product_sex_type[]']")[/^d/.test(productNumber) ? 2 : 1].checked = true;
 document.querySelectorAll("[name=stock_type]")[2].checked = true;
 document.querySelector("[name=stock_name_width]").value = "サイズ";
 document.querySelector("[name=stock_name_height]").value = "カラー";
 document.querySelector("[name=product_subject_mobile]").value =
   shoplistDescription
     .replace(/\n{2,}/g, "\n")
-    .replace(/\n/g, "<br>\n")
-// .replace(/【/g, "\n<br><br>\n【")
-// .replace(/】/g, "】<br>\n") + "\n\n";
+    .replace(/\n/g, "<br>\n") + "<br><br>\n\n"
+    // .replace(/【/g, "\n<br><br>\n【")
+    // .replace(/】/g, "】<br>\n") + "\n\n";
 
 if (!/^k/.test(productNumber)) {
   let sizeInput = prompt("Size") ?? "";
@@ -562,7 +568,7 @@ document
   .forEach((td) => td.appendChild(document.createElement("img")));
 
 let imagesLimit =
-  productNumber[0] == "k" ? parseInt(prompt("Images Limit")) : 19;
+  /^(k|d)/.test(productNumber) ? parseInt(prompt("Images Limit")) : 19;
 
 document.querySelectorAll("input[id^=image_url]").forEach((input, i) => {
   input.value =
@@ -589,6 +595,7 @@ document
   );
 
 document.querySelector("select[name=multi_type]").value = 2;
+
 
 // Shoplist Create Size Description
 
@@ -627,10 +634,9 @@ copy(
     .replace(/\n \/ /g, "\n")
 );
 
-//! Shoplist Variation
+//! Shoplist VARIATION
 
-let response = await fetch("http://localhost:8888/milulu");
-let { sizes, colors, productNumber, colorCode } = await response.json();
+let { sizes, colors, productNumber, colorCode } = await (await fetch("http://localhost:8888/milulu")).json();
 
 document
   .querySelectorAll("input[name^=product_axis_width_name]")
@@ -639,9 +645,9 @@ document
 document
   .querySelectorAll("input[name^=product_width_child_no]")
   .forEach((size, i) => {
-    size.value = sizes[i]?.replaceAll("号", "") || "";
+    size.value = sizes[i]?.replace(/号/g, "") ?? "";
     size.value = size.value.length == 1 ? "0" + size.value : size.value;
-    size.value = !sizes[i]?.includes("フリー") ? size.value : "fl";
+    size.value = !sizes[i]?.includes("フリー") ? (size.value.match(/\d{2}(?=(\D|$))/)?.[0] ?? "") : "fl";
   });
 
 document
@@ -714,7 +720,7 @@ document
   );
 
 
-//! Yahoo Submit Product
+//! Yahoo SUBMIT Product
 let data = await(await fetch("http://localhost:8888/milulu")).json();
 
 let inputs = {
@@ -748,20 +754,16 @@ let descriptionInput = document.querySelector("[name=__submit__explanation]");
   .forEach((input) => (input.style.backgroundColor = "#ff0"));
 
 let descriptionText =
-  descriptionInput.value.split("【")[0] +
-  "【カラー】" +
-  data.colors.join("／") +
-  "\n【サイズ】" +
-  data.sizes.join(" ");
-
-descriptionText =
-  descriptionText.split("\n\n")[0] +
+  descriptionInput.value.split(/\n{2,}/)[0] +
   "\n\n" +
   data.headline +
   "\n" +
   data.subtitle +
   "\n\n" +
-  descriptionText.split("\n\n")[2];
+  "【カラー】" +
+  data.colors.join("／") +
+  "\n【サイズ】" +
+  data.sizes.join(" ");
 
 document.querySelector("select[name=__submit__lead_time_outstock]").value = 3;
 
@@ -773,6 +775,11 @@ let textareaValueChanger = Object.getOwnPropertyDescriptor(
   window.HTMLTextAreaElement.prototype,
   "value"
 ).set;
+
+let sleep = (ms) => {
+  const start = new Date().getTime()
+  while (true) if (new Date().getTime() - start >= ms) break
+}
 
 for (input in inputs) {
   inputValueChanger.call(inputs[input], data[input.replace("Input", "")]);
@@ -889,7 +896,7 @@ localStorage.setItem(
 );
 
 
-//! Yahoo komoku sentaku
+//! Yahoo KOMOKU sentaku
 
 document
   .querySelectorAll(
@@ -899,7 +906,7 @@ document
     input.tabIndex = i + 1;
     input.addEventListener("focus", () => {
       input.tabIndex = 0;
-      inputValueChanger.call(input, data.colors[i - 1]);
+      inputValueChanger.call(input, String(data.colors[i - 1] ?? ""));
     });
     input.dispatchEvent(new Event("focus", { bubbles: true }));
   });
@@ -911,26 +918,25 @@ document
     input.tabIndex = i + 1;
     input.addEventListener("focus", () => {
       input.tabIndex = 0;
-      inputValueChanger.call(input, data.sizes[i - 1]);
+      inputValueChanger.call(input, String(data.sizes[i - 1] ?? ""));
     });
     input.dispatchEvent(new Event("focus", { bubbles: true }));
   });
 
-//! Yahoo variation table
+//! Yahoo variation TABLE
 
 document
   .querySelectorAll(".stockList td:nth-child(1) span > input")
   .forEach((input, i) => {
     input.tabIndex = i + 1;
     const yahooSizeCode =
-      input.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerText.replaceAll(
-        "号",
-        ""
-      );
+      input.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerText
+
+      console.log({yahooSizeCode});
     let SizeCode =
-      yahooSizeCode == "フリー"
+      yahooSizeCode === "フリー"
         ? "fl"
-        : yahooSizeCode.length == 1
+        : yahooSizeCode.match(/\d{2}(?=\D|$)/)?.[0].length === 1
           ? "0" + yahooSizeCode
           : yahooSizeCode;
     inputValueChanger.call(
@@ -943,6 +949,7 @@ document
         .nextElementSibling.innerText
       ]
     );
+
     input.addEventListener("focus", () =>
       inputValueChanger.call(
         input,
@@ -983,46 +990,7 @@ document.querySelectorAll("input, textarea").forEach((input) => {
   input.dispatchEvent(new Event("change", { bubbles: true }));
 });
 
-//! Yahoo variation table
-
-document
-  .querySelectorAll(".stockList td:nth-child(1) span > input")
-  .forEach((input, i) => {
-    const yahooSizeCode =
-      input.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement
-        .querySelector("td:nth-child(3)")
-        .innerText.replaceAll("号", "");
-    let SizeCode =
-      yahooSizeCode == "フリー"
-        ? "fl"
-        : yahooSizeCode.length == 1
-          ? "0" + yahooSizeCode
-          : yahooSizeCode;
-    input.value =
-      productNumber +
-      SizeCode +
-      colorCode[
-      input.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.querySelector(
-        ".stockList__title"
-      ).innerText
-      ];
-    input.dispatchEvent(new Event("focus"));
-  });
-
-document
-  .querySelectorAll(".stockList .stockList__tableWrap tr:nth-child(1) textarea")
-  .forEach((textArea, i) => {
-    textArea.value = `https://shopping.c.yimg.jp/lib/milulu-shop/${productNumber}-parts${i + 1
-      }.jpg`;
-  });
-
-document
-  .querySelectorAll(
-    ".stockList .stockList__tableWrap tr:nth-child(1) .stockList__tableCellInner--photo input[type=radio], input[type=text], textarea"
-  )
-  .forEach((radio, i) => (radio.checked = true));
-
-//* Create Page Screenshot
+//* Create Page SCREENSHOT
 
 document.querySelector(".floating-cart-wrapper")?.remove();
 document.querySelector("#iFixed")?.remove();
@@ -1090,9 +1058,8 @@ document.querySelectorAll("div").forEach(async (div) => {
   .filter((tr) => /m214044ct0/.test(tr.innerHTML))
   .forEach((tr) => console.log(tr.querySelector('[value="削除"]').click()));
 
-// Amazon select modules
-let response = await fetch(`http://localhost:8888/milulu`);
-let data = await response.json();
+// Amazon select MODULES
+let data = await (await fetch(`http://localhost:8888/milulu`)).json();
 
 document
   .querySelector("#app-main > div > div > div > div > div > div > div > div")
@@ -1171,11 +1138,63 @@ document
   );
 
 // Sleep
-const sleep = (ms) => {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > ms){
-      break;
-    }
-  }
+let sleep = (ms) => {
+  const start = new Date().getTime();
+  while (true) if ((new Date().getTime() - start) > ms) break;
 }
+
+
+
+// Create finish REPORT
+copy = copy
+let { productNumber } = await(await fetch(`http://localhost:8888/milulu`)).json();
+let deadline          = prompt("Deadline").match(/\d+/g)?.join('/')
+let shoplistId        = window.location.href.match(/\d{7}$/)[0] ?? prompt("Shoplist ID")
+
+let finishReport = `[To:2961124]松永康裕さん
+ミルル${deadline}のタスク ${productNumber} 登録しました。
+ご確認宜しくお願い致します。
+
+https://item.rakuten.co.jp/milulu/${productNumber}/
+https://item.rms.rakuten.co.jp/rms-item/shops/275447/item/edit/${productNumber}
+
+https://service.shop-list.com/shopadmin/product/ProductDetail?product_id=${shoplistId}
+
+https://store.shopping.yahoo.co.jp/milulu-shop/${productNumber}.html
+https://editor3.store.yahoo.co.jp/RT/milulu-shop/PageEdit/index?page_key=${productNumber}&page_mode=Edit
+
+https://sellercentral-japan.amazon.com/inventory/ref=xx_invmgr_dnav_xx?tbla_myitable=sort:%7B%22sortOrder%22%3A%22ASCENDING%22%2C%22sortedColumnId%22%3A%22skucondition%22%7D;search:${productNumber};pagination:1;`
+
+copy(finishReport)
+
+// Create SAMPLE Watermark
+
+document.body.innerHTML += (
+  `<h1 style="
+    font-weight   : 900;
+    font-size     : 80px;
+    opacity       : .2;
+    position      : fixed;
+    right         : 50%;
+    top           : 50%;
+    transform     : translate(50%, -50%);
+    pointer-events: none
+  ">SAMPLE</h1>`
+)
+
+// Create WATERMARK
+
+document.body.innerHTML += (
+  `<h1 style="
+    font-weight   : 900;
+    font-size     : 80px;
+    opacity       : .2;
+    position      : fixed;
+    right         : 50%;
+    top           : 50%;
+    transform     : translate(50%, -50%);
+    pointer-events: none
+  ">${prompt("watermark", "SAMPLE")}</h1>`
+)
+
+console.log(prompt());

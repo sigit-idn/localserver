@@ -1,0 +1,16 @@
+{
+  "202-0506": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1796px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 874px;\n    }\n}\n    ",
+  "202-0508": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1445px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 874px;\n    }\n}\n    ",
+  "202-0512": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1690px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 863px;\n    }\n}\n    ",
+  "202-0514": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1764px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 874px;\n    }\n}\n    ",
+  "202-0516": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1796px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 874px;\n    }\n}\n    ",
+  "202-0518": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1733px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 874px;\n    }\n}\n    ",
+  "202-0520": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1671px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 776px;\n    }\n}\n    ",
+  "202-0492": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1733px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 753px;\n    }\n}\n    ",
+  "202-0493": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1658px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 753px;\n    }\n}\n    ",
+  "202-0494": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1659px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 753px;\n    }\n}\n    ",
+  "202-0497": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1671px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 719px;\n    }\n}\n    ",
+  "202-0499": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1671px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 719px;\n    }\n}\n    ",
+  "202-0502": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1477px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 719px;\n    }\n}\n    ",
+  "202-0504": "\n@media screen and (max-width: 767px) {\n  #item-review iframe {\n    height: calc(1764px - 3.75px * 120 + 120vw);\n    }\n\n  #spec iframe {\n    height: 719px;\n    }\n}\n    "
+}

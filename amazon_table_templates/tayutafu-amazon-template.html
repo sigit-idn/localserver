@@ -85,11 +85,11 @@
       const data = await res.json();
 
       const variations = data.size.flatMap((size) =>
-        data.color.map((color) => color + "-_-" + size.replace("-", ""))
+        data?.color.map((color) => color + "-_-" + size.replace("-", ""))
       );
 
       const variationsCode = data.size.flatMap((size, i) =>
-        data.color.map((color, j) => `X${1000 + i}Y${1000 + j}`)
+        data?.color.map((color, j) => `X${1000 + i}Y${1000 + j}`)
       );
 
       const [
@@ -129,7 +129,7 @@
           new RegExp(key).test(data.itemName)
         );
 
-        return categories[categoryKey][query];
+        if (categories[categoryKey]?.[query]) return categories[categoryKey][query];
       };
 
       const parentValues = {
@@ -173,7 +173,7 @@
        	</td>`;
       });
 
-      variations.forEach((variation, i) => {
+      variations?.forEach((variation, i) => {
         const values = {
           feed_product_type: getProductType("productType"),
           item_sku: data.itemNumber + variationsCode[i],
@@ -402,13 +402,13 @@
     // `;
 
     //     const variations = data.size
-    //       .map((size) => data.color.map((color) => color + "-_-" + size))
+    //       .map((size) => data?.color.map((color) => color + "-_-" + size))
     //       .join()
     //       .split(",");
 
     //     const variationsCode = data.size
     //       .map((size, i) =>
-    //         data.color.map((color, j) => "X" + (1000 + i) + "Y" + (1000 + j))
+    //         data?.color.map((color, j) => "X" + (1000 + i) + "Y" + (1000 + j))
     //       )
     //       .join()
     //       .split(",");
