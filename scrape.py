@@ -44,7 +44,6 @@ def scrape(product_number):
 				category = categories[re.search("(?<=\d)\D{2}", product_number)[0]]
 
 		if category == "スーツ":
-			# category = re.findall("[ァ-ヴー]+スーツ", pageSoup.text)[-1]
 			category = re.search("(パンツ|スカート|ワンピース)スーツ", pageSoup.text)[0]
 
 		res = {
@@ -55,10 +54,6 @@ def scrape(product_number):
 
 		iframe = requests.get(pageSoup.select_one(
 				".sale_desc iframe").get("src"))
-
-		# if iframe.status_code == 404:
-		# 		iframe = requests.get(
-		# 				f"https://www.rakuten.ne.jp/gold/milulu/psge2/{product_number}/{product_number}.html")
 
 		if iframe.status_code == 404: return res
 
@@ -71,4 +66,5 @@ def scrape(product_number):
 		
 		return res
 
-# scrape("k215060hg0")
+if __name__ == "__main__":
+		print(scrape("k215060hg0"))
