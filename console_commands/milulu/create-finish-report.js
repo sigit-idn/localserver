@@ -4,7 +4,7 @@ let { productNumber } = await(await fetch(`http://localhost:8888/milulu`)).json(
 let deadline          = prompt("Deadline").match(/\d+/g)?.join('/')
 let shoplistId        = window.location.href.match(/\d{7}$/)[0] ?? prompt("Shoplist ID")
 
-let finishReport = `[To:2961124]松永康裕さん
+let finishReport = `[To:2958152]羽納典さん
 ミルル${deadline}のタスク ${productNumber} 登録しました。
 ご確認宜しくお願い致します。
 

@@ -20,9 +20,9 @@ let xValue = 0;
 let yValue = 0;
 
 let tabIndex = tabIndex ?? 1;
-let abc = ["a", "b", "c"]
+// let abc = ["a", "b", "c"]
 let abcIndex = 0; 
-let abcCount = prompt("abcCount").match(/\d+/g).map((n) => parseInt(n))
+// let abcCount = prompt("abcCount").match(/\d+/g).map((n) => parseInt(n))
 let tIndex = 1;
 
 document.querySelectorAll("stockList__selectLabel").forEach((label) => label.click())
@@ -54,15 +54,15 @@ document
     textArea.tabIndex = tabIndex++;
     textareaValueChanger.call(
       textArea,
-      `https://shopping.c.yimg.jp/lib/tayu-tafu/${data.itemNumber}-sp-${abc[abcIndex]}-t${tIndex++}.jpg`
+      `https://shopping.c.yimg.jp/lib/tayu-tafu/${data.itemNumber}-sp-t${tIndex++}.jpg`
     );
     // textareaValueChanger.call(textArea, `https://shopping.c.yimg.jp/lib/tayu-tafu/${data.itemNumber}-c100${i}.jpg`)
     const newValue         = textArea.value;
           textArea.onfocus = () => textareaValueChanger.call(textArea, newValue);
-    if (tIndex > abcCount[abcIndex]) {
-      tIndex = 1;
-      abcIndex++
-    }
+    // if (tIndex > abcCount[abcIndex]) {
+    //   tIndex = 1;
+    //   abcIndex++
+    // }
   });
 
 document.querySelectorAll('input, textarea').forEach(input => {

@@ -64,20 +64,31 @@
         </table>
       </div>
     </div>
-    <button id="copy"
-            class="
-          mx-auto
-          bg-green-600
-          px-3
-          py-1
-          hover:bg-green-700
-          rounded
-          block
-          w-max
+
+    <div class="flex justify-center w-screen space-x-2">
+      <button id="copy"
+      class="
+      bg-green-600
+      px-3
+      py-1
+      hover:bg-green-700
+      rounded
         ">
       Copy
     </button>
-  </section>
+
+    <button id="partialUpdate"
+            class="
+          bg-pink-600
+          px-3
+          py-1
+          hover:bg-pink-700
+          rounded
+        ">
+        Partial Update
+      </button>
+    </div>
+    </section>
 
   <script>
     fetch(`http://localhost:8888/tayutafu`).then(async (res) => {
@@ -95,18 +106,10 @@
         bullet_point1,
         bullet_point2,
         bullet_point3,
-        bullet_point4,
-        bullet_point5,
       ] = data.description
-        .match(/(?<=仕様(】*)\n)(.|\n)+/)[0]
-        .split(/\n|、/)
-        .map((word, i, words) => {
-          if (word.length <= 2) {
-            words[i + 1] = word + " " + words[i + 1];
-          }
-          return word;
-        })
-        .filter((word) => word.length > 2);
+        .match(/\[[^\[]+/gm) ?? [];
+
+      const bullet_point4 = data.description.match(/※[^※]+(?=\n{3,})/gm);
 
       const getProductType = (query) => {
         const categories = {
@@ -122,42 +125,48 @@
             productType: "kimono",
             browseNode: "2131532051"
           },
+          甚平: {
+            productType: "jinbei",
+            browseNode: "2131460051"
+          },
         };
 
         const categoryKey = Object.keys(categories).find((key) =>
           new RegExp(key).test(data.itemName)
         );
 
-        if (categories[categoryKey]?.[query]) return categories[categoryKey][query];
+        if (categories[categoryKey]?. [query]) return categories[categoryKey][query];
       };
 
       const parentValues = {
         feed_product_type: getProductType("productType"),
         item_sku: data.itemNumber,
+        fabric_type: "綿",
         product_description: data.description
           .replace(/\n+/g, "\n")
           .replace(/\n/g, "&lt;br&gt;\n"),
-        item_name: data.itemName.replace(/【|】|ギフト|プレゼント/g, "").match(/\S+/g).filter((_,i,arr) => i < arr.length / 2 - 2).join(' '),
+        age_range_description: "大人",
+        item_name: data.itemName.replace(/【|】|ギフト|プレゼント/g, "").match(/\S+/g).filter((_, i, arr) => i < arr.length / 2 - 2).join(' '),
         bullet_point1,
         bullet_point2,
         bullet_point3,
         bullet_point4,
-        bullet_point5,
         brand_name: "TAYU-TAFU(たゆたふ)",
         department_name: /子供/.test(data.itemName) ? "ボーイズ" : (/男/.test(data.itemNumber) ? "メンズ" : "レディース"),
-        // target_gender: /男.*女/.test(data.itemName) ? "ユニセックス" : (/男/.test(data.itemNumber) ? "男性" : "女性"),
+        target_gender: /男.*女/.test(data.itemName) ? "ユニセックス" : (/男/.test(data.itemNumber) ? "男性" : "女性"),
         variation_theme: variations.length ?
           data.size.length > 1 ?
           "SizeColor" :
-          "Color" :
-          "",
+          "Color" : "",
         parent_child: variations.length ? "Parent" : "",
         update_delete: "Update",
-        generic_keywords: data.itemName.replace(/【|】|ギフト|プレゼント/g, "").match(/\S+/g).filter((_,i,arr) => i >= arr.length / 2 - 2).join(' '),
+        generic_keywords: data.itemName.replace(/【|】|ギフト|プレゼント/g, "").match(/\S+/g).filter((_, i, arr) => i >= arr.length / 2 - 2).join(' '),
         merchant_shipping_group_name: !/当日/.test(data.deliveryDays) ? "移行された配送パターン" : "マケプレお急ぎ便用",
+        // merchant_shipping_group_name: !/当日/.test(data.deliveryDays) ? "移行された配送パターン" : "マケプレお急ぎ便用",
         condition_type: "新品",
         recommended_browse_nodes: getProductType("browseNode"),
-        fulfillment_latency: 5,
+        model_year: 2022,
+        fulfillment_latency: 1,
       };
 
       const tableHeaders = prompt("Table Headers").match(/\w+/g) ?? localStorage.getItem('tableHeaders').match(/\w+/g);
@@ -180,36 +189,39 @@
             /\n+/g,
             "&lt;br&gt;\n"
           ),
-          item_name: data.itemName.replace(/【|】|ギフト|プレゼント/g, "").match(/\S+/g).filter((_,i,arr) => i < arr.length / 2 - 2).join(' ') + " " + variation.replace("-_-", " "),
+          fabric_type: "綿",
+          age_range_description: "大人",
+          item_name: data.itemName.replace(/[【】（）]|ギフト|プレゼント/g, "").match(/\S+/g).filter((_, i, arr) => i < arr.length / 2 - 2).join(' ') + " " + variation.replace(/-_-/, " "),
           bullet_point1,
           bullet_point2,
           bullet_point3,
           bullet_point4,
-          bullet_point5,
           brand_name: "TAYU-TAFU(たゆたふ)",
-          department_name: /子供/.test(data.itemName) ? "ボーイズ" : (/男/.test(data.itemNumber) ? "メンズ" : "レディース"),
-          // target_gender: /男.*女/.test(data.itemName) ? "ユニセックス" : (/男/.test(data.itemNumber) ? "男性" : "女性"),
-          quantity: 0,
+          department_name: /子供/.test(data.itemName) ? "ボーイズ" : (/男|メンズ/.test(data.itemName) ? "メンズ" : "レディース"),
+          target_gender: /男.*女/.test(data.itemName) ? "ユニセックス" : (/男|メンズ/.test(data.itemName) ? "男性" : "女性"),
+          quantity: 1,
           relationship_type: variations.length ? "variation" : "",
           variation_theme: variations.length ?
             data.size.length > 1 ?
             "SizeColor" :
-            "Color" :
-            "",
+            "Color" : "",
           parent_sku: data.itemNumber,
           parent_child: "Child",
           update_delete: "Update",
-          generic_keywords: data.itemName.replace(/【|】|ギフト|プレゼント/g, "").match(/\S+/g).filter((_,i,arr) => i >= arr.length / 2 - 2).join(' '),
+          generic_keywords: data.itemName.replace(/【|】|ギフト|プレゼント/g, "").match(/\S+/g).filter((_, i, arr) => i >= arr.length / 2 - 2).join(' '),
           size_name: variation.split("-_-")[1],
           size_map: variation.split("-_-")[1],
           color_name: variation.split("-_-")[0],
-          color_map: variation.split("-_-")[0].match(/[ァ-ヴー]+/),
-          merchant_shipping_group_name: !/当日/.test(data.deliveryDays) ? "移行された配送パターン" : "マケプレお急ぎ便用",
+          color_map: variation.split("-_-")[0].trim().match(/[ァ-ヴー]+/),
+          merchant_shipping_group_name: "マケプレお急ぎ便用",
+          // merchant_shipping_group_name: !/当日/.test(data.deliveryDays) ? "移行された配送パターン" : "マケプレお急ぎ便用",
           condition_type: "新品",
           standard_price: data.price,
           recommended_browse_nodes: getProductType("browseNode"),
-          fulfillment_latency: 5,
+          model_year: 2022,
+          fulfillment_latency: 1,
         };
+
 
         document.querySelector("#tableBody").innerHTML += `
        <tr>
@@ -233,369 +245,25 @@
           .then((res) => console.log("Copied!"))
         );
     });
-    // fetch(`http://localhost:8888/watmos`)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     document.querySelector("tbody").innerHTML += `
-    // <tr>
-    // 	<td>accessory</td>
-    // 	<td>${data.itemNumber}</td>
-    // 	<td>TAYU-TAFU(たゆたふ)</td>
-    // 	<td>${data.itemName.split("【")[0]}</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>レディース</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>Parent</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>SizeColor</td>
-    // 	<td>Update</td>
-    // 	<td></td>
-    // 	<td>${data.description
-    //     .replaceAll("\n\n", "\n")
-    //     .replaceAll("\n", "&lt;br&gt;\n")}</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>${data.catchCopy}</td>
-    // 	<td>カジュアル</td>
-    // 	<td>カジュアル</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>5</td>
-    // 	<td>新品</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>移行された配送パターン</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // </tr>
-    // `;
 
-    //     const variations = data.size
-    //       .map((size) => data?.color.map((color) => color + "-_-" + size))
-    //       .join()
-    //       .split(",");
+    document
+      .querySelector("#partialUpdate")
+      .addEventListener("click", (event) => {
+        document.querySelectorAll("#tableBody > tr > td").forEach((td) => {
+          if (td.innerText.includes("Update")) {
+            td.innerText = "PartialUpdate";
+          }
+        });
 
-    //     const variationsCode = data.size
-    //       .map((size, i) =>
-    //         data?.color.map((color, j) => "X" + (1000 + i) + "Y" + (1000 + j))
-    //       )
-    //       .join()
-    //       .split(",");
+        const quantityColumn = [...document.querySelectorAll("thead > tr > th")].findIndex((th) => th.innerText === "quantity");
+        document.querySelectorAll(`#tableBody td:nth-child(${quantityColumn + 1})`).forEach((td) => {
+          if (td.innerText == 1) td.innerText = 0;
+        });
 
-    //     console.log(variations, variationsCode);
-    //     variations.forEach(
-    //       (variation, i) =>
-    //         (document.querySelector("tbody").innerHTML += `
-    // <tr>
-    // 	<td>accessory</td>
-    // 	<td>${data.itemNumber + variationsCode[i]}</td>
-    // 	<td>TAYU-TAFU(たゆたふ)</td>
-    // 	<td>${
-    //     data.itemName.split("【")[0] + variations[i].replace("-_-", " ")
-    //   }</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>${(spec1 = data.description
-    //     .split("【仕様】")[1]
-    //     .split("[草履]")[0])}</td>
-    // 	<td>${(spec2 = data.description.split(spec1)[1]?.split("ご注意")[0])}</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>${variation.split("-_-")[1]}</td>
-    // 	<td>${variation.split("-_-")[0]}</td>
-    // 	<td>${variation.split("-_-")[0].match(/[ァ-ヴー]+/)}</td>
-    // 	<td>レディース</td>
-    // 	<td>Free</td>
-    // 	<td></td>
-    // 	<td>0</td>
-    // 	<td>${data.price}</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>Child</td>
-    // 	<td>${data.itemNumber}</td>
-    // 	<td>Variation</td>
-    // 	<td>SizeColor</td>
-    // 	<td>Update</td>
-    // 	<td></td>
-    // 	<td>${data.description
-    //     .replaceAll("\n\n", "\n")
-    //     .replaceAll("\n", "&lt;br&gt;\n")}</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>${(spec1 = data.description
-    //     .split("【仕様】")[1]
-    //     .split("[草履]")[0])}</td>
-    // 	<td>${(spec2 = data.description.split(spec1)[1]?.split("ご注意")[0])}</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>${data.catchCopy}</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>5</td>
-    // 	<td>新品</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td>移行された配送パターン</td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // 	<td></td>
-    // </tr>
-    // `)
-    //     );
-
-    //     document
-    //       .querySelectorAll("tbody")
-    //       .forEach((tbody) =>
-    //         tbody.addEventListener("dblclick", (event) =>
-    //           navigator.clipboard
-    //             .writeText(tbody.innerText)
-    //             .then((res) => console.log("Copied!"))
-    //         )
-    //       );
-    //   });
+        navigator.clipboard
+          .writeText(document.querySelector("#tableBody").innerText)
+          .then((res) => console.log("Copied!"))
+      });
   </script>
 </body>
 

@@ -7,18 +7,19 @@ prompt("関連商品")
   .filter((val, i, arr) => arr.indexOf(val) === i)
   .forEach((productNumber, i, arr) => {
     setTimeout(async () => {
-      let data = await (await fetch("http://localhost:8888/scrape/" + productNumber)).json();
+      let data = await (await fetch("http://localhost:8888/scrape/" + productNumber.toLowerCase())).json().catch(() => {});
+      if (!data) return;
 
       relatedItems += `  <li style="box-shadow: 0 -4px 0 0 #FFF inset;">
         <a href="https://item.rakuten.co.jp/milulu/${productNumber}/" target="_top">
         <i>
-        <img src="${data.thumbnail}">
+        <img src="${data?.thumbnail}">
         </i>
         <span>
         <u></u>
         <u>
           <font size="0.5em" color="#6a5acd">
-            ＜${data.category?.replace(/<br>|\s/g, "")}＞
+            ＜${data?.category?.replace(/<br>|\s/g, "")}＞
           </font>
           <br>
           ${(data.h2 + data.h1).length >= 50

@@ -5,37 +5,36 @@ let form = document.querySelector("form");
 let formData = new FormData(form);
 
 tbody.querySelectorAll("input[type=file]").forEach((uploadInput) => {
-  uploadInput.multiple = true;
-  uploadInput.addEventListener("change", () => {
-    const files = [...uploadInput.files];
-    files.forEach((file, i) => {
-      formData.append(`upload_image[${i + 2}]`, file);
+    uploadInput.multiple = true;
+    uploadInput.addEventListener("change", () => {
+        const files = [...uploadInput.files];
+        files.forEach((file, i) => {
+            formData.append(`upload_image[${i + 2}]`, file);
+        });
     });
-  });
 });
 
-form.onsubmit = (event) => {
-  event.preventDefault();
-  document.querySelector('[href="#Submit"]').innerHTML = `アップロード中...`;
-  document.querySelector('[href="#Submit"]').style.backgroundColor = `#3338`;
-  document.querySelector('[href="#Submit"]').style.cursor = `wait`;
-  fetch(form.action, {
-    method: "POST",
-    body: formData,
-  })
-    .then(async (res) => {
-      console.log(await res.text());
-      if (confirm("アップロード完了!\nウィンドウ閉じる？")) {
-        window.close();
-      } else {
-        document.querySelector('[href="#Submit"]').innerHTML = `登録`;
-        document.querySelector(
-          '[href="#Submit"]'
-        ).style.backgroundColor = `#333`;
-        document.querySelector('[href="#Submit"]').style.cursor = `pointer`;
-        form.reset();
-        formData = new FormData(form);
-      }
-    })
-    .catch((error) => console.error(error));
+form.onsubmit = async(event) => {
+    event.preventDefault();
+    const submitButton = document.querySelector('[href="#Submit"]')
+    const setButton = (innerHTML, backgroundColor, cursor) => {
+        submitButton.innerHTML = innerHTML;
+        submitButton.style.backgroundColor = backgroundColor;
+        submitButton.style.cursor = cursor;
+    };
+
+    setButton(`アップロード中...`, `#3338`, `wait`);
+
+    const response = await fetch(form.action, {
+        method: "POST",
+        body: formData,
+    });
+
+    if (!response.ok) return console.error(response);
+
+    if (confirm("アップロード完了!\nウィンドウ閉じる？")) return window.close();
+
+    setButton(`アップロード`, `#0066cc`, `pointer`);
+    form.reset();
+    formData = new FormData(form);
 };

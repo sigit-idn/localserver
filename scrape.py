@@ -35,7 +35,10 @@ def scrape(product_number):
 				"nk": "ネックレス",
 				"br": "ブローチ",
 				"mk": "マスク",
-				"ct": "コート"
+				"ct": "コート",
+				"hs": "ふくさ",
+				"st": "スーツ",
+				"jz": "数珠",
 		}
 
 		category = ""

@@ -2,12 +2,21 @@
 
 let data = await (await fetch(`http://localhost:8888/milulu`)).json();
 
+NodeList.prototype.filter = Array.prototype.filter;
+NodeList.prototype.map = Array.prototype.map;
 NodeList.prototype.find = Array.prototype.find;
 
 document
   .querySelector("#root > .rms-layout .rms-content .rms-columns  button")
   .click();
 
+  NodeList.prototype.forEach = Array.prototype.forEach
+  NodeList.prototype.find = Array.prototype.find
+  NodeList.prototype.filter = Array.prototype.filter
+    
+  let getTextFieldByTitle = (title) =>
+  document.querySelectorAll('.rms-form-row').find(row => new RegExp(title).test(row.innerText)).querySelector('textarea, input[type=text]')
+  
 let manageNumberInput = document.querySelector("[name=itemManageNumber]");
 let productNumberInput = document.querySelector("[name=itemNumber]");
 let productNameInput = document.querySelector("[name=item_name]");
@@ -19,12 +28,11 @@ let categoryInputs = document
   .find((row) => /表示先カテゴリ/.test(row.innerHTML))
   .querySelectorAll("input");
 
-let mobilePageInput = [...document.querySelectorAll("textarea")].find(
-  ({ value }) => /<!.+sp.+>/.test(value)
-);
-let pcPageInput = [...document.querySelectorAll("textarea")].find(({ value }) =>
-/<!.+pc.+>/.test(value)
-);
+
+let descriptionInput = getTextFieldByTitle("PC用商品説明文")
+let mobilePageInput = getTextFieldByTitle('スマートフォン用商品説明文')
+let pcPageInput = getTextFieldByTitle('PC用販売説明文')
+
 
 let asurakuInput = document.querySelector("select[name=asuraku]");
 
@@ -128,4 +136,6 @@ document
   #salesPrice
   `
   )
-  .forEach((element) => (element?.style?.backgroundColor = "#ff0"));
+  .forEach((element) => {
+    if (!element) return
+    element.style.backgroundColor = "#ff0"});

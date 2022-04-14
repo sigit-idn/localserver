@@ -11,9 +11,9 @@ document
   )
   .forEach((input, i) => {
     input.tabIndex = tabIndex++;
-    inputValueChanger.call(input, data.color[i - 1] ?? "");
+    inputValueChanger.call(input, data.color[i - 2] ?? "");
     input.onfocus = () => {
-      inputValueChanger.call(input, data.color[i - 1] ?? "")
+      inputValueChanger.call(input, data.color[i - 2] ?? "")
       input.tabIndex = -1;
     };
   });
@@ -23,9 +23,9 @@ document
   )
   .forEach((input, i) => {
     input.tabIndex = tabIndex++;
-    inputValueChanger.call(input, data.size[i - 1] ?? "")
+    inputValueChanger.call(input, data.size[i - 2] ?? "")
     input.addEventListener("focus", () => {
-      inputValueChanger.call(input, data.size[i - 1] ?? "");
+      inputValueChanger.call(input, data.size[i - 2] ?? "");
       input.tabIndex = -1;
     }
     );

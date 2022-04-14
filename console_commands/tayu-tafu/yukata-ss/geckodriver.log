@@ -6192,3 +6192,14 @@ LdrLoadDll: Blocking load of 'wrusr.dll' -- see http://www.mozilla.com/en-US/blo
 
 ###!!! [Parent][PGPUParent] Error: RunMessage(msgname=PGPU::Msg_ShutdownVR) Channel closing: too late to send/recv, messages will be lost
 
+1649731328635	geckodriver	INFO	Listening on 127.0.0.1:62237
+1649731331727	mozrunner::runner	INFO	Running command: "C:\\Users\\nobor\\AppData\\Local\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "62238" "-no-remote" "-profile" "C:\\Users\\nobor\\AppData\\Local\\Temp\\rust_mozprofileJiKZRU"
+LdrLoadDll: Blocking load of 'wrusr.dll' -- see http://www.mozilla.com/en-US/blocklist/
+1649731334644	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\nobor\\AppData\\Local\\Temp\\rust_mozprofileJiKZRU\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:62238/devtools/browser/d4289a3b-eefe-4e98-a8f7-c7b64f744429
+1649731338900	Marionette	INFO	Listening on port 62246
+1649731339062	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1649731464232	Marionette	INFO	Stopped listening on port 62246
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+JavaScript error: chrome://remote/content/marionette/cert.js, line 55: NS_ERROR_NOT_AVAILABLE: Component returned failure code: 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsICertOverrideService.setDisableAllSecurityChecksAndLetAttackersInterceptMyData]

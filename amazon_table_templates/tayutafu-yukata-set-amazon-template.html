@@ -107,7 +107,7 @@
         bullet_point2,
         bullet_point3,
       ] = data.description
-        .match(/\[[^\[]+/gm)
+        .match(/\[[^\[]+/gm) ?? [];
 
       const bullet_point4 = data.description.match(/※[^※]+(?=\n{3,})/gm);
 

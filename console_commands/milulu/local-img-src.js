@@ -1,4 +1,4 @@
-//* Create Page SCREENSHOT
+//* Local Image SRC
 
 document.querySelector(".floating-cart-wrapper")?.remove();
 document.querySelector("#iFixed")?.remove();
@@ -27,13 +27,5 @@ document.querySelectorAll("img")?.forEach((img) => {
 document
   .querySelectorAll("li.up")
   ?.forEach((li) => (li.style.listStyle = "none"));
-
-eval(
-  await(
-    await fetch(
-      "https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"
-    )
-  ).text()
-);
 
 let number = localStorage.getItem("spNumber") ?? 1;

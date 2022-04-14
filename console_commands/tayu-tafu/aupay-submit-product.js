@@ -19,15 +19,15 @@ document.querySelector("#productExplnCmn_ctl").value =
   data.description.replaceAll("\n", "<br>\n");
 document.querySelectorAll("input[name*=productBuyOptTitle]")
   .forEach(
-    (dorpdownItem, i) => 
-    (dorpdownItem.value = data.selection[i]
+    (dropdownItem, i) => 
+    (dropdownItem.value = data.selection[i]
       ? Object.keys(data.selection[i])
       : null)
   );
 document.querySelectorAll("textarea[name*=productBuyOptChoices]")
   .forEach(
-    (dorpdownItem, i) => 
-    (dorpdownItem.value = data.selection[i]
+    (dropdownItem, i) => 
+    (dropdownItem.value = data.selection[i]
       ? data.selection[i][Object.keys(data.selection[i])].join("\n")
       : null)
   );
