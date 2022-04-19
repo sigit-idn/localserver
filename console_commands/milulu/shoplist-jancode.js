@@ -4,12 +4,10 @@ let { shoplistJanCode } = await (await fetch("http://localhost:8888/milulu")).js
 
 document.querySelectorAll("input[name^=jan_code]")
   .forEach(
-    (janInput, i) => {
-      console.log(janInput.parentElement.previousElementSibling.innerText.toLowerCase());
-      (janInput.value = 
-        shoplistJanCode[
-          janInput.parentElement.previousElementSibling.innerText
-        ] ?? "")
+    (janInput) => {
+      const { innerText } = janInput.parentElement.previousElementSibling
+      
+      janInput.value = shoplistJanCode[innerText] ?? ""
       }
   );
 

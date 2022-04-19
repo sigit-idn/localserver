@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 import re
 import os
+from page_screenshot.shot import screenshot_page
 from scrape import scrape
 
 
@@ -13,6 +14,9 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.send_response(200, "ok")
         self.send_header('Access-Control-Allow-Origin', "*")
         self.end_headers()
+
+        if re.match(r"/shot", self.path):
+            return self.wfile.write(bytes(open(os.path.join(os.path.dirname(__file__), "page_screenshot", "index.html"), "r").read(), "utf-8"))
 
         if re.search("scrape", self.path):
             return self.wfile.write(
@@ -28,21 +32,31 @@ class RequestHandler(BaseHTTPRequestHandler):
         # data = open(filename, encoding="utf-8")
         data = open(filename, encoding="shift_jis")
 
-        if(data):
-            self.wfile.write(bytes(data.read(), "utf-8"))
-            # self.wfile.write(bytes(data.read(),"shift_jis"))
-            print(str(datetime.now()) + " Data loaded " + filename)
-            self.wfile.close()
-        else:
-            return print("error", "not ok")
-            self.wfile.write()
-            self.wfile.close()
-            return False
+        if data == None: return self.wfile.write(bytes("No data", "utf-8"))
+
+        data_content = data.read()
+
+        self.wfile.write(bytes(data_content, "utf-8"))
+        # self.wfile.write(bytes(data.read(),"shift_jis"))
+        print(str(datetime.now()) + " Data loaded " + filename)
+        self.wfile.close()
 
     def do_POST(self):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', "*")
         self.end_headers()
+
+        if re.match(r"/shot", self.path):
+            content_length = int(self.headers['Content-Length'])
+            body = self.rfile.read(content_length)
+            filename = re.search("filename=\"([^\"]+)\"", str(body))[1]
+            print("filename: " + filename, "product_number: " + str(re.search("\w+", filename)))
+            product_number = re.search("\w+", filename)[0]
+            with open(os.path.join(os.path.dirname(__file__), "page_screenshot", filename), "wb") as f:
+                f.write(body)
+
+            screenshot_page(product_number)
+            return
 
         req_body = self.rfile.read(
             int(self.headers.get('Content-Length'))).decode('utf-8')
@@ -114,6 +128,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             # self.wfile.write(bytes("Data written " + filename,"shift_jis"))
             print(str(datetime.now()) + " Data written " + filename)
             self.wfile.close()
+
 
 
 HTTPServer(("localhost", 8888), RequestHandler).serve_forever()

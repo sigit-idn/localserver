@@ -1,6 +1,16 @@
 //! Yahoo SUBMIT Product
 let data = await(await fetch("http://localhost:8888/milulu")).json();
 
+let inputValueChanger = Object.getOwnPropertyDescriptor(
+  window.HTMLInputElement.prototype,
+  "value"
+).set;
+let textareaValueChanger = Object.getOwnPropertyDescriptor(
+  window.HTMLTextAreaElement.prototype,
+  "value"
+).set;
+
+
 let inputs = {
   productNumberInput: document.querySelector("[name=__submit__product_code]"),
   yahooProductNameInput: document.querySelector("[name=__submit__name]"),
@@ -44,15 +54,6 @@ let descriptionText =
   data.sizes.join(" ");
 
 document.querySelector("select[name=__submit__lead_time_outstock]").value = 3;
-
-let inputValueChanger = Object.getOwnPropertyDescriptor(
-  window.HTMLInputElement.prototype,
-  "value"
-).set;
-let textareaValueChanger = Object.getOwnPropertyDescriptor(
-  window.HTMLTextAreaElement.prototype,
-  "value"
-).set;
 
 let sleep = (ms) => {
   const start = new Date().getTime()

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Page Screenshot</title>
+</head>
+<body>
+  <h1 class="text-2xl font-bold text-center mt-5">Upload HTML files</h1>
+  <div class="flex justify-center">
+    <form method="post" enctype="multipart/form-data" class="w-full max-w-2xl bg-white px-8 pt-6 pb-8 mb-4" id="upload-form">
+      <label class="block text-gray-700 text-sm font-bold mb-2 w-full rounded-lg border-[2px] border-dashed text-center py-10 cursor-pointer" for="file">
+        <input class="hidden" type="file" name="file" id="file" multiple>
+        <span class="text-gray-700">Select a file</span>
+      </label>
+      <ul id="fileList" class="list-disc list-inside w-full"></ul>
+      <div class="flex justify-center mt-4">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+          Upload
+        </button>
+        <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg ml-4" onclick="this.form.reset()">
+          Clear
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('upload-form');
+      const fileInput = document.getElementById('file');
+      const fileList = document.getElementById('fileList');
+
+      fileInput.addEventListener('change', function(e) {
+        const{ files } = e.target;
+
+        for (let i = 0, file; file = files[i]; i++) {
+          const li = document.createElement('li');
+          const span = document.createElement('span');
+
+          span.innerHTML = file.name;
+          li.appendChild(span);
+          
+          fileList.appendChild(li);
+        }
+      });
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const files = fileInput.files;
+        
+        for (let i = 0, file; file = files[i]; i++) {
+          const formData = new FormData();
+          formData.append('file', file);
+          
+          const ajax = new XMLHttpRequest();
+          ajax.open('POST', 'shot', true);
+          ajax.send(formData);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

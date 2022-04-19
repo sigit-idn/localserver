@@ -1,19 +1,18 @@
 //! Yahoo variation TABLE
 
+let tabIndex = 1;
 document
   .querySelectorAll(".stockList td:nth-child(1) span > input")
-  .forEach((input, i) => {
-    input.tabIndex = i + 1;
+  .forEach((input) => {
+    input.tabIndex = tabIndex++;
     const yahooSizeCode =
       input.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerText
 
-      console.log({yahooSizeCode});
     let SizeCode =
       yahooSizeCode === "フリー"
         ? "fl"
-        : yahooSizeCode.match(/\d{2}(?=\D|$)/)?.[0].length === 1
-          ? "0" + yahooSizeCode
-          : yahooSizeCode;
+        : yahooSizeCode.replace(/(\d{1,2}).+/, (_, p1) => p1.padStart(2, "0"));
+
     inputValueChanger.call(
       input,
       data.productNumber +
@@ -42,7 +41,7 @@ document
 document
   .querySelectorAll(".stockList .stockList__tableWrap tr:nth-child(1) textarea")
   .forEach((textArea, i) => {
-    textArea.tabIndex = i + 1;
+    textArea.tabIndex = tabIndex++;
     textArea.value = `https://shopping.c.yimg.jp/lib/milulu-shop/${data.productNumber
       }-parts${i + 1}.jpg`;
     textArea.addEventListener(

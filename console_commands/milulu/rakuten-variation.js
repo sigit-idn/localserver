@@ -25,9 +25,9 @@ let tabIndex = 1;
 sizes.filter((size,i) => sizes.indexOf(size) === i).forEach((size, i) => {
   sizeInputs[i].tabIndex = tabIndex++;
   sizeCodeInputs[i].tabIndex = tabIndex++;
-  let sizeCode =
-    size.length < 3 ? "0" + size.match(/\d{2}(?=(\D|$))/)?.[0] : size.match(/\d{2}(?=(\D|$))/)?.[0];
-  sizeCode = !size.includes("フリー") ? sizeCode : "fl";
+  let sizeCode = size === "フリー" 
+    ? "fl" 
+    : size.replace(/(\d{1,2})\D+/, (_, p1) => p1.padStart(2, "0"));
 
   inputValueChanger.call(sizeInputs[i], size);
   sizeInputs[i].onfocus = () => inputValueChanger.call(sizeInputs[i], size);
